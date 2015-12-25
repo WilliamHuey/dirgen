@@ -1,0 +1,13 @@
+junk
+/storaging
+  fileinline
+  /morestoraging
+    itemthathastext
+    f/oldupshop
+      stuff
+      morestuff
+
+    fileoftext
+  fileitaway
+  1
+    notright
