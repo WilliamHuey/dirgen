@@ -42,6 +42,9 @@ reader.on('line', line => {
   //Get properties from the current line
   lexer.lex(line);
 
+  //Validate the lexed line can come right after the lexer
+  //validate(lexerResult, '')
+
   //Lexer returns information about the line structure type
   //but still verify if the prior line
   //could be confirm as a folder or a file type

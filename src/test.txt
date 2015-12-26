@@ -5,10 +5,10 @@ junk
 
     itemthathastext
     f/oldupshop
-      stuff
+      s*tuff
       morestuff
 
     fileoftext
-  fileitaway
+  fileitaway.txt
   1
     notright
