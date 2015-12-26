@@ -12,9 +12,9 @@
   "noarg": true,
   "node": true,
   "nonbsp": true,
-  "quotmark": "single",
+  "quotmark": false,
   "undef": true,
-  "unused": "vars",
+  "unused": false,
   "trailing": true,
   "globals": {
     "after"      : false,
