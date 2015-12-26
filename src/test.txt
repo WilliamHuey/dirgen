@@ -9,6 +9,6 @@ junk
       morestuff
 
     fileoftext
-  fileitaway.txt
+  fil/eitaw/ay.txt
   1
     notright

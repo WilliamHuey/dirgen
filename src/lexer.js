@@ -15,7 +15,7 @@ Lexer.prototype = {
         charPos: 0,
         currentCharCode: '',
         structureType: null,
-        specialCharacters: null
+        specialCharacters: {}
       };
 
     //Scan the current line to get stats
@@ -27,18 +27,28 @@ Lexer.prototype = {
         console.log("charPos at init ", lineTokenStats.charPos);
         console.log('currentCharCode ', lineTokenStats.currentCharCode);
 
-        //Logging
-
-        /*
-        specialCharacters ({
-          number_char_code: {count: aa, positions: []},
-          number_char_code: {count: aa, positions: []}
-
-      })
-        */
+        //Log all special character information
+        let characterInfo = lineTokenStats
+          .specialCharacters[lineTokenStats.currentCharCode];
+        if (typeof characterInfo === 'undefined') {
+          console.log("lineTokenStats.charPos", lineTokenStats.charPos);
+          characterInfo = {
+            count: 1,
+            position: [lineTokenStats.charPos]
+          };
+        } else {
+          //Update the character prior info
+          characterInfo.count += 1;
+          let characterPosition = characterInfo.position;
+          characterPosition.push(lineTokenStats.charPos);
+          characterInfo.position = characterPosition;
+          console.log("characterInfo.position", characterInfo.position);
+        }
       }
       scanner.nextChar();
     }
+
+    console.log("lineTokenStats", JSON.stringify(lineTokenStats));
   }
 };
 
