@@ -43,7 +43,7 @@ reader.on('line', line => {
   lexer.lex(line);
 
   //Validate the lexed line can come right after the lexer
-  //validate(lexerResult, '')
+  //validator.validate(lexerResult, '');
 
   //Lexer returns information about the line structure type
   //but still verify if the prior line
