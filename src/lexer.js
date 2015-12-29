@@ -65,6 +65,7 @@ Lexer.prototype = {
       scanner.nextChar();
     }
     // console.log("lineTokenStats", JSON.stringify(lineTokenStats));
+    return lineTokenStats;
   }
 };
 

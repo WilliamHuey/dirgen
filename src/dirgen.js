@@ -14,6 +14,7 @@ import PrettyError from 'pretty-error';
 //Source modules
 import Lexer from './lexer.js';
 const lexer = new Lexer();
+import validator from './validations.js';
 
 //Track the status of the lines
 let linesInfo = {
@@ -31,6 +32,8 @@ const reader = readline.createInterface({
 });
 
 reader.on('line', line => {
+  linesInfo.trimmedValue = line.trim();
+
   //The actual line number involves counting all lines,
   //but the lines with content may differ
   //However, the count the lines with content on them is more important
@@ -40,10 +43,7 @@ reader.on('line', line => {
   }
 
   //Get properties from the current line
-  lexer.lex(line);
-
-  //Validate the lexed line can come right after the lexer
-  //validator.validate(lexerResult, '');
+  let lexResults = lexer.lex(line);
 
   //Lexer returns information about the line structure type
   //but still verify if the prior line
@@ -54,6 +54,13 @@ reader.on('line', line => {
     //
 
   }
+
+  //Validate right here to verify if the lexed
+  //line markings info syncs with the indentation levels
+
+
+
+
 
   /*
 
@@ -81,7 +88,9 @@ reader.on('line', line => {
 
 reader.on('close', function() {
   console.log('closing the file');
-  console.log("linesInfo", linesInfo);
+
+  console.log("validator ", validator);
+  // console.log("linesInfo", linesInfo);
   //Start generating the folders based on the b-tree
 });
 
