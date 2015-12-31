@@ -8,7 +8,7 @@ function Lexer() {}
 
 Lexer.prototype = {
   lex: line => {
-    console.log("line in lexer is ", line);
+    // console.log("line in lexer is ", line);
     let scanner = strscan(line),
       lineTokenStats = {
         totalLength: line.length,

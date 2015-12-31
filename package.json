@@ -16,6 +16,9 @@
   },
   "dependencies": {
     "detect-indent": "^4.0.0",
+    "extend-accessors": "^1.0.1",
+    "lodash": "^3.10.1",
+    "mergee": "^0.2.3",
     "strscanner": "0.0.8",
     "unlimited": "^1.2.0"
   },
