@@ -24,9 +24,9 @@ _.assign(linesInfo.prototype, {
     //The actual line number involves counting all lines,
     //but the lines with content may differ
     //However, the count the lines with content on them is more important
-    lineSetInfo.actualLineCount++;
-    if (line.length > 0) {
-      lineSetInfo.lineCount++;
+    this.data.lineSetInfo.actualLineCount++;
+    if (this.data.line.length > 0) {
+      this.data.lineSetInfo.lineCount++;
     }
   }
 });
