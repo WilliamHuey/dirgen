@@ -3,7 +3,7 @@
 console.time('timer');
 
 //Native Nodejs modules
-let readline = require('readline');
+import readline from 'readline';
 import fs from 'fs';
 
 //Vendor modules

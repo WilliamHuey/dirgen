@@ -5,20 +5,22 @@ let linesInfo = function() {};
 _.assign(linesInfo.prototype, {
   data: null,
   setData: function(line, lineSetInfo) {
-    console.log("line", line);
+    //Gather all the data gathering functions on the linesInfo prototype
+    let lineFunctions = _.filter(_.keys(linesInfo.prototype),
+      function(n) {
+        return !_.includes(['data', 'setData'], n);
+      });
+    console.log("lineFunctions", lineFunctions);
     this.data = {
       line, lineSetInfo
     };
-    // console.log("data is now", this.data);
-    this.setInfo();
-    this.trimmedValue();
-  },
-  setInfo: function() {
-    console.log("this line", this.data.line);
-    //this.trimmedValue();
+    _.each(lineFunctions, (n) => {
+      console.log("this is now ", n, this[n]());
+    });
+    console.log("data is now", this.data);
   },
   trimmedValue: function() {
-    // lineSetInfo.trimmedValue = line.trim();
+    this.data.lineSetInfo.trimmedValue = this.data.line.trim();
   },
   countLines: function() {
     //The actual line number involves counting all lines,

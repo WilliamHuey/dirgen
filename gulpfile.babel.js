@@ -1,7 +1,7 @@
-const gulp = require('gulp');
-const babel = require('gulp-babel');
-const mocha = require('gulp-mocha');
-const jshint = require('gulp-jshint');
+import gulp from 'gulp';
+import babel from 'gulp-babel';
+import mocha from 'gulp-mocha';
+import jshint from 'gulp-jshint';
 
 var config = {
   paths: {
