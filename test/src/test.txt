@@ -1,0 +1,14 @@
+junk
+/storaging
+  fileinline
+  /morestoraging
+
+    itemthathastext
+    f/oldupshop
+      s*tuff
+      morestuff
+
+    fileoftext
+  fil/eitaw/ay.txt
+  1
+    notright
