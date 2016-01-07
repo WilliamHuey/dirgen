@@ -2,22 +2,27 @@ import _ from 'lodash';
 
 let linesInfo = function() {};
 
+let excludedFunctions = ['data', 'setData'];
+
 _.assign(linesInfo.prototype, {
   data: null,
   setData: function(line, lineSetInfo) {
     //Gather all the data gathering functions on the linesInfo prototype
     let lineFunctions = _.filter(_.keys(linesInfo.prototype),
       function(n) {
-        return !_.includes(['data', 'setData'], n);
+        return !_.includes(excludedFunctions, n);
       });
-    console.log("lineFunctions", lineFunctions);
+    // console.log("lineFunctions", lineFunctions);
     this.data = {
       line, lineSetInfo
     };
     _.each(lineFunctions, (n) => {
-      console.log("this is now ", n, this[n]());
+      this[n]();
     });
-    console.log("data is now", this.data);
+    // console.log("data is now", this.data);
+  },
+  currentValue: function() {
+    this.data.lineSetInfo.currentValue = this.data.line;
   },
   trimmedValue: function() {
     this.data.lineSetInfo.trimmedValue = this.data.line.trim();

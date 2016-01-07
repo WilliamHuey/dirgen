@@ -63,20 +63,37 @@ reader.on('line', function (line) {
   //Get properties from the current line
   var lexResults = lexer.lex(line);
 
-  console.log("addLinesInfo", addLinesInfo.setData(line, linesInfo));
+  addLinesInfo.setData(line, linesInfo);
+
+  // console.log("linesInfo", linesInfo);
 
   //Lexer returns information about the line structure type
   //but still verify if the prior line
   //could be confirm as a folder or a file type
-  if (linesInfo.previousValue === null) {
-    linesInfo.currentValue = line;
-  } else {}
+  // if (linesInfo.previousValue === null) {
+  //   linesInfo.currentValue = line;
+  // } else {
+  //   //
   //
+  // }
 
   //Validate right here to verify if the lexed
   //line markings info syncs with the indentation levels
   //actually going to validate the previous line
   //when on the current line
+
+  /*
+  sample node construction
+  stuff
+  thing
+  others
+   {value: 'stuff', siblings: null, children: null, indentationLevel: null}}
+  {value: 'thing', siblinsg: ref to stuff object, indentationLevel}
+   what do I really need to make sure the chain ref can not be lost?
+   linesInfo = {
+    lastRef: 'the object ref'
+  }
+    */
 
   /*
    STEPS
