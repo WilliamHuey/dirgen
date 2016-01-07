@@ -2,6 +2,8 @@ import gulp from 'gulp';
 import babel from 'gulp-babel';
 import mocha from 'gulp-mocha';
 import jshint from 'gulp-jshint';
+import plumberNotifier from 'gulp-plumber-notifier';
+
 
 var config = {
   paths: {
@@ -21,24 +23,28 @@ gulp.task('babel', ['babel-src']);
 
 gulp.task('babel-src', ['lint-src'], () =>
   gulp.src(config.paths.js.src)
+  .pipe(plumberNotifier())
   .pipe(babel())
   .pipe(gulp.dest(config.paths.js.dist))
 );
 
 gulp.task('babel-test', ['lint-test'], () =>
   gulp.src(config.paths.test.src)
+  .pipe(plumberNotifier())
   .pipe(babel())
   .pipe(gulp.dest(config.paths.test.dist))
 );
 
 gulp.task('lint-src', () =>
   gulp.src(config.paths.js.src)
+  .pipe(plumberNotifier())
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
 );
 
 gulp.task('lint-test', () =>
   gulp.src(config.paths.test.src)
+  .pipe(plumberNotifier())
   .pipe(jshint())
   .pipe(jshint.reporter('default'))
 );
@@ -50,6 +56,7 @@ gulp.task('watch', () => {
 
 gulp.task('test', ['babel'], () =>
   gulp.src([config.paths.test.run])
+  .pipe(plumberNotifier())
   .pipe(mocha({
     reporter: 'spec'
   }))
