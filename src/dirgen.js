@@ -35,24 +35,69 @@ const reader = readline.createInterface({
   input: fs.createReadStream('/Users/williamhuey/Desktop/Coding/JavaScript/npm-modules/dirgen/src/test.txt')
 });
 
-reader.on('line', line => {
+let prevNode = null;
 
-  //Get properties from the current line
+reader.on('line', line => {
+  let nodeLine = {};
+  //Get properties from the current line in detail
   let lexResults = lexer.lex(line);
 
+  console.log("lexResults", lexResults);
+
+  //Accumulate information for the current line
+  //as well as for all lines
   addLinesInfo.setData(line, linesInfo);
 
-  console.log("linesinfo is now ", linesInfo);
+  // console.log("linesinfo is now ", linesInfo);
 
-  //Lexer returns information about the line structure type
-  //but still verify if the prior line
-  //could be confirm as a folder or a file type
-  // if (linesInfo.previousValue === null) {
-  //   linesInfo.currentValue = line;
-  // } else {
-  //   //
-  //
-  // }
+  //Start creating nodes for files and folders
+  if (prevNode === null) {
+    linesInfo.currentValue = line;
+
+    console.log("prevNode is ", prevNode);
+
+    prevNode = {
+      trimmedValue: linesInfo.trimmedValue,
+      indentAmount: linesInfo.indentAmount
+    };
+
+  } else {
+
+    nodeLine.indentAmount = lexResults.indentAmount;
+
+    /*
+    //Example of node reference
+    // will still need to get the
+    //ref of the parent from the children
+
+
+    var prevnode = {mark: null};
+
+    var a = {stuff: 'things'};
+
+    prevnode.mark = a;
+
+    console.log('prevnode', prevnode);
+
+    var b = {what: 'stuff'};
+
+    prevnode.mark.sibling = b;
+
+    console.log('a is now ', a );
+
+    console.log('later a is ', a);
+
+    prevnode.mark = b;
+
+    console.log('mark is now ', prevnode);
+
+    console.log('third check a is ', a);
+
+    */
+
+
+    // prevNode.children
+  }
 
   //Validate right here to verify if the lexed
   //line markings info syncs with the indentation levels

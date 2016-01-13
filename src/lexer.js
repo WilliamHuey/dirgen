@@ -35,14 +35,11 @@ Lexer.prototype = {
       if (!scanner.isAZ()) {
         lineTokenStats.charPos = scanner.pos();
         lineTokenStats.currentCharCode = line.charCodeAt(lineTokenStats.charPos);
-        // console.log("charPos at init ", lineTokenStats.charPos);
-        // console.log('currentCharCode ', lineTokenStats.currentCharCode);
 
         //Log all special character information
         let characterInfo = lineTokenStats
           .specialCharacters[lineTokenStats.currentCharCode];
         if (typeof characterInfo === 'undefined') {
-          // console.log("lineTokenStats.charPos", lineTokenStats.charPos);
           lineTokenStats
             .specialCharacters[lineTokenStats.currentCharCode] = {
               count: 1,
@@ -57,14 +54,10 @@ Lexer.prototype = {
           characterPosition.push(lineTokenStats.charPos);
           characterInfo.position = characterPosition;
           lineTokenStats.specialCharactersTypeCount += 1;
-          // console.log("characterInfo.position", characterInfo.position);
-          // console.log("characterInfo", JSON.stringify(characterInfo));
-          // console.log("first lineTokenStats", JSON.stringify(lineTokenStats));
         }
       }
       scanner.nextChar();
     }
-    // console.log("lineTokenStats", JSON.stringify(lineTokenStats));
     return lineTokenStats;
   }
 };
