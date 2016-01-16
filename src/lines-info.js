@@ -4,11 +4,11 @@ let _ = require('lodash');
 
 let linesInfo = function() {};
 
-let excludedFunctions = ['data', 'setData'];
+let excludedFunctions = ['data', 'setGeneralData'];
 
 _.assign(linesInfo.prototype, {
   data: null,
-  setData: function(line, lineSetInfo) {
+  setGeneralData: function(line, lineSetInfo) {
     //Gather all the data gathering functions on the linesInfo prototype
     let lineFunctions = _.filter(_.keys(linesInfo.prototype),
       function(n) {
