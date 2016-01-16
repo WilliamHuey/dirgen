@@ -1,12 +1,15 @@
-import detectIndent from 'detect-indent';
-import strscan from 'strscanner';
-import PrettyError from 'pretty-error';
-import characterMap from './character-map.js';
+'use strict';
+
+let detectIndent = require('detect-indent');
+let strscan = require('strscanner');
+let PrettyError = require('pretty-error');
+let _ = require('lodash');
+let characterMap = require('./character-map.js');
 
 //Should also detect indentation and well as symbols
-function Lexer() {}
+let lexer = function() {};
 
-Lexer.prototype = {
+_.assign(lexer.prototype, {
   lex: line => {
     // console.log("line in lexer is ", line);
     let scanner = strscan(line),
@@ -60,6 +63,7 @@ Lexer.prototype = {
     }
     return lineTokenStats;
   }
-};
 
-export default Lexer;
+});
+
+module.exports = lexer;

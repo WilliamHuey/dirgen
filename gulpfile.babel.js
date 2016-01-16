@@ -1,9 +1,10 @@
-import gulp from 'gulp';
-import babel from 'gulp-babel';
-import mocha from 'gulp-mocha';
-import jshint from 'gulp-jshint';
-import plumberNotifier from 'gulp-plumber-notifier';
+'use strict';
 
+let gulp = require('gulp');
+let babel = require('gulp-babel');
+// let mocha = require('gulp-mocha');
+let jshint = require('gulp-jshint');
+let plumberNotifier = require('gulp-plumber-notifier');
 
 var config = {
   paths: {
@@ -28,12 +29,12 @@ gulp.task('babel-src', ['lint-src'], () =>
   .pipe(gulp.dest(config.paths.js.dist))
 );
 
-gulp.task('babel-test', ['lint-test'], () =>
-  gulp.src(config.paths.test.src)
-  .pipe(plumberNotifier())
-  .pipe(babel())
-  .pipe(gulp.dest(config.paths.test.dist))
-);
+// gulp.task('babel-test', ['lint-test'], () =>
+//   gulp.src(config.paths.test.src)
+//   .pipe(plumberNotifier())
+//   .pipe(babel())
+//   .pipe(gulp.dest(config.paths.test.dist))
+// );
 
 gulp.task('lint-src', () =>
   gulp.src(config.paths.js.src)
@@ -50,18 +51,19 @@ gulp.task('lint-test', () =>
 );
 
 gulp.task('watch', () => {
-  gulp.watch(config.paths.js.src, ['babel-src', 'test']);
-  gulp.watch(config.paths.test.src, ['babel-test', 'test']);
+  gulp.watch(config.paths.js.src, ['babel-src']);
+  // gulp.watch(config.paths.js.src, ['babel-src', 'test']);
+  // gulp.watch(config.paths.test.src, ['babel-test', 'test']);
 });
 
-gulp.task('test', ['babel'], () =>
-  gulp.src([config.paths.test.run])
-  .pipe(plumberNotifier())
-  .pipe(mocha({
-    reporter: 'spec'
-  }))
-  .on('error', err => console.log(err.stack))
-);
+// gulp.task('test', ['babel'], () =>
+//   gulp.src([config.paths.test.run])
+//   .pipe(plumberNotifier())
+//   .pipe(mocha({
+//     reporter: 'spec'
+//   }))
+//   .on('error', err => console.log(err.stack))
+// );
 
 // Default Task
 gulp.task('default', ['babel', 'watch']);

@@ -1,4 +1,6 @@
-import _ from 'lodash';
+'use strict';
+
+let _ = require('lodash');
 
 let linesInfo = function() {};
 
@@ -25,7 +27,7 @@ _.assign(linesInfo.prototype, {
     this.data.lineSetInfo.currentValue = this.data.line;
   },
   trimmedValue: function() {
-    this.data.lineSetInfo.trimmedValue = this.data.line.trim();
+    this.data.lineSetInfo.currentTrimmedValue = this.data.line.trim();
   },
   countLines: function() {
     //The actual line number involves counting all lines,
@@ -38,4 +40,4 @@ _.assign(linesInfo.prototype, {
   }
 });
 
-export default linesInfo;
+module.exports = linesInfo;

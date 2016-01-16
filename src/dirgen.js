@@ -3,20 +3,22 @@
 console.time('timer');
 
 //Native Nodejs modules
-import readline from 'readline';
-import fs from 'fs';
+let readline = require('readline');
+let fs = require('fs');
 
 //Vendor modules
-import unlimited from 'unlimited';
+let unlimited = require('unlimited');
 unlimited(10000);
-import PrettyError from 'pretty-error';
+let PrettyError = require('pretty-error');
 
 //Source modules
-import AddLinesInfo from './lines-info.js';
+let AddLinesInfo = require('./lines-info.js');
 let addLinesInfo = new AddLinesInfo();
-import Lexer from './lexer.js';
+let Lexer = require('./lexer.js');
+console.log("lexer is ", Lexer);
+
 const lexer = new Lexer();
-import validator from './validations.js';
+let validator = require('./validations.js');
 
 //Track the status of the lines
 let linesInfo = {
@@ -48,6 +50,12 @@ reader.on('line', line => {
   //as well as for all lines
   addLinesInfo.setData(line, linesInfo);
 
+  // most likely have
+  //
+  // {val, siblings, parent, childrens}
+
+
+
   // console.log("linesinfo is now ", linesInfo);
 
   //Start creating nodes for files and folders
@@ -63,9 +71,14 @@ reader.on('line', line => {
 
   } else {
 
+
+
     nodeLine.indentAmount = lexResults.indentAmount;
 
     /*
+
+
+
     //Example of node reference
     // will still need to get the
     //ref of the parent from the children
@@ -101,6 +114,10 @@ reader.on('line', line => {
 
   //Validate right here to verify if the lexed
   //line markings info syncs with the indentation levels
+
+  //current line check for invalid values
+  //prior lines will be check for it stated/supposed structure type
+  //validate(lines, linesinfo)
 
 
 
