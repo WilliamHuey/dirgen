@@ -51,7 +51,7 @@ readline.createInterface({
       nameDetails: lexer.lex(line)
     };
 
-    console.log("lexResults", currentLine.nameDetails);
+    // console.log("lexResults", currentLine.nameDetails);
 
     //Get the information from prior lines to determine
     //the siblings, parent, and children key values

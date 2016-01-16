@@ -9,19 +9,19 @@ let excludedFunctions = ['data', 'setGeneralData'];
 _.assign(linesInfo.prototype, {
   data: null,
   setGeneralData: function(line, lineSetInfo) {
-    //Gather all the data gathering functions on the linesInfo prototype
-    let lineFunctions = _.filter(_.keys(linesInfo.prototype),
-      function(n) {
-        return !_.includes(excludedFunctions, n);
-      });
-    // console.log("lineFunctions", lineFunctions);
+    //Update current line data with line set info
     this.data = {
       line, lineSetInfo
     };
-    _.each(lineFunctions, (n) => {
-      this[n]();
+
+    //Gather all the data gathering functions on the linesInfo prototype
+    _.filter(_.keys(linesInfo.prototype), (n) => {
+      // console.log("this lineFunctions", this[n]);
+      if (!_.includes(excludedFunctions, n)) {
+        this[n]();
+      };
     });
-    // console.log("data is now", this.data);
+
   },
   currentValue: function() {
     this.data.lineSetInfo.currentValue = this.data.line;
