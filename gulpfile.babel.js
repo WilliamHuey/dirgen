@@ -11,11 +11,6 @@ var config = {
     js: {
       src: 'src/**/*.js',
       dist: 'dist/'
-    },
-    test: {
-      src: 'test/**/*.js',
-      dist: 'test-dist/',
-      run: 'test-dist/**/*.js'
     }
   }
 };
@@ -28,13 +23,6 @@ gulp.task('babel-src', ['lint-src'], () =>
   .pipe(babel())
   .pipe(gulp.dest(config.paths.js.dist))
 );
-
-// gulp.task('babel-test', ['lint-test'], () =>
-//   gulp.src(config.paths.test.src)
-//   .pipe(plumberNotifier())
-//   .pipe(babel())
-//   .pipe(gulp.dest(config.paths.test.dist))
-// );
 
 gulp.task('lint-src', () =>
   gulp.src(config.paths.js.src)
@@ -55,15 +43,6 @@ gulp.task('watch', () => {
   // gulp.watch(config.paths.js.src, ['babel-src', 'test']);
   // gulp.watch(config.paths.test.src, ['babel-test', 'test']);
 });
-
-// gulp.task('test', ['babel'], () =>
-//   gulp.src([config.paths.test.run])
-//   .pipe(plumberNotifier())
-//   .pipe(mocha({
-//     reporter: 'spec'
-//   }))
-//   .on('error', err => console.log(err.stack))
-// );
 
 // Default Task
 gulp.task('default', ['babel', 'watch']);

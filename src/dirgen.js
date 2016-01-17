@@ -24,12 +24,12 @@ let validator = require('./validations.js');
 let linesInfo = {
     previousValue: null,
     currentValue: null,
-    lineCount: 0,
-    actualLineCount: 0,
+    contentLineCount: 0,
+    totalLineCount: 0,
     firstIndentationType: null,
     firstIndentationAmount: null
   },
-  prevNode = null;
+  prevLineInfo = null;
 
 //Read through all the lines of a supplied file
 readline.createInterface({
@@ -55,13 +55,14 @@ readline.createInterface({
 
     //Get the information from prior lines to determine
     //the siblings, parent, and children key values
+    addLinesInfo.setLineData(currentLine, prevLineInfo);
 
-    //modify addLinesInfo to accept
-    //addLinesInfo.setLineData(currentLine)
+
 
     //Validate the recently set line data
 
 
+    console.log("l21ine process");
 
     //Save the line data object reference for future comparison
     //by updating previous value with current
@@ -69,7 +70,7 @@ readline.createInterface({
 
   })
   .on('close', function() {
-    // console.log('closing the file');
+    console.log('closing the file');
     //
     // console.log("validator ", validator);
     // console.log("linesInfo", linesInfo);

@@ -14,10 +14,16 @@ let linesInfoFunctions = {
     //The actual line number involves counting all lines,
     //but the lines with content may differ
     //However, the count the lines with content on them is more important
-    data.lineSetInfo.actualLineCount++;
+    data.lineSetInfo.totalLineCount++;
     if (data.line.length > 0) {
-      data.lineSetInfo.lineCount++;
+      data.lineSetInfo.contentLineCount++;
     }
+  },
+  indentationType: function() {
+
+  },
+  indentationAmount: function() {
+
   }
 };
 
@@ -34,6 +40,12 @@ _.assign(linesInfo.prototype, {
     _.each(_.keys(linesInfoFunctions), function(value) {
       linesInfoFunctions[value]();
     });
+  },
+  setLineData: function(currentLine, prevLineInfo) {
+
+    if (prevLineInfo === null) {
+
+    }
   }
 });
 
