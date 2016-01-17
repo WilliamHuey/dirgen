@@ -69,10 +69,10 @@ readline.createInterface({
 
   })
   .on('close', function() {
-    console.log('closing the file');
-
-    console.log("validator ", validator);
-    console.log("linesInfo", linesInfo);
+    // console.log('closing the file');
+    //
+    // console.log("validator ", validator);
+    // console.log("linesInfo", linesInfo);
     //Start generating the folders based on the b-tree
   });
 
