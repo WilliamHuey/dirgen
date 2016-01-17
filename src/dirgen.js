@@ -3,7 +3,7 @@
 console.time('timer');
 
 //Native Nodejs modules
-let readline = require('readline');
+import readline from 'readline';
 let fs = require('fs');
 
 //Vendor modules
@@ -62,7 +62,7 @@ readline.createInterface({
     //Validate the recently set line data
 
 
-    console.log("l21ine process");
+    console.log("process the line");
 
     //Save the line data object reference for future comparison
     //by updating previous value with current
