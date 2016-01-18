@@ -76,6 +76,7 @@
      * Best practices
      */
     "consistent-return": 2,
+    "complexity": [2, 4],
     "curly": [2, "multi-line"],
     "default-case": 2,
     "dot-notation": [2, {

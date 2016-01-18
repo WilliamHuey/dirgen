@@ -1,10 +1,10 @@
 'use strict';
 
-let detectIndent = require('detect-indent');
-let strscan = require('strscanner');
-let PrettyError = require('pretty-error');
-let _ = require('lodash');
-let characterMap = require('./character-map.js');
+import detectIndent from 'detect-indent';
+import strscan from 'strscanner';
+import PrettyError from 'pretty-error';
+import _ from 'lodash';
+import characterMap from './character-map.js';
 
 //Should also detect indentation and well as symbols
 let lexer = function() {};

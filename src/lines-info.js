@@ -1,6 +1,6 @@
 'use strict';
 
-let _ = require('lodash');
+import _ from 'lodash';
 
 let data = {};
 let linesInfoFunctions = {
@@ -35,6 +35,8 @@ _.assign(linesInfo.prototype, {
     data = {
       line, lineSetInfo
     };
+
+
 
     //Execute all data gathering functions for gathering data for lines
     _.each(_.keys(linesInfoFunctions), function(value) {

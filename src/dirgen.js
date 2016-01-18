@@ -4,21 +4,20 @@ console.time('timer');
 
 //Native Nodejs modules
 import readline from 'readline';
-let fs = require('fs');
+import fs from 'fs';
 
 //Vendor modules
-let unlimited = require('unlimited');
-unlimited(10000);
-let PrettyError = require('pretty-error');
+import unlimited from 'unlimited';
+import PrettyError from 'pretty-error';
 
 //Source modules
-let AddLinesInfo = require('./lines-info.js');
+import AddLinesInfo from './lines-info.js';
 let addLinesInfo = new AddLinesInfo();
-let Lexer = require('./lexer.js');
-console.log("lexer is ", Lexer);
+import Lexer from './lexer.js';
+import validator from './validations.js';
 
+unlimited(10000);
 const lexer = new Lexer();
-let validator = require('./validations.js');
 
 //Track the status of the lines
 let linesInfo = {
@@ -62,7 +61,7 @@ readline.createInterface({
     //Validate the recently set line data
 
 
-    console.log("process the line");
+    // console.log("process the line");
 
     //Save the line data object reference for future comparison
     //by updating previous value with current
