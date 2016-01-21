@@ -17,13 +17,8 @@ let linesInfoFunctions = {
     data.lineSetInfo.totalLineCount++;
     if (data.line.length > 0) {
       data.lineSetInfo.contentLineCount++;
+
     }
-  },
-  indentationType: function() {
-
-  },
-  indentationAmount: function() {
-
   }
 };
 
@@ -36,17 +31,22 @@ _.assign(linesInfo.prototype, {
       line, lineSetInfo
     };
 
-
-
     //Execute all data gathering functions for gathering data for lines
     _.each(_.keys(linesInfoFunctions), function(value) {
       linesInfoFunctions[value]();
     });
   },
-  setLineData: function(currentLine, prevLineInfo) {
+  setLineData: function(currentLine, linesInfo) {
+    //First encounter with content line
+    if (linesInfo.prevLineInfo === null) {
+      linesInfo.prevLineInfo = currentLine;
+    }
 
-    if (prevLineInfo === null) {
-
+    //Set the indentation information of the
+    //first encounter of a non-empty line
+    if (linesInfo.firstIndentationType === null && currentLine.nameDetails.indentType !== null) {
+      linesInfo.firstIndentationType = currentLine.nameDetails.indentType;
+      linesInfo.firstIndentationAmount = currentLine.nameDetails.indentAmount;
     }
   }
 });

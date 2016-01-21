@@ -65,7 +65,7 @@
     /**
      * Variables
      */
-    "no-shadow": 2,
+    "no-shadow": 0,
     "no-shadow-restricted-names": 2,
     "no-unused-vars": [0, {
       "vars": "local",
@@ -102,7 +102,7 @@
     "no-new-wrappers": 2,
     "no-octal": 2,
     "no-octal-escape": 2,
-    "no-param-reassign": 1,
+    "no-param-reassign": 0,
     "no-proto": 2,
     "no-redeclare": 2,
     "no-return-assign": 2,

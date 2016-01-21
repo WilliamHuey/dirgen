@@ -21,20 +21,20 @@ const lexer = new Lexer();
 
 //Track the status of the lines
 let linesInfo = {
-    previousValue: null,
-    currentValue: null,
-    contentLineCount: 0,
-    totalLineCount: 0,
-    firstIndentationType: null,
-    firstIndentationAmount: null
-  },
-  prevLineInfo = null;
+  prevLineInfo: null,
+  currentValue: null,
+  contentLineCount: 0,
+  totalLineCount: 0,
+  firstIndentationType: null,
+  firstIndentationAmount: null
+};
 
 //Read through all the lines of a supplied file
 readline.createInterface({
     input: fs.createReadStream('/Users/williamhuey/Desktop/Coding/JavaScript/npm-modules/dirgen/src/test.txt')
   })
   .on('line', line => {
+    // console.log("process line prevLineInfo", prevLineInfo);
 
     //Accumulate general information lines
     addLinesInfo.setGeneralData(line, linesInfo);
@@ -54,7 +54,7 @@ readline.createInterface({
 
     //Get the information from prior lines to determine
     //the siblings, parent, and children key values
-    addLinesInfo.setLineData(currentLine, prevLineInfo);
+    addLinesInfo.setLineData(currentLine, linesInfo);
 
 
 
