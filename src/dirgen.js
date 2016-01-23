@@ -60,6 +60,7 @@ readline.createInterface({
 
     //Validate the recently set line data
 
+    console.log("linesInfo", linesInfo);
 
     // console.log("process the line");
 
@@ -68,7 +69,7 @@ readline.createInterface({
 
 
   })
-  .on('close', function() {
+  .on('close', () => {
     console.log('closing the file');
     //
     // console.log("validator ", validator);

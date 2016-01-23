@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {
+export default {
   33: '!',
   34: "'",
   35: '#',

@@ -4,13 +4,13 @@ import _ from 'lodash';
 
 let data = {};
 let linesInfoFunctions = {
-  currentValue: function() {
+  currentValue: () => {
     data.lineSetInfo.currentValue = data.line;
   },
-  trimmedValue: function() {
+  trimmedValue: () => {
     data.lineSetInfo.currentTrimmedValue = data.line.trim();
   },
-  countLines: function() {
+  countLines: () => {
     //The actual line number involves counting all lines,
     //but the lines with content may differ
     //However, the count the lines with content on them is more important
@@ -22,10 +22,10 @@ let linesInfoFunctions = {
   }
 };
 
-let linesInfo = function() {};
+let linesInfo = () => {};
 
 _.assign(linesInfo.prototype, {
-  setGeneralData: function(line, lineSetInfo) {
+  setGeneralData: (line, lineSetInfo) => {
     //Update current line data with line set info
     data = {
       line, lineSetInfo
@@ -36,7 +36,7 @@ _.assign(linesInfo.prototype, {
       linesInfoFunctions[value]();
     });
   },
-  setLineData: function(currentLine, linesInfo) {
+  setLineData: (currentLine, linesInfo) => {
     //First encounter with content line
     if (linesInfo.prevLineInfo === null) {
       linesInfo.prevLineInfo = currentLine;
@@ -51,4 +51,4 @@ _.assign(linesInfo.prototype, {
   }
 });
 
-module.exports = linesInfo;
+export default linesInfo;

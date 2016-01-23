@@ -66,4 +66,4 @@ _.assign(lexer.prototype, {
 
 });
 
-module.exports = lexer;
+export default lexer;
