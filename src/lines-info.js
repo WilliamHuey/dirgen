@@ -51,7 +51,7 @@ const singleLineInfoFunctions = {
           currentLine.sibling = linesInfo.prevLineInfo;
           // console.log("currentLine.structureName", currentLine.structureName);
 
-          //Still need to check if current line is a parent
+          //TODO: Still need to check if current line is a parent
           //of a previous parent
         } else if (linesInfo.prevLineInfo.nameDetails.indentAmount < currentLine.nameDetails.indentAmount) {
           //Previous line is a parent of the current line
@@ -62,7 +62,7 @@ const singleLineInfoFunctions = {
           console.log("child cond at", currentLine.structureName);
         }
 
-        //More complicated if there is an outdent because of the
+        //TODO: More complicated if there is an outdent because of the
         //need to traverse prior entries
 
 
@@ -80,6 +80,12 @@ _.assign(linesInfo.prototype, {
     data = {
       line, lineSetInfo
     };
+
+    //Only set the line count info for empty lines
+    if (line.length === 0) {
+      linesInfoFunctions.countLines();
+      return;
+    }
 
     //Execute all data gathering functions for gathering data for lines
     _.each(_.keys(linesInfoFunctions), function(value) {

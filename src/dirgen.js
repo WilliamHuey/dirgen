@@ -35,11 +35,11 @@ readline.createInterface({
   .on('line', line => {
     // console.log("process line prevLineInfo", prevLineInfo);
 
-    //Do not process a line without content
-    if (line.length === 0) return;
-
     //Accumulate general information lines
     addLinesInfo.setGeneralData(line, linesInfo);
+
+    //Do not process a line without content
+    if (line.length === 0) return;
 
     //Get properties from the current line in detail with
     //the lexer and use this object when performing checks
@@ -76,7 +76,7 @@ readline.createInterface({
     console.log('closing the file');
     //
     // console.log("validator ", validator);
-    // console.log("linesInfo", linesInfo);
+    console.log("linesInfo", linesInfo);
     //Start generating the folders based on the b-tree
   });
 
