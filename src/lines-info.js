@@ -38,17 +38,34 @@ const singleLineInfoFunctions = {
   relations: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo !== null) {
 
-      //what is the indentation level?
+      //Determine the indentation level
+      if (linesInfo.contentLineCount > 1 &&
+        currentLine.structureName.length > 0 &&
+        linesInfo.prevLineInfo.structureName.length > 0) {
+        //If the same indentation level as previous line,
+        //than tag the prev as a sibling to the current line
+        //Ignore check for siblings on the first line and blank lines
+        if (linesInfo.prevLineInfo.nameDetails.indentAmount ===
+          currentLine.nameDetails.indentAmount
+        ) {
+          currentLine.sibling = linesInfo.prevLineInfo;
+          // console.log("currentLine.structureName", currentLine.structureName);
 
-      //If the same indentation level as previous line,
-      //than tag the prev as a sibling to the current line
-      //Ignore check for siblings on the first line and blank lines
-      if (linesInfo.prevLineInfo.nameDetails.indentAmount ===
-        currentLine.nameDetails.indentAmount &&
-        linesInfo.contentLineCount > 1 &&
-        currentLine.structureName.length > 0) {
+          //Still need to check if current line is a parent
+          //of a previous parent
+        } else if (linesInfo.prevLineInfo.nameDetails.indentAmount < currentLine.nameDetails.indentAmount) {
+          //Previous line is a parent of the current line
+          //as the current line indent is greater than the previous
+          currentLine.nameDetails.parent = linesInfo.prevLineInfo;
+          linesInfo.prevLineInfo.children.push(currentLine);
+          // console.log("linesInfo.prevLineInfo", linesInfo.prevLineInfo);
+          console.log("child cond at", currentLine.structureName);
+        }
 
-        currentLine.sibling = linesInfo.prevLineInfo;
+        //More complicated if there is an outdent because of the
+        //need to traverse prior entries
+
+
       }
     }
   },
@@ -74,8 +91,8 @@ _.assign(linesInfo.prototype, {
     linesInfo.prevLineInfo ||
       singleLineInfoFunctions.setFirstPrev(linesInfo, currentLine);
 
-    //Set the indentation information of the
-    //first encounter of a non-empty line
+    // Set the indentation information of the
+    // first encounter of a non - empty line
     singleLineInfoFunctions.indentation(linesInfo, currentLine);
 
     //Determine how current line relates to the previous line

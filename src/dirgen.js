@@ -35,6 +35,9 @@ readline.createInterface({
   .on('line', line => {
     // console.log("process line prevLineInfo", prevLineInfo);
 
+    //Do not process a line without content
+    if (line.length === 0) return;
+
     //Accumulate general information lines
     addLinesInfo.setGeneralData(line, linesInfo);
 
@@ -45,7 +48,7 @@ readline.createInterface({
       structureName: linesInfo.currentTrimmedValue,
       sibling: null,
       parent: null,
-      children: null,
+      children: [],
       inferType: null,
       nameDetails: lexer.lex(line)
     };
