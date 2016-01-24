@@ -34,6 +34,26 @@ const singleLineInfoFunctions = {
       linesInfo.firstIndentationType = currentLine.nameDetails.indentType;
       linesInfo.firstIndentationAmount = currentLine.nameDetails.indentAmount;
     }
+  },
+  relations: (linesInfo, currentLine) => {
+    if (linesInfo.prevLineInfo !== null) {
+
+      //what is the indentation level?
+
+      //If the same indentation level as previous line,
+      //than tag the prev as a sibling to the current line
+      //Ignore check for siblings on the first line and blank lines
+      if (linesInfo.prevLineInfo.nameDetails.indentAmount ===
+        currentLine.nameDetails.indentAmount &&
+        linesInfo.contentLineCount > 1 &&
+        currentLine.structureName.length > 0) {
+
+        currentLine.sibling = linesInfo.prevLineInfo;
+      }
+    }
+  },
+  updatePrevLine: (linesInfo, currentLine) => {
+    linesInfo.prevLineInfo = currentLine;
   }
 };
 
@@ -57,6 +77,13 @@ _.assign(linesInfo.prototype, {
     //Set the indentation information of the
     //first encounter of a non-empty line
     singleLineInfoFunctions.indentation(linesInfo, currentLine);
+
+    //Determine how current line relates to the previous line
+    singleLineInfoFunctions.relations(linesInfo, currentLine);
+
+    //Current line will become the previous line after all
+    //the necessary data is gather
+    singleLineInfoFunctions.updatePrevLine(linesInfo, currentLine);
 
   }
 });

@@ -43,9 +43,10 @@ readline.createInterface({
     //with subsequent lines
     let currentLine = {
       structureName: linesInfo.currentTrimmedValue,
-      siblings: null,
+      sibling: null,
       parent: null,
       children: null,
+      inferType: null,
       nameDetails: lexer.lex(line)
     };
 
@@ -59,7 +60,7 @@ readline.createInterface({
 
     //Validate the recently set line data
 
-    console.log("linesInfo", linesInfo);
+    // console.log("linesInfo", linesInfo);
 
     // console.log("process the line");
 
