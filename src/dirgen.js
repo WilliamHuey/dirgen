@@ -51,7 +51,7 @@ readline.createInterface({
     //with subsequent lines
     let currentLine = {
       structureName: linesInfo.currentTrimmedValue,
-      sibling: null,
+      sibling: [],
       parent: null,
       children: [],
       inferType: null,

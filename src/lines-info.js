@@ -51,19 +51,16 @@ const singleLineInfoFunctions = {
         if (linesInfo.prevLineInfo.nameDetails.indentAmount ===
           currentLine.nameDetails.indentAmount
         ) {
-          currentLine.sibling = linesInfo.prevLineInfo;
-          // console.log("currentLine.structureName", currentLine.structureName);
+          currentLine.sibling.push(linesInfo.prevLineInfo);
+          currentLine.parent = linesInfo.prevLineInfo.parent;
 
-          //TODO: Still need to check if current line is a children
-          //of a previous parent
         } else if (linesInfo.prevLineInfo.nameDetails.indentAmount <
           currentLine.nameDetails.indentAmount) {
           //Previous line is a parent of the current line
           //as the current line indent is greater than the previous
-          currentLine.nameDetails.parent = linesInfo.prevLineInfo;
+          currentLine.parent = linesInfo.prevLineInfo;
           linesInfo.prevLineInfo.children.push(currentLine);
-          // console.log("linesInfo.prevLineInfo", linesInfo.prevLineInfo);
-          console.log("child cond at", currentLine.structureName);
+
         }
 
         //TODO: More complicated if there is an outdent because of the
