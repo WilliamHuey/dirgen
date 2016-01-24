@@ -12,14 +12,17 @@ const linesInfoFunctions = {
   trimmedValue: () => {
     data.lineSetInfo.currentTrimmedValue = data.line.trim();
   },
-  countLines: () => {
+  countLines: (lineInfo) => {
+    let processFurther = false;
     //The actual line number involves counting all lines,
     //but the lines with content may differ
     //However, the count the lines with content on them is more important
     data.lineSetInfo.totalLineCount++;
-    if (data.line.length > 0) {
+    if (lineInfo.length > 0 && lineInfo.trimLength > 0) {
       data.lineSetInfo.contentLineCount++;
+      processFurther = true;
     }
+    return processFurther;
   }
 };
 
@@ -51,9 +54,10 @@ const singleLineInfoFunctions = {
           currentLine.sibling = linesInfo.prevLineInfo;
           // console.log("currentLine.structureName", currentLine.structureName);
 
-          //TODO: Still need to check if current line is a parent
+          //TODO: Still need to check if current line is a children
           //of a previous parent
-        } else if (linesInfo.prevLineInfo.nameDetails.indentAmount < currentLine.nameDetails.indentAmount) {
+        } else if (linesInfo.prevLineInfo.nameDetails.indentAmount <
+          currentLine.nameDetails.indentAmount) {
           //Previous line is a parent of the current line
           //as the current line indent is greater than the previous
           currentLine.nameDetails.parent = linesInfo.prevLineInfo;
@@ -81,16 +85,20 @@ _.assign(linesInfo.prototype, {
       line, lineSetInfo
     };
 
-    //Only set the line count info for empty lines
-    if (line.length === 0) {
-      linesInfoFunctions.countLines();
-      return;
-    }
+    let lineInfo = {
+      length: line.length,
+      trimLength: line.trim().length
+    };
 
-    //Execute all data gathering functions for gathering data for lines
-    _.each(_.keys(linesInfoFunctions), function(value) {
-      linesInfoFunctions[value]();
-    });
+    //Only set the line count info for empty lines
+    if (!linesInfoFunctions.countLines(lineInfo)) return;
+
+    //Execute all other data gathering functions
+    //for gathering data for lines
+    _.each(_.keys(_.omit(linesInfoFunctions, 'countLines')),
+      function(value) {
+        linesInfoFunctions[value]();
+      });
   },
   setLineData: (currentLine, linesInfo) => {
     //First encounter with content line

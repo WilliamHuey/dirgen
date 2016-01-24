@@ -31,6 +31,7 @@ _.assign(lexer.prototype, {
     //length of line with the the left space characters
     lineTokenStats.contentLength = lineTokenStats.totalLength -
       indentInfo.amount;
+    lineTokenStats.currentTrimmedValue = line.trim();
 
     //Scan the current line to get stats
     while (!scanner.eof()) {

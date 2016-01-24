@@ -35,14 +35,19 @@ readline.createInterface({
   .on('line', line => {
     // console.log("process line prevLineInfo", prevLineInfo);
 
+    //Get properties from the current line in detail with
+    //the lexer
+    let lexResults = lexer.lex(line);
+
     //Accumulate general information lines
     addLinesInfo.setGeneralData(line, linesInfo);
 
-    //Do not process a line without content
-    if (line.length === 0) return;
+    //Do not further process a line that is
+    //only whitespace or that is without content
+    if (line.length === 0 ||
+      lexResults.currentTrimmedValue.length === 0) return;
 
-    //Get properties from the current line in detail with
-    //the lexer and use this object when performing checks
+    //Use this object when performing checks
     //with subsequent lines
     let currentLine = {
       structureName: linesInfo.currentTrimmedValue,
@@ -50,7 +55,7 @@ readline.createInterface({
       parent: null,
       children: [],
       inferType: null,
-      nameDetails: lexer.lex(line)
+      nameDetails: lexResults
     };
 
     // console.log("lexResults", currentLine.nameDetails);
