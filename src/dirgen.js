@@ -1,6 +1,5 @@
-'use strict';
-
 console.time('timer');
+'use strict';
 
 //Native Nodejs modules
 import readline from 'readline';
@@ -12,7 +11,7 @@ import PrettyError from 'pretty-error';
 
 //Source modules
 import AddLinesInfo from './lines-info.js';
-let addLinesInfo = new AddLinesInfo();
+const addLinesInfo = new AddLinesInfo();
 import Lexer from './lexer.js';
 import validator from './validations.js';
 

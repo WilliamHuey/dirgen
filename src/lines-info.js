@@ -3,7 +3,9 @@
 import _ from 'lodash';
 
 let data = {};
-let linesInfoFunctions = {
+let linesInfo = () => {};
+
+const linesInfoFunctions = {
   currentValue: () => {
     data.lineSetInfo.currentValue = data.line;
   },
@@ -17,12 +19,23 @@ let linesInfoFunctions = {
     data.lineSetInfo.totalLineCount++;
     if (data.line.length > 0) {
       data.lineSetInfo.contentLineCount++;
-
     }
   }
 };
 
-let linesInfo = () => {};
+const singleLineInfoFunctions = {
+  setFirstPrev: (linesInfo, currentLine) => {
+    if (linesInfo.prevLineInfo === null) {
+      linesInfo.prevLineInfo = currentLine;
+    }
+  },
+  indentation: (linesInfo, currentLine) => {
+    if (linesInfo.firstIndentationType === null && currentLine.nameDetails.indentType !== null) {
+      linesInfo.firstIndentationType = currentLine.nameDetails.indentType;
+      linesInfo.firstIndentationAmount = currentLine.nameDetails.indentAmount;
+    }
+  }
+};
 
 _.assign(linesInfo.prototype, {
   setGeneralData: (line, lineSetInfo) => {
@@ -38,16 +51,13 @@ _.assign(linesInfo.prototype, {
   },
   setLineData: (currentLine, linesInfo) => {
     //First encounter with content line
-    if (linesInfo.prevLineInfo === null) {
-      linesInfo.prevLineInfo = currentLine;
-    }
+    linesInfo.prevLineInfo ||
+      singleLineInfoFunctions.setFirstPrev(linesInfo, currentLine);
 
     //Set the indentation information of the
     //first encounter of a non-empty line
-    if (linesInfo.firstIndentationType === null && currentLine.nameDetails.indentType !== null) {
-      linesInfo.firstIndentationType = currentLine.nameDetails.indentType;
-      linesInfo.firstIndentationAmount = currentLine.nameDetails.indentAmount;
-    }
+    singleLineInfoFunctions.indentation(linesInfo, currentLine);
+
   }
 });
 
