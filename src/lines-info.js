@@ -30,6 +30,8 @@ const singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo === null) {
       linesInfo.prevLineInfo = currentLine;
+      //Also set the first actual content line encounter
+      linesInfo.firstLine = currentLine;
     }
   },
   indentation: (linesInfo, currentLine) => {
@@ -51,7 +53,12 @@ const singleLineInfoFunctions = {
         if (linesInfo.prevLineInfo.nameDetails.indentAmount ===
           currentLine.nameDetails.indentAmount
         ) {
+          console.log("same indent as before");
           currentLine.sibling.push(linesInfo.prevLineInfo);
+          // linesInfo.prevLineInfo.sibling
+          console.log("currentLine.sibling", currentLine.sibling);
+          //TODO: prev sibling also needs to be updated
+
           currentLine.parent = linesInfo.prevLineInfo.parent;
 
         } else if (linesInfo.prevLineInfo.nameDetails.indentAmount <

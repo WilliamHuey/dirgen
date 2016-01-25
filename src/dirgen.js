@@ -1,4 +1,14 @@
 console.time('timer');
+
+/*
+  TODO:
+  sibling tagging for prev lines
+  indent level factor
+  outdent
+  validation
+    on lexer
+    on inconsistent parent
+*/
 'use strict';
 
 //Native Nodejs modules
@@ -81,7 +91,7 @@ readline.createInterface({
     console.log('closing the file');
     //
     // console.log("validator ", validator);
-    console.log("linesInfo", linesInfo);
+    // console.log("linesInfo", linesInfo);
     //Start generating the folders based on the b-tree
   });
 
