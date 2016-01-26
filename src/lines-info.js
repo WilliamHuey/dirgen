@@ -1,6 +1,7 @@
 'use strict';
 
 import _ from 'lodash';
+import guard from 'guard-js';
 
 let data = {};
 let linesInfo = () => {};
@@ -40,41 +41,55 @@ const singleLineInfoFunctions = {
       linesInfo.firstIndentationAmount = currentLine.nameDetails.indentAmount;
     }
   },
-  relations: (linesInfo, currentLine) => {
-    if (linesInfo.prevLineInfo !== null) {
+  compareIndent: guard()
+    //equal
+    .when((prevLineIndent, currentLineIndent) => {
+      return prevLineIndent === currentLineIndent;
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
 
-      //Determine the indentation level
-      if (linesInfo.contentLineCount > 1 &&
-        currentLine.structureName.length > 0 &&
-        linesInfo.prevLineInfo.structureName.length > 0) {
-        //If the same indentation level as previous line,
-        //than tag the prev as a sibling to the current line
-        //Ignore check for siblings on the first line and blank lines
-        if (linesInfo.prevLineInfo.nameDetails.indentAmount ===
-          currentLine.nameDetails.indentAmount
-        ) {
-          console.log("same indent as before");
-          currentLine.sibling.push(linesInfo.prevLineInfo);
-          // linesInfo.prevLineInfo.sibling
-          console.log("currentLine.sibling", currentLine.sibling);
-          //TODO: prev sibling also needs to be updated
+      // currentLine.sibling.push(linesInfo.prevLineInfo);
+      // linesInfo.prevLineInfo.sibling
+      // console.log("currentLine.sibling", currentLine.sibling);
 
-          currentLine.parent = linesInfo.prevLineInfo.parent;
+      // linesInfo.prevLineInfo.sibling.push()
 
-        } else if (linesInfo.prevLineInfo.nameDetails.indentAmount <
-          currentLine.nameDetails.indentAmount) {
-          //Previous line is a parent of the current line
-          //as the current line indent is greater than the previous
-          currentLine.parent = linesInfo.prevLineInfo;
-          linesInfo.prevLineInfo.children.push(currentLine);
-
-        }
-
-        //TODO: More complicated if there is an outdent because of the
-        //need to traverse prior entries
-
-
+      if (linesInfo.prevLineInfo.sibling.length === 0) {
+        currentLine.sibling.push(linesInfo.prevLineInfo);
+        linesInfo.prevLineInfo.sibling = currentLine.sibling;
       }
+
+      //TODO: prev sibling also needs to be updated
+
+      currentLine.parent = linesInfo.prevLineInfo.parent;
+    }).when((prevLineIndent, currentLineIndent) => {
+      return prevLineIndent < currentLineIndent;
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+
+      //Previous line is a parent of the current line
+      //as the current line indent is greater than the previous
+      currentLine.parent = linesInfo.prevLineInfo;
+      linesInfo.prevLineInfo.children.push(currentLine);
+    }).any(() => {
+      return;
+    }),
+  relations: (linesInfo, currentLine) => {
+    //Determine the indentation level
+    if (linesInfo.prevLineInfo &&
+      linesInfo.contentLineCount > 1 &&
+      currentLine.structureName.length > 0 &&
+      linesInfo.prevLineInfo.structureName.length > 0) {
+      //If the same indentation level as previous line,
+      //than tag the prev as a sibling to the current line
+      //Ignore check for siblings on the first line and blank lines
+      singleLineInfoFunctions
+        .compareIndent(
+          linesInfo.prevLineInfo.nameDetails.indentAmount,
+          currentLine.nameDetails.indentAmount, linesInfo, currentLine);
+
+      //TODO: More complicated if there is an outdent because of the
+      //need to traverse prior entries
+
+
     }
   },
   updatePrevLine: (linesInfo, currentLine) => {
