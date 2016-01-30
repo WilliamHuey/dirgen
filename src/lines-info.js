@@ -42,36 +42,36 @@ const singleLineInfoFunctions = {
     }
   },
   compareIndent: guard()
-    //equal
+    //Previous line indent is equal to the current line
+
     .when((prevLineIndent, currentLineIndent) => {
-      return prevLineIndent === currentLineIndent;
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+    return prevLineIndent === currentLineIndent;
+  }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
 
-      // currentLine.sibling.push(linesInfo.prevLineInfo);
-      // linesInfo.prevLineInfo.sibling
-      // console.log("currentLine.sibling", currentLine.sibling);
+    // currentLine.sibling.push(linesInfo.prevLineInfo);
+    // linesInfo.prevLineInfo.sibling
+    // console.log("currentLine.sibling", currentLine.sibling);
 
-      // linesInfo.prevLineInfo.sibling.push()
+    // linesInfo.prevLineInfo.sibling.push()
 
-      if (linesInfo.prevLineInfo.sibling.length === 0) {
-        currentLine.sibling.push(linesInfo.prevLineInfo);
-        linesInfo.prevLineInfo.sibling = currentLine.sibling;
-      }
+    if (linesInfo.prevLineInfo.sibling.length === 0) {
+      currentLine.sibling.push(linesInfo.prevLineInfo);
+      linesInfo.prevLineInfo.sibling = currentLine.sibling;
+    }
 
-      //TODO: prev sibling also needs to be updated
+    //TODO: prev sibling also needs to be updated
 
-      currentLine.parent = linesInfo.prevLineInfo.parent;
-    }).when((prevLineIndent, currentLineIndent) => {
-      return prevLineIndent < currentLineIndent;
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
-
-      //Previous line is a parent of the current line
-      //as the current line indent is greater than the previous
-      currentLine.parent = linesInfo.prevLineInfo;
-      linesInfo.prevLineInfo.children.push(currentLine);
-    }).any(() => {
-      return;
-    }),
+    currentLine.parent = linesInfo.prevLineInfo.parent;
+  }).when((prevLineIndent, currentLineIndent) => {
+    //Previous line indent is less than current
+    return prevLineIndent < currentLineIndent;
+  }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+    //Previous line is than a parent of the current line
+    currentLine.parent = linesInfo.prevLineInfo;
+    linesInfo.prevLineInfo.children.push(currentLine);
+  }).any(() => {
+    return;
+  }),
   relations: (linesInfo, currentLine) => {
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&
