@@ -3,11 +3,12 @@ console.time('timer');
 /*
   TODO:
 
-  outdent
   validation
     on lexer
     on inconsistent parent
   indent level factor
+  generation
+  command line
 */
 'use strict';
 
