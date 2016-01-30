@@ -2,12 +2,12 @@ console.time('timer');
 
 /*
   TODO:
-  sibling tagging for prev lines
-  indent level factor
+
   outdent
   validation
     on lexer
     on inconsistent parent
+  indent level factor
 */
 'use strict';
 
@@ -93,6 +93,5 @@ readline.createInterface({
     // console.log("validator ", validator);
     // console.log("linesInfo", linesInfo);
     //Start generating the folders based on the b-tree
+    console.timeEnd('timer');
   });
-
-console.timeEnd('timer');

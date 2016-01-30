@@ -43,35 +43,103 @@ const singleLineInfoFunctions = {
   },
   compareIndent: guard()
     //Previous line indent is equal to the current line
-
     .when((prevLineIndent, currentLineIndent) => {
-    return prevLineIndent === currentLineIndent;
-  }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+      return prevLineIndent === currentLineIndent;
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
 
-    // currentLine.sibling.push(linesInfo.prevLineInfo);
-    // linesInfo.prevLineInfo.sibling
-    // console.log("currentLine.sibling", currentLine.sibling);
+      // console.log("linesInfo.prevLineInfo", linesInfo.prevLineInfo);
 
-    // linesInfo.prevLineInfo.sibling.push()
+      if (linesInfo.prevLineInfo.sibling.length === 0) {
+        currentLine.sibling.push(linesInfo.prevLineInfo);
+        linesInfo.prevLineInfo.sibling = currentLine.sibling;
+      }
 
-    if (linesInfo.prevLineInfo.sibling.length === 0) {
-      currentLine.sibling.push(linesInfo.prevLineInfo);
-      linesInfo.prevLineInfo.sibling = currentLine.sibling;
-    }
+      currentLine.parent = linesInfo.prevLineInfo.parent;
+    }).when((prevLineIndent, currentLineIndent) => {
+      //Previous line indent is less than current
+      return prevLineIndent < currentLineIndent;
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+      //Previous line is now known as a parent of the current line
+      currentLine.parent = linesInfo.prevLineInfo;
+      linesInfo.prevLineInfo.children.push(currentLine);
+    }).when((prevLineIndent, currentLineIndent) => {
+      return prevLineIndent > currentLineIndent;
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+      //Use the previous line and navigate back up the levels until the indent level is the same as the current line
+      console.log("------------------------------");
+      console.log("currentLine name", currentLine.structureName);
 
-    //TODO: prev sibling also needs to be updated
+      // var searchLine = linesInfo.prevLineInfo;
+      //
+      // var searchPrevLineIndent = searchLine.parent.nameDetails.indentAmount;
+      // console.log("start loop");
 
-    currentLine.parent = linesInfo.prevLineInfo.parent;
-  }).when((prevLineIndent, currentLineIndent) => {
-    //Previous line indent is less than current
-    return prevLineIndent < currentLineIndent;
-  }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
-    //Previous line is than a parent of the current line
-    currentLine.parent = linesInfo.prevLineInfo;
-    linesInfo.prevLineInfo.children.push(currentLine);
-  }).any(() => {
-    return;
-  }),
+      for (var i = 0; i < linesInfo.contentLineCount; i++) {
+        console.log("i is ", i);
+        // console.log("********linesInfo.prevLineInfo", linesInfo.prevLineInfo.structureName);
+        // console.log("linesInfo.prevLineInfo", linesInfo.prevLineInfo);
+
+        // console.log("linesInfo.prevLineInfo.parent", linesInfo.prevLineInfo.parent);
+
+        if (linesInfo.prevLineInfo.parent.nameDetails.indentAmount == currentLineIndent) {
+
+
+          currentLine.sibling.push(linesInfo.prevLineInfo.parent);
+          if (linesInfo.prevLineInfo.parent.sibling.length === 0) {
+            linesInfo.prevLineInfo.parent.sibling = currentLine.sibling;
+          }
+
+          currentLine.parent = linesInfo.prevLineInfo.parent.parent;
+
+          console.log("currentLine", currentLine);
+          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>breaking out");
+          break;
+        }
+        // if (typeof linesInfo.prevLineInfo.parent !== null) {
+        //
+        // }
+
+
+        // console.log("searchPrevLineIndent", searchPrevLineIndent);
+        // if (linesInfo.prevLineInfo.parent.nameDetails.indentAmount == currentLineIndent) {
+        //   console.log("same indent found");
+        //   // i = linesInfo.contentLineCount;
+        // }
+      }
+      //
+      // let search = true;
+      // while (search) {
+      //   console.log("searchPrevLineIndent ", searchPrevLineIndent);
+      //   console.log("current line indent", currentLineIndent);
+      //   console.log("----------------------still searching");
+      //
+      //   // console.log("currentLine", currentLine);
+      //
+      //   // console.log("now prevLineIndent ", prevLineIndent);
+      //   if (searchPrevLineIndent === currentLineIndent) {
+      //     console.log("found same indent level from previous");
+      //     search = false;
+      //     break;
+      //   } else {
+      //     console.log("search back");
+      //     searchLine = linesInfo.prevLineInfo;
+      //
+      //     searchPrevLineIndent = searchLine.parent.nameDetails.indentAmount;
+      //   }
+
+
+
+
+
+      //Do make sure that the search up the levels terminate
+      //when reaching the first line where no other previous line
+      //matches the current line's indent
+
+
+
+    }).any(() => {
+      return;
+    }),
   relations: (linesInfo, currentLine) => {
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&
