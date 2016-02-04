@@ -3,12 +3,21 @@ console.time('timer');
 /*
   TODO:
 
+  Circular reference in the parent
+
   validation
     on lexer
+      encoding setting
+      character restrictions
+        255 length as upper limit for all oses
+        specific reserved characters
     on inconsistent parent
   indent level factor
   generation
   command line
+    --filename-all-safe (warn on attempt of creating file/folder using a character that is allowed in current os but is forbidden in other oses)
+    permitted value of true, false,step
+    --trim-name (windows will not filename with whitespace at the ends of the filename)
 */
 'use strict';
 
@@ -92,7 +101,7 @@ readline.createInterface({
     console.log('closing the file');
     //
     // console.log("validator ", validator);
-    // console.log("linesInfo", linesInfo);
+    console.log("linesInfo.firstLine.sibling", linesInfo.firstLine.sibling[0].children[0].sibling[0].sibling[0]);
     //Start generating the folders based on the b-tree
     console.timeEnd('timer');
   });

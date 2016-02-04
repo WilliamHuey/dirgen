@@ -48,10 +48,14 @@ const singleLineInfoFunctions = {
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
       if (linesInfo.prevLineInfo.sibling.length === 0) {
-        currentLine.sibling.push(linesInfo.prevLineInfo);
-        linesInfo.prevLineInfo.sibling = currentLine.sibling;
+        // currentLine.sibling.push(linesInfo.prevLineInfo);
+        // linesInfo.prevLineInfo.sibling = currentLine.sibling;
+        linesInfo.prevLineInfo.sibling.push(currentLine);
       }
       currentLine.parent = linesInfo.prevLineInfo.parent;
+      if (currentLine.parent !== null) {
+        currentLine.parent.children.push(currentLine);
+      }
 
     }).when((prevLineIndent, currentLineIndent) => {
       //Previous line indent is less than current
@@ -69,7 +73,7 @@ const singleLineInfoFunctions = {
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
         if (linesInfo.prevLineInfo.parent.nameDetails.indentAmount === currentLineIndent) {
-          currentLine.sibling.push(linesInfo.prevLineInfo.parent);
+          // currentLine.sibling.push(linesInfo.prevLineInfo.parent);
 
           if (linesInfo.prevLineInfo.parent.sibling.length === 0) {
             linesInfo.prevLineInfo.parent.sibling = currentLine.sibling;
@@ -107,7 +111,8 @@ _.assign(linesInfo.prototype, {
   setGeneralData: (line, lineSetInfo) => {
     //Update current line data with line set info
     data = {
-      line, lineSetInfo
+      line,
+      lineSetInfo
     };
 
     let lineInfo = {
