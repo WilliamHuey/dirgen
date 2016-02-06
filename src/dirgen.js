@@ -5,6 +5,9 @@ console.time('timer');
 
   Circular reference in the parent
 
+  /morestoraging sibling ref skips to 1
+
+
   validation
     on lexer
       encoding setting
@@ -101,7 +104,7 @@ readline.createInterface({
     console.log('closing the file');
     //
     // console.log("validator ", validator);
-    console.log("linesInfo.firstLine.sibling", linesInfo.firstLine.sibling[0].children[0].sibling[0].sibling[0]);
+    // console.log("linesInfo.firstLine.sibling", linesInfo.firstLine.sibling[0].children[0].sibling[0].sibling[0].children[0].sibling[0]);
     //Start generating the folders based on the b-tree
     console.timeEnd('timer');
   });

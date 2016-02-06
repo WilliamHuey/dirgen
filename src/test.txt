@@ -13,4 +13,3 @@ junk
   fil/eitaw/ay.txt
   1
     notright
-     

@@ -50,12 +50,17 @@ const singleLineInfoFunctions = {
       if (linesInfo.prevLineInfo.sibling.length === 0) {
         // currentLine.sibling.push(linesInfo.prevLineInfo);
         // linesInfo.prevLineInfo.sibling = currentLine.sibling;
+        // console.log(`currentLine is ${currentLine.structureName} as the sibling for, ${linesInfo.prevLineInfo.structureName}`);
+
         linesInfo.prevLineInfo.sibling.push(currentLine);
+        // console.log("sibling for prev is ", linesInfo.prevLineInfo.sibling);
       }
       currentLine.parent = linesInfo.prevLineInfo.parent;
       if (currentLine.parent !== null) {
         currentLine.parent.children.push(currentLine);
       }
+
+      // console.log(`prior same indent  linesInfo.prevLineInfo.sibling for line ${currentLine.structureName}, prev line sib is,`, linesInfo.prevLineInfo.sibling[0]);
 
     }).when((prevLineIndent, currentLineIndent) => {
       //Previous line indent is less than current
@@ -71,16 +76,27 @@ const singleLineInfoFunctions = {
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
-      for (let i = 0; i < linesInfo.contentLineCount; i++) {
-        if (linesInfo.prevLineInfo.parent.nameDetails.indentAmount === currentLineIndent) {
-          // currentLine.sibling.push(linesInfo.prevLineInfo.parent);
+      let prevLine = linesInfo.prevLineInfo;
+      // console.log("here prevLine", prevLine);
+      //TODO: does not go far enough for searching
+      //still need to set the prevLine ref frame
 
-          if (linesInfo.prevLineInfo.parent.sibling.length === 0) {
-            linesInfo.prevLineInfo.parent.sibling = currentLine.sibling;
+      for (let i = 0; i < linesInfo.contentLineCount; i++) {
+        if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
+          //Same prior level of indent means the prior is
+          //a sibling to the current line
+          if (prevLine.parent.sibling.length === 0) {
+            // console.log("2>>>>>>>>>>> found prior sib from for line ", currentLine.structureName);
+
+            prevLine.parent.sibling.push(currentLine);
+            // console.log("prior sib is ", prevLine.parent);
           }
-          currentLine.parent = linesInfo.prevLineInfo.parent.parent;
+          currentLine.parent = prevLine.parent.parent;
 
           break;
+        } else {
+          //Continue the search by going up the parents
+          prevLine = prevLine.parent;
         }
       }
     }).any(() => {
