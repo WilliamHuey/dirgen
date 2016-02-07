@@ -20,10 +20,11 @@ import unlimited from 'unlimited';
 import PrettyError from 'pretty-error';
 
 //Source modules
-import AddLinesInfo from './lines-info.js';
+import AddLinesInfo from './lines-info';
 const addLinesInfo = new AddLinesInfo();
-import Lexer from './lexer.js';
-import validator from './validations.js';
+import Lexer from './lexer';
+import validator from './validations';
+import generateStructure from './generation';
 
 unlimited(10000);
 const lexer = new Lexer();
@@ -89,12 +90,11 @@ readline.createInterface({
   })
   .on('close', () => {
     console.log('closing the file');
+    console.log("linesInfo", linesInfo, "\n\n");
+    //Hand off general line information
+    //to create the actual files and folders
+    generateStructure(linesInfo);
 
-
-
-    //
     // console.log("validator ", validator);
-    // console.log("linesInfo.firstLine.sibling", linesInfo.firstLine.sibling[0].children[0].sibling[0].sibling[0].sibling[0].sibling[0]);
-    //Start generating the folders based on the b-tree
     console.timeEnd('timer');
   });

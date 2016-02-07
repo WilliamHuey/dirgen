@@ -4,7 +4,7 @@ import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
 import PrettyError from 'pretty-error';
 import _ from 'lodash';
-import characterMap from './character-map.js';
+import characterMap from './character-map';
 
 //Should also detect indentation and well as symbols
 let lexer = function() {};
