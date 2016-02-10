@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "detect-indent": "^4.0.0",
+    "file-exists": "^1.0.0",
     "lodash": "^4.2.1",
     "pretty-error": "^2.0.0",
     "strscanner": "0.0.8",

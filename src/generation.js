@@ -1,5 +1,9 @@
 'use strict';
 
+import fs from 'fs';
+import fileExists from 'file-exists';
+import folderExists from './folder-exists';
+
 /*
 write both files and folder
 
@@ -17,10 +21,27 @@ rc file has the name dirgen.config.js
 //Readline the first content line
 
 export default (linesInfo) => {
-  console.log(`generation lines info is`, linesInfo);
+  // console.log(`generation lines info is`, linesInfo);
 
   //Check for any specified folder to house
   //the files and folders to be generated
+
+  // console.log(fs.statSync('/Users/williamhuey/Desktop/Android-Nexus7-Tablet-Backup/').Stats.isDirectory());
+  //Hard code this folder for now
+  if (folderExists('testing')) {
+    fs.rmdirSync('testing');
+
+    console.log("removed dir");
+  }
+
+  fs.mkdir('testing', function() {
+    console.log("fib dir gen");
+  });
+
+  // fs.writeFile('message.txt', 'Hello Node.js', (err) => {
+  //   if (err) throw err;
+  //   console.log('It\'s saved!');
+  // });
 
 
 };
