@@ -30,18 +30,30 @@ export default (linesInfo) => {
   //Hard code this folder for now
   if (folderExists('testing')) {
     fs.rmdirSync('testing');
-
-    console.log("removed dir");
   }
 
   fs.mkdir('testing', function() {
     console.log("fib dir gen");
+
+    //Go through the linesinfo and start
+    //creating the folders or files
+
+    // console.log("linesInfo", linesInfo);
+
+    /*
+      Having children means that it is definitely a folder
+
+      Not having children means that it could be a file or a folder
+
+      If the line has a slash in front than it is a folder, regardless of whether or not it has periods in its name
+
+      if a one or more periods in the name than it is assumed to be a file
+
+    */
+
+
   });
 
-  // fs.writeFile('message.txt', 'Hello Node.js', (err) => {
-  //   if (err) throw err;
-  //   console.log('It\'s saved!');
-  // });
 
 
 };

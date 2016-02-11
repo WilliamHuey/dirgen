@@ -16,17 +16,17 @@
   "dependencies": {
     "detect-indent": "^4.0.0",
     "file-exists": "^1.0.0",
-    "lodash": "^4.2.1",
+    "lodash": "^4.3.0",
     "pretty-error": "^2.0.0",
     "strscanner": "0.0.8",
     "unlimited": "^1.2.0"
   },
   "devDependencies": {
-    "babel": "^6.3.26",
-    "babel-core": "^6.4.5",
+    "babel": "^6.5.1",
+    "babel-core": "^6.5.1",
     "babel-eslint": "^4.1.8",
     "babel-loader": "^6.2.2",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015": "^6.5.0",
     "eslint": "^1.10.3",
     "eslint-loader": "^1.2.1",
     "json-loader": "^0.5.4",
