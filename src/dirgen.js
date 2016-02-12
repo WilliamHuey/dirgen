@@ -92,6 +92,8 @@ readline.createInterface({
     console.log('closing the file');
     // console.log("linesInfo", linesInfo, "\n\n");
 
+    //Still need checks for line structure type
+
     //Hand off general line information
     //to create the actual files and folders
     generateStructure(linesInfo);

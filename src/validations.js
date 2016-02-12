@@ -15,6 +15,10 @@ lexer
 
 Invalid characters - os specific checks
 
+repeated lines check - warn for overwrite
+
+two level of severity, warning and errors
+
 
 */
 
