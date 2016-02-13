@@ -16,8 +16,7 @@ const linesInfoFunctions = {
   countLines: (lineInfo) => {
     let processFurther = false;
     //The actual line number involves counting all lines,
-    //but the lines with content may differ
-    //However, the count the lines with content on them is more important
+    //but the lines with content matters more so count them differently
     data.lineSetInfo.totalLineCount++;
     if (lineInfo.length > 0 && lineInfo.trimLength > 0) {
       data.lineSetInfo.contentLineCount++;
@@ -71,6 +70,7 @@ const singleLineInfoFunctions = {
       currentLine.parent = linesInfo.prevLineInfo;
       linesInfo.prevLineInfo.children.push(currentLine);
 
+      currentLine.parent.nameDetails.inferType = 'folder';
     }).when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent > currentLineIndent;
 
@@ -108,14 +108,12 @@ const singleLineInfoFunctions = {
       linesInfo.contentLineCount > 1 &&
       currentLine.structureName.length > 0 &&
       linesInfo.prevLineInfo.structureName.length > 0) {
-      //If the same indentation level as previous line,
-      //than tag the prev as a sibling to the current line
-      //Ignore check for siblings on the first line and blank lines
+      //Check indent level of current line and
+      //ignore check for siblings on the first line and blank lines
       singleLineInfoFunctions
         .compareIndent(
           linesInfo.prevLineInfo.nameDetails.indentAmount,
           currentLine.nameDetails.indentAmount, linesInfo, currentLine);
-
     }
   },
   updatePrevLine: (linesInfo, currentLine) => {
@@ -157,6 +155,9 @@ _.assign(linesInfo.prototype, {
 
     //Determine how current line relates to the previous line
     singleLineInfoFunctions.relations(linesInfo, currentLine);
+
+    //TODO: Still need to check for line structure type
+    //infer the type
 
     //Current line will become the previous line after all
     //the necessary data is gather

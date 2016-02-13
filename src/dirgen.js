@@ -65,7 +65,6 @@ readline.createInterface({
       sibling: [],
       parent: null,
       children: [],
-      inferType: null,
       nameDetails: lexResults
     };
 
@@ -75,11 +74,7 @@ readline.createInterface({
     //the siblings, parent, and children key values
     addLinesInfo.setLineData(currentLine, linesInfo);
 
-
-
     //Validate the recently set line data
-
-    // console.log("linesInfo", linesInfo);
 
     // console.log("process the line");
 
@@ -91,8 +86,6 @@ readline.createInterface({
   .on('close', () => {
     console.log('closing the file');
     // console.log("linesInfo", linesInfo, "\n\n");
-
-    //Still need checks for line structure type
 
     //Hand off general line information
     //to create the actual files and folders
