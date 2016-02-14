@@ -66,19 +66,25 @@ const singleLineInfoFunctions = {
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
       if (linesInfo.prevLineInfo.sibling.length === 0) {
-        // currentLine.sibling.push(linesInfo.prevLineInfo);
-        // linesInfo.prevLineInfo.sibling = currentLine.sibling;
-        // console.log(`currentLine is ${currentLine.structureName} as the sibling for, ${linesInfo.prevLineInfo.structureName}`);
 
         linesInfo.prevLineInfo.sibling.push(currentLine);
-        // console.log("sibling for prev is ", linesInfo.prevLineInfo.sibling);
       }
       currentLine.parent = linesInfo.prevLineInfo.parent;
       if (currentLine.parent !== null) {
         currentLine.parent.children.push(currentLine);
       }
 
-      // console.log(`prior same indent  linesInfo.prevLineInfo.sibling for line ${currentLine.structureName}, prev line sib is,`, linesInfo.prevLineInfo.sibling[0]);
+      //Set previous line and current line
+      //as a file type if uncertain of file type
+      //Assume that they are files until new
+      //information comes out
+      if (_.isUndefined(linesInfo.prevLineInfo.inferType)) {
+        linesInfo.prevLineInfo.inferType = 'file';
+      }
+
+      if (_.isUndefined(currentLine.inferType)) {
+        currentLine.inferType = 'file';
+      }
 
     }).when((prevLineIndent, currentLineIndent) => {
       //Previous line indent is less than current
@@ -134,7 +140,8 @@ const singleLineInfoFunctions = {
       //that is not determined by indentation
       singleLineInfoFunctions.setStructureTypeByChar(currentLine);
 
-      // console.log("<<<<< cl ", currentLine);
+      //TODO: Also set the structure type
+      // in the compare indent function
 
       //Check indent level of current line and
       //ignore check for siblings on the first line and blank lines
