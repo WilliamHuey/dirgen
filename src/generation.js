@@ -41,32 +41,6 @@ export default (linesInfo) => {
     // console.log("linesInfo", linesInfo);
 
 
-    // Having children means that it is definitely a folder
-
-    /*
-      Need to walk through the linesinfo structure again
-
-      check file line structure type and then
-      check for existence of structure type, are the lines repeated?
-    */
-
-    if (linesInfo.firstLine.children.length > 0) {
-      console.log("is a folder");
-    } else {
-      // Not having children means that it could be a file or a folder
-      console.log("could be file or folder");
-
-      //Evaluate what the current line might be
-
-      //Check for presence of any special characters
-
-
-      //If the line has a slash in front than it is a folder,
-      //regardless of whether or not it has periods in its name
-
-      // if a one or more periods in the name than it is assumed to be a file
-      //unless it is stated otherwise
-    }
 
 
   });

@@ -6,6 +6,11 @@ import guard from 'guard-js';
 let data = {};
 let linesInfo = () => {};
 
+const structureMarker = {
+  folder: 47,
+  file: 46
+};
+
 const linesInfoFunctions = {
   currentValue: () => {
     data.lineSetInfo.currentValue = data.line;
@@ -32,6 +37,20 @@ const singleLineInfoFunctions = {
       linesInfo.prevLineInfo = currentLine;
       //Also set the first actual content line encounter
       linesInfo.firstLine = currentLine;
+    }
+  },
+  setStructureTypeByChar: (currentLine) => {
+    //If the line has a slash in front than it is a folder,
+    //regardless of whether or not it has periods in its name
+    // console.log("currentLine", currentLine.structureName);
+
+    if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
+      // console.log("slash is found, then it is a folder");
+      currentLine.inferType = 'folder';
+    } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
+      // console.log("period means a file");
+      //if a one or more periods in the name than it is assumed to be a file
+      currentLine.inferType = 'file';
     }
   },
   indentation: (linesInfo, currentLine) => {
@@ -108,6 +127,15 @@ const singleLineInfoFunctions = {
       linesInfo.contentLineCount > 1 &&
       currentLine.structureName.length > 0 &&
       linesInfo.prevLineInfo.structureName.length > 0) {
+
+      //Check on the characters in the content line to make immediate
+      //determination of the structure type
+      //This will take care of the relationship
+      //that is not determined by indentation
+      singleLineInfoFunctions.setStructureTypeByChar(currentLine);
+
+      // console.log("<<<<< cl ", currentLine);
+
       //Check indent level of current line and
       //ignore check for siblings on the first line and blank lines
       singleLineInfoFunctions
@@ -155,9 +183,6 @@ _.assign(linesInfo.prototype, {
 
     //Determine how current line relates to the previous line
     singleLineInfoFunctions.relations(linesInfo, currentLine);
-
-    //TODO: Still need to check for line structure type
-    //infer the type
 
     //Current line will become the previous line after all
     //the necessary data is gather
