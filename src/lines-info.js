@@ -45,7 +45,6 @@ const singleLineInfoFunctions = {
     // console.log("currentLine", currentLine.structureName);
 
     if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
-      // console.log("slash is found, then it is a folder");
       currentLine.inferType = 'folder';
     } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
       // console.log("period means a file");
@@ -95,7 +94,13 @@ const singleLineInfoFunctions = {
       currentLine.parent = linesInfo.prevLineInfo;
       linesInfo.prevLineInfo.children.push(currentLine);
 
-      currentLine.parent.nameDetails.inferType = 'folder';
+      currentLine.parent.inferType = 'folder';
+
+      //Assume currentline to be a file, unless proven later on
+      if (_.isUndefined(currentLine.inferType)) {
+        currentLine.inferType = 'file';
+      }
+
     }).when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent > currentLineIndent;
 
@@ -103,8 +108,6 @@ const singleLineInfoFunctions = {
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
       // console.log("here prevLine", prevLine);
-      //TODO: does not go far enough for searching
-      //still need to set the prevLine ref frame
 
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
@@ -117,6 +120,11 @@ const singleLineInfoFunctions = {
             // console.log("prior sib is ", prevLine.parent);
           }
           currentLine.parent = prevLine.parent.parent;
+
+          //Assume currentline to be a file, unless proven later on
+          if (_.isUndefined(currentLine.inferType)) {
+            currentLine.inferType = 'file';
+          }
 
           break;
         } else {
@@ -140,8 +148,7 @@ const singleLineInfoFunctions = {
       //that is not determined by indentation
       singleLineInfoFunctions.setStructureTypeByChar(currentLine);
 
-      //TODO: Also set the structure type
-      // in the compare indent function
+      //TODO: First line still needs its structuretype set
 
       //Check indent level of current line and
       //ignore check for siblings on the first line and blank lines

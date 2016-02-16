@@ -76,7 +76,7 @@ readline.createInterface({
 
     //Validate the recently set line data
 
-    // console.log("process the line");
+    // console.log("process the line", currentLine);
 
     //Save the line data object reference for future comparison
     //by updating previous value with current
