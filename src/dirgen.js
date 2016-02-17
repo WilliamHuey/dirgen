@@ -36,7 +36,8 @@ let linesInfo = {
   contentLineCount: 0,
   totalLineCount: 0,
   firstIndentationType: null,
-  firstIndentationAmount: null
+  firstIndentationAmount: null,
+  firstLine: null
 };
 
 //Read through all the lines of a supplied file
@@ -85,7 +86,7 @@ readline.createInterface({
   })
   .on('close', () => {
     console.log('closing the file');
-    // console.log("linesInfo", linesInfo, "\n\n");
+    // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
 
     //Hand off general line information
     //to create the actual files and folders

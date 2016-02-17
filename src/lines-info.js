@@ -59,6 +59,12 @@ const singleLineInfoFunctions = {
     }
   },
   compareIndent: guard()
+    .when((prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
+      return isFirstLine;
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
+      //Assume is file type unless new information comes up
+      currentLine.inferType = 'file';
+    })
     //Previous line indent is equal to the current line
     .when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent === currentLineIndent;
@@ -135,7 +141,9 @@ const singleLineInfoFunctions = {
     }).any(() => {
       return;
     }),
-  relations: (linesInfo, currentLine) => {
+  relations: (linesInfo, currentLine, isFirstLine) => {
+
+    // console.log("isFirstLine", isFirstLine);
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&
       linesInfo.contentLineCount > 1 &&
@@ -150,12 +158,23 @@ const singleLineInfoFunctions = {
 
       //TODO: First line still needs its structuretype set
 
+      // console.log("linesInfo.prevLineInfo", linesInfo.prevLineInfo);
+
       //Check indent level of current line and
       //ignore check for siblings on the first line and blank lines
       singleLineInfoFunctions
         .compareIndent(
           linesInfo.prevLineInfo.nameDetails.indentAmount,
           currentLine.nameDetails.indentAmount, linesInfo, currentLine);
+
+      // prevLineIndent, currentLineIndent, linesInfo, currentLine, contentLineCount
+    } else if (linesInfo.contentLineCount === 1 &&
+      currentLine.structureName.length > 0 && isFirstLine) {
+      //First content line
+      singleLineInfoFunctions
+        .compareIndent(
+          linesInfo.prevLineInfo.nameDetails.indentAmount,
+          currentLine.nameDetails.indentAmount, linesInfo, currentLine, isFirstLine);
     }
   },
   updatePrevLine: (linesInfo, currentLine) => {
@@ -187,6 +206,11 @@ _.assign(linesInfo.prototype, {
       });
   },
   setLineData: (currentLine, linesInfo) => {
+    let isFirstLine = false;
+    if (linesInfo.prevLineInfo === null) {
+      isFirstLine = true;
+    }
+
     //First encounter with content line
     linesInfo.prevLineInfo ||
       singleLineInfoFunctions.setFirstPrev(linesInfo, currentLine);
@@ -196,7 +220,7 @@ _.assign(linesInfo.prototype, {
     singleLineInfoFunctions.indentation(linesInfo, currentLine);
 
     //Determine how current line relates to the previous line
-    singleLineInfoFunctions.relations(linesInfo, currentLine);
+    singleLineInfoFunctions.relations(linesInfo, currentLine, isFirstLine);
 
     //Current line will become the previous line after all
     //the necessary data is gather
