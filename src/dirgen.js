@@ -87,6 +87,7 @@ readline.createInterface({
   .on('close', () => {
     console.log('closing the file');
     // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
+    // console.log("linesinfo", linesInfo);
 
     //Hand off general line information
     //to create the actual files and folders
