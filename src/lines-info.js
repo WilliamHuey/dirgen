@@ -7,7 +7,6 @@ import singleLineInfoFunctions from './singleLine-info';
 let data = {};
 let linesInfo = () => {};
 
-
 const linesInfoFunctions = {
   currentValue: () => {
     data.lineSetInfo.currentValue = data.line;

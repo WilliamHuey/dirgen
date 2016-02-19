@@ -32,17 +32,40 @@ export default (linesInfo) => {
     fs.rmdirSync('testing');
   }
 
-  fs.mkdir('testing', function() {
-    console.log("fib dir gen");
+  /*
 
-    //Go through the linesinfo and start
-    //creating the folders or files
-
-    // console.log("linesInfo", linesInfo);
-
-
+  createStructure() {
+  if file
+    createFile()
+  if folder
+    createFolder(children, callback)
 
 
+}
+
+  readObjectLevel(linesInfo) {
+  var keys = _.keys(linesInfo);
+
+  forEach(keys, function(key) {
+    createStructure(key);
   });
+
+}
+
+  */
+
+
+  // fs.mkdir('testing', function() {
+  //   console.log("fib dir gen");
+
+  //Go through the linesinfo and start
+  //creating the folders or files
+
+  //Read the linesInfo object recursively
+
+  // console.log("linesInfo", linesInfo);
+
+
+  // });
 
 };
