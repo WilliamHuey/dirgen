@@ -23,11 +23,12 @@ import PrettyError from 'pretty-error';
 import AddLinesInfo from './lines-info';
 const addLinesInfo = new AddLinesInfo();
 import Lexer from './lexer';
-import validator from './validations';
+import Validations from './validations';
 import generateStructure from './generation';
 
 unlimited(10000);
 const lexer = new Lexer();
+const validator = new Validations();
 
 //Track the status of the lines
 let linesInfo = {
@@ -91,7 +92,10 @@ readline.createInterface({
 
     //Hand off general line information
     //to create the actual files and folders
-    generateStructure(linesInfo);
+
+    //But validate the presence of the firstLine
+    //if nothing, skip generation
+    validator.presenceFirstLine(linesInfo, generateStructure);
 
     // console.log("validator ", validator);
     console.timeEnd('timer');

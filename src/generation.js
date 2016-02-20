@@ -1,7 +1,13 @@
 'use strict';
 
+//Native Nodejs modules
 import fs from 'fs';
+
+//Vendor modules
 import fileExists from 'file-exists';
+import _ from 'lodash';
+
+//Source modules
 import folderExists from './folder-exists';
 
 /*
@@ -15,10 +21,28 @@ accidentally created files or folders
 read from the commandline or rc file
 rc file has the name dirgen.config.js
 
-
 */
 
-//Readline the first content line
+const createStructure = (key) => {
+
+  // console.log("createStructure", createStructure);
+  console.log("key is ", key);
+  // if file
+  //   createFile()
+  // if folder
+  //   createFolder(children, callback)
+};
+
+const readObjectLevel = (linesInfo) => {
+  let keys = _.keys(linesInfo);
+
+  _.each(keys, function(key) {
+    //TODO: warn check for existing structureType
+
+    createStructure(key);
+  });
+
+};
 
 export default (linesInfo) => {
   // console.log(`generation lines info is`, linesInfo);
@@ -26,46 +50,14 @@ export default (linesInfo) => {
   //Check for any specified folder to house
   //the files and folders to be generated
 
-  // console.log(fs.statSync('/Users/williamhuey/Desktop/Android-Nexus7-Tablet-Backup/').Stats.isDirectory());
   //Hard code this folder for now
   if (folderExists('testing')) {
     fs.rmdirSync('testing');
   }
 
-  /*
+  //Get the first line from the linesInfo
 
-  createStructure() {
-  if file
-    createFile()
-  if folder
-    createFolder(children, callback)
+  readObjectLevel(linesInfo.firstLine);
 
-
-}
-
-  readObjectLevel(linesInfo) {
-  var keys = _.keys(linesInfo);
-
-  forEach(keys, function(key) {
-    createStructure(key);
-  });
-
-}
-
-  */
-
-
-  // fs.mkdir('testing', function() {
-  //   console.log("fib dir gen");
-
-  //Go through the linesinfo and start
-  //creating the folders or files
-
-  //Read the linesInfo object recursively
-
-  // console.log("linesInfo", linesInfo);
-
-
-  // });
 
 };

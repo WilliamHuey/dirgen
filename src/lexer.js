@@ -1,13 +1,16 @@
 'use strict';
 
+//Vendor modules
 import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
 import PrettyError from 'pretty-error';
 import _ from 'lodash';
+
+//Vendor modules
 import characterMap from './character-map';
 
 //Should also detect indentation and well as symbols
-let lexer = function() {};
+let lexer = () => {};
 
 _.assign(lexer.prototype, {
   lex: line => {
