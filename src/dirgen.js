@@ -93,9 +93,11 @@ readline.createInterface({
     //Hand off general line information
     //to create the actual files and folders
 
+    let rootPath = './';
+
     //But validate the presence of the firstLine
     //if nothing, skip generation
-    validator.presenceFirstLine(linesInfo, generateStructure);
+    validator.presenceFirstLine(linesInfo, generateStructure, rootPath);
 
     // console.log("validator ", validator);
     console.timeEnd('timer');

@@ -23,28 +23,22 @@ rc file has the name dirgen.config.js
 
 */
 
-const createStructure = (key) => {
+const createStructure = (linesInfo, rootPath) => {
 
   // console.log("createStructure", createStructure);
-  console.log("key is ", key);
+  console.log("linesInfo is ", linesInfo);
+  console.log("rootPath", rootPath);
+
+
   // if file
   //   createFile()
   // if folder
-  //   createFolder(children, callback)
+  //   createFolder(children, parentDir)
+
+  //Also start off creating siblings structure types
 };
 
-const readObjectLevel = (linesInfo) => {
-  let keys = _.keys(linesInfo);
-
-  _.each(keys, function(key) {
-    //TODO: warn check for existing structureType
-
-    createStructure(key);
-  });
-
-};
-
-export default (linesInfo) => {
+export default (linesInfo, rootPath) => {
   // console.log(`generation lines info is`, linesInfo);
 
   //Check for any specified folder to house
@@ -56,8 +50,6 @@ export default (linesInfo) => {
   }
 
   //Get the first line from the linesInfo
-
-  readObjectLevel(linesInfo.firstLine);
-
+  createStructure(linesInfo.firstLine, rootPath);
 
 };
