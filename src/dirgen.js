@@ -93,7 +93,7 @@ readline.createInterface({
     //Hand off general line information
     //to create the actual files and folders
 
-    let rootPath = './';
+    let rootPath = '.\\';
 
     //But validate the presence of the firstLine
     //if nothing, skip generation

@@ -6,8 +6,8 @@ import _ from 'lodash';
 //Source modules
 import singleLineInfoFunctions from './singleLine-info';
 
-let data = {};
-let linesInfo = () => {};
+let data = {},
+  linesInfo = () => {};
 
 const linesInfoFunctions = {
   currentValue: () => {
