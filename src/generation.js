@@ -29,21 +29,37 @@ const createStructure = (linesInfo, rootPath) => {
 
   // console.log("createStructure", createStructure);
   // console.log("linesInfo is ", linesInfo);
-  console.log("rootPath", rootPath);
+  // console.log("rootPath", rootPath);
 
-  //Join the path safely
+  //Join the path safely by converting all backward
+  //slashes to forward slashes
   let structureName = linesInfo.structureName,
     structureRoughPath = path.join(rootPath, structureName),
     structureCreatePath = normalizePath(structureRoughPath);
 
-  console.log("structureCreatePath", structureCreatePath);
+  // console.log("structureCreatePath", structureCreatePath);
 
   if (linesInfo.inferType === 'file') {
-    console.log("normalize root with struct path", structureCreatePath);
+    // console.log("normalize root with struct path", structureCreatePath);
+    //Create self structure, file
+    //callback is not really needed
+    console.log("file", linesInfo.structureName);
   } else {
     //Folder will be the only other structure type
+    //Create self structure, folder
+    //callback produces the child structures
+    console.log("folder", linesInfo.structureName);
+  }
+
+  if (!_.isUndefined(linesInfo.sibling) && linesInfo.sibling.length > 0) {
+
+    console.log("some siblings");
 
   }
+
+  //siblings need to be created too if present for files and folders
+  //
+
 
   /*
   How to keep track reliably of the current path?
@@ -85,5 +101,7 @@ export default (linesInfo, rootPath) => {
 
   //Get the first line from the linesInfo
   createStructure(linesInfo.firstLine, hardCodeRootFolder);
+
+  //Also create the structure for all the siblings too
 
 };
