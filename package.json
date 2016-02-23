@@ -16,7 +16,7 @@
   "dependencies": {
     "detect-indent": "^4.0.0",
     "file-exists": "^1.0.0",
-    "lodash": "^4.5.0",
+    "lodash": "^4.5.1",
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
     "strscanner": "0.0.8",
@@ -31,7 +31,7 @@
     "eslint": "^1.10.3",
     "eslint-loader": "^1.3.0",
     "json-loader": "^0.5.4",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.14"
   },
   "engine": "node >= 0.10.x",
   "private": false,
