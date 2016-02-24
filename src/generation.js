@@ -53,8 +53,9 @@ const createStructure = (linesInfo, rootPath) => {
 
   if (!_.isUndefined(linesInfo.sibling) && linesInfo.sibling.length > 0) {
 
-    console.log("some siblings");
-
+    // console.log("some siblings children", linesInfo.sibling[0].children);
+    //TODO: Need to include outdentd folder as children ex: fil/eitaw/ay.txt did not get picked
+    //up the children of /storaging
   }
 
   //siblings need to be created too if present for files and folders
@@ -91,7 +92,7 @@ export default (linesInfo, rootPath) => {
 
   //Hard code this folder for now
   if (folderExists('testing')) {
-    console.log("folder exists and removing");
+    // console.log("folder exists and removing");
     fs.rmdirSync(hardCodeRootFolder);
     fs.mkdirSync(hardCodeRootFolder);
   } else {

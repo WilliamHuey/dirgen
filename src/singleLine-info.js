@@ -95,10 +95,8 @@ let singleLineInfoFunctions = {
           //Same prior level of indent means the prior is
           //a sibling to the current line
           if (prevLine.parent.sibling.length === 0) {
-            // console.log("2>>>>>>>>>>> found prior sib from for line ", currentLine.structureName);
-
             prevLine.parent.sibling.push(currentLine);
-            // console.log("prior sib is ", prevLine.parent);
+            prevLine.parent.parent.children.push(currentLine);
           }
           currentLine.parent = prevLine.parent.parent;
 
@@ -130,10 +128,6 @@ let singleLineInfoFunctions = {
       //This will take care of the relationship
       //that is not determined by indentation
       singleLineInfoFunctions.setStructureTypeByChar(currentLine);
-
-      //TODO: First line still needs its structuretype set
-
-      // console.log("linesInfo.prevLineInfo", linesInfo.prevLineInfo);
 
       //Check indent level of current line and
       //ignore check for siblings on the first line and blank lines
