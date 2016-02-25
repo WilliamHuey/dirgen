@@ -7,6 +7,22 @@ take the precedence of the cli arguments over the
 rc file
 
 --------------------------
+situations:
+
+-no-content
+  error 'no content in the file'
+
+-potential unsafe content in line
+  errors produce warnings
+    walk thru errors or mass change
+    opts (ignore| replace | skip)
+
+    remember choices in config file
+
+
+
+
+---------------------
 
  --filename-all-safe (warn on attempt of creating file/folder using a character that is allowed in current os but is forbidden in other oses)
  permitted value of true, false,step

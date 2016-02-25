@@ -18,6 +18,7 @@ import fs from 'fs';
 //Vendor modules
 import unlimited from 'unlimited';
 import PrettyError from 'pretty-error';
+import _ from 'lodash';
 
 //Source modules
 import AddLinesInfo from './lines-info';
@@ -92,6 +93,21 @@ readline.createInterface({
 
     //Hand off general line information
     //to create the actual files and folders
+
+    /*
+      api-
+      validator(subject, {content: true})
+
+      pretty error will be generate the errors
+      underneath the scenes
+    */
+
+    if (_.isNull(linesInfo.firstLine)) {
+      let renderedError = (new PrettyError())
+        .render(new Error('Nothing in the file.'));
+      console.log(renderedError);
+      return;
+    }
 
     let rootPath = '.\\';
 
