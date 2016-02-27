@@ -8,6 +8,7 @@ import path from 'path';
 import fileExists from 'file-exists';
 import _ from 'lodash';
 import normalizePath from 'normalize-path';
+import trampa from 'trampa';
 
 //Source modules
 import folderExists from './folder-exists';
@@ -25,9 +26,10 @@ rc file has the name dirgen.config.js
 
 */
 
+
 const createStructure = (linesInfo, rootPath) => {
 
-  // console.log("createStructure", createStructure);
+  // console.log("createStructure");
   // console.log("linesInfo is ", linesInfo);
   // console.log("rootPath", rootPath);
 
@@ -39,21 +41,35 @@ const createStructure = (linesInfo, rootPath) => {
 
   // console.log("structureCreatePath", structureCreatePath);
 
+  // console.log("linesInfo.inferType", linesInfo.inferType);
   if (linesInfo.inferType === 'file') {
     // console.log("normalize root with struct path", structureCreatePath);
     //Create self structure, file
     //callback is not really needed
-    console.log("file", linesInfo.structureName);
+    console.log("file is", linesInfo.structureName);
   } else {
     //Folder will be the only other structure type
     //Create self structure, folder
     //callback produces the child structures
-    console.log("folder", linesInfo.structureName);
+    console.log("folder is ", linesInfo.structureName);
+    if (linesInfo.children.length > 0) {
+
+      _.each(linesInfo.children, (line) => {
+        console.log("children is ", line.structureName);
+        createStructure(line, rootPath);
+      });
+    }
+
   }
 
   if (!_.isUndefined(linesInfo.sibling) && linesInfo.sibling.length > 0) {
-
-    // console.log("some siblings children", linesInfo.sibling[0].children);
+    console.log("===========");
+    // console.log("some sibling", linesInfo.sibling);
+    _.each(linesInfo.sibling, (line) => {
+      console.log("~~");
+      createStructure(line, rootPath);
+    });
+    console.log("FOL--------------------");
 
   }
 
@@ -79,7 +95,16 @@ const createStructure = (linesInfo, rootPath) => {
   //Also start off creating siblings structure types
 };
 
-
+// console.time('compute');
+//
+// function loop(n, acc) {
+//   return n === 0 ? trampa.wrap(acc) : trampa.lazy(function() {
+//     return loop(n - 1, acc + 1);
+//   });
+// }
+//
+// loop(123456, 0).run();
+// console.timeEnd('compute');
 
 export default (linesInfo, rootPath) => {
   // console.log(`generation lines info is`, linesInfo);

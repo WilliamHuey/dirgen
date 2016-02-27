@@ -31,6 +31,7 @@
     "eslint": "^1.10.3",
     "eslint-loader": "^1.3.0",
     "json-loader": "^0.5.4",
+    "trampa": "^1.0.0",
     "webpack": "^1.12.14"
   },
   "engine": "node >= 0.10.x",
