@@ -27,7 +27,7 @@ rc file has the name dirgen.config.js
 */
 
 
-const createStructure = (linesInfo, rootPath) => {
+const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
   // console.log("createStructure");
   // console.log("linesInfo is ", linesInfo);
@@ -55,27 +55,25 @@ const createStructure = (linesInfo, rootPath) => {
     if (linesInfo.children.length > 0) {
 
       _.each(linesInfo.children, (line) => {
-        console.log("children is ", line.structureName);
-        createStructure(line, rootPath);
+        // console.log("children is ", line.structureName);
+        createStructure(line, rootPath, firstContentLineIndentAmount);
       });
     }
 
   }
+  // console.log("firstContentLineIndentAmount", firstContentLineIndentAmount);
 
-  if (!_.isUndefined(linesInfo.sibling) && linesInfo.sibling.length > 0) {
-    console.log("===========");
-    // console.log("some sibling", linesInfo.sibling);
+  //TODO: Make sure to only look
+  //at the siblings is the very first indented
+  //Content line indent must be taken
+  //not the first appearance of an indent
+  if (!_.isUndefined(linesInfo.sibling) &&
+    linesInfo.sibling.length > 0 &&
+    firstContentLineIndentAmount === linesInfo.nameDetails.indentAmount) {
     _.each(linesInfo.sibling, (line) => {
-      console.log("~~");
-      createStructure(line, rootPath);
+      createStructure(line, rootPath, firstContentLineIndentAmount);
     });
-    console.log("FOL--------------------");
-
   }
-
-  //TODO:
-  //Don't read siblings when not on the first/root level
-
 
   /*
   How to keep track reliably of the current path?
@@ -127,7 +125,9 @@ export default (linesInfo, rootPath) => {
   }
 
   //Get the first line from the linesInfo
-  createStructure(linesInfo.firstLine, hardCodeRootFolder);
+  createStructure(linesInfo.firstLine,
+    hardCodeRootFolder,
+    linesInfo.firstContentLineIndentAmount);
 
   //Also create the structure for all the siblings too
 

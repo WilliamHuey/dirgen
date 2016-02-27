@@ -39,6 +39,9 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
       //Assume is file type unless new information comes up
       currentLine.inferType = 'file';
+      //Need to know the first content line indent amount to note the sibling check
+      //read marker
+      linesInfo.firstContentLineIndentAmount = currentLine.nameDetails.indentAmount;
     })
     //Previous line indent is equal to the current line
     .when((prevLineIndent, currentLineIndent) => {
