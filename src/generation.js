@@ -52,6 +52,7 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
     //Create self structure, folder
     //callback produces the child structures
     console.log("folder is ", linesInfo.structureName);
+
     if (linesInfo.children.length > 0) {
 
       _.each(linesInfo.children, (line) => {
@@ -61,12 +62,8 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
     }
 
   }
-  // console.log("firstContentLineIndentAmount", firstContentLineIndentAmount);
 
-  //TODO: Make sure to only look
-  //at the siblings is the very first indented
-  //Content line indent must be taken
-  //not the first appearance of an indent
+  //Only the top-most level need the siblings generation
   if (!_.isUndefined(linesInfo.sibling) &&
     linesInfo.sibling.length > 0 &&
     firstContentLineIndentAmount === linesInfo.nameDetails.indentAmount) {
@@ -84,13 +81,11 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
   race conditions
   */
 
-
   // if file
   //   createFile()
   // if folder
   //   createFolder(children, rootPath, parentDir)
 
-  //Also start off creating siblings structure types
 };
 
 // console.time('compute');
