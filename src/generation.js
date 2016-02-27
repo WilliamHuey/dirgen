@@ -73,8 +73,8 @@ const createStructure = (linesInfo, rootPath) => {
 
   }
 
-  //siblings need to be created too if present for files and folders
-  //
+  //TODO:
+  //Don't read siblings when not on the first/root level
 
 
   /*
