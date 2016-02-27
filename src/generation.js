@@ -54,8 +54,7 @@ const createStructure = (linesInfo, rootPath) => {
   if (!_.isUndefined(linesInfo.sibling) && linesInfo.sibling.length > 0) {
 
     // console.log("some siblings children", linesInfo.sibling[0].children);
-    //TODO: Need to include outdentd folder as children ex: fil/eitaw/ay.txt did not get picked
-    //up the children of /storaging
+
   }
 
   //siblings need to be created too if present for files and folders
@@ -79,6 +78,8 @@ const createStructure = (linesInfo, rootPath) => {
 
   //Also start off creating siblings structure types
 };
+
+
 
 export default (linesInfo, rootPath) => {
   // console.log(`generation lines info is`, linesInfo);

@@ -104,7 +104,7 @@ readline.createInterface({
 
     if (_.isNull(linesInfo.firstLine)) {
       let renderedError = (new PrettyError())
-        .render(new Error('Nothing in the file.'));
+        .render(new Error('There are no lines to generate files or folders from the supplied template file.'));
       console.log(renderedError);
       return;
     }
