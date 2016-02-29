@@ -16,11 +16,11 @@
   "dependencies": {
     "detect-indent": "^4.0.0",
     "file-exists": "^1.0.0",
+    "guard-js": "^0.1.1",
     "lodash": "^4.5.1",
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
-    "strscanner": "0.0.8",
-    "unlimited": "^1.2.0"
+    "strscanner": "0.0.8"
   },
   "devDependencies": {
     "babel": "^6.5.2",

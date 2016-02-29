@@ -2,12 +2,10 @@ console.time('timer');
 
 /*
   TODO:
-
+  **GENERATION
   **VALIDATIONS
   **INDENT LEVEL FACTOR
-  **GENERATION
   **COMMAND LINE
-
 */
 'use strict';
 
@@ -16,7 +14,7 @@ import readline from 'readline';
 import fs from 'fs';
 
 //Vendor modules
-import unlimited from 'unlimited';
+// import unlimited from 'unlimited';
 import PrettyError from 'pretty-error';
 import _ from 'lodash';
 
@@ -27,7 +25,7 @@ import Lexer from './lexer';
 import Validations from './validations';
 import generateStructure from './generation';
 
-unlimited(10000);
+// unlimited(10000);
 const lexer = new Lexer();
 const validator = new Validations();
 
@@ -44,7 +42,7 @@ let linesInfo = {
 
 //Read through all the lines of a supplied file
 readline.createInterface({
-    input: fs.createReadStream('/Users/williamhuey/Desktop/Coding/JavaScript/npm-modules/dirgen/src/test.txt')
+    input: fs.createReadStream(`${process.cwd()}/src/test.txt`)
   })
   .on('line', line => {
     // console.log("process line prevLineInfo", prevLineInfo);

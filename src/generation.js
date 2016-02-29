@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+log out the generated paths
+*/
+
 //Native Nodejs modules
 import fs from 'fs';
 import path from 'path';
