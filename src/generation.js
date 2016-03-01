@@ -13,6 +13,7 @@ import fileExists from 'file-exists';
 import _ from 'lodash';
 import normalizePath from 'normalize-path';
 import trampa from 'trampa';
+import rimraf from 'rimraf';
 
 //Source modules
 import folderExists from './folder-exists';
@@ -43,7 +44,7 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
     structureRoughPath = path.join(rootPath, structureName),
     structureCreatePath = normalizePath(structureRoughPath);
 
-  // console.log("structureCreatePath", structureCreatePath);
+  console.log("structureCreatePath", structureCreatePath);
 
   // console.log("linesInfo.inferType", linesInfo.inferType);
   if (linesInfo.inferType === 'file') {
@@ -57,11 +58,17 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
     //callback produces the child structures
     console.log("folder is ", linesInfo.structureName);
 
+    let parentPath = path.join(rootPath, linesInfo.structureName);
+    console.log("parentPath", parentPath);
+    fs.mkdirSync(parentPath);
+
     if (linesInfo.children.length > 0) {
 
       _.each(linesInfo.children, (line) => {
         // console.log("children is ", line.structureName);
-        createStructure(line, rootPath, firstContentLineIndentAmount);
+
+
+        createStructure(line, parentPath, firstContentLineIndentAmount);
       });
     }
 
@@ -103,7 +110,8 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 // loop(123456, 0).run();
 // console.timeEnd('compute');
 
-export default (linesInfo, rootPath) => {
+export
+default (linesInfo, rootPath) => {
   // console.log(`generation lines info is`, linesInfo);
 
   //TODO: Not taking in the rootpath directly
@@ -115,8 +123,8 @@ export default (linesInfo, rootPath) => {
 
   //Hard code this folder for now
   if (folderExists('testing')) {
-    // console.log("folder exists and removing");
-    fs.rmdirSync(hardCodeRootFolder);
+    console.log("folder exists and removing");
+    rimraf(hardCodeRootFolder, () => {});
     fs.mkdirSync(hardCodeRootFolder);
   } else {
     //Create when no root folder exists

@@ -43,33 +43,34 @@ let singleLineInfoFunctions = {
       //read marker
       linesInfo.firstContentLineIndentAmount = currentLine.nameDetails.indentAmount;
     })
-    //Previous line indent is equal to the current line
+  //Previous line indent is equal to the current line
+  .when((prevLineIndent, currentLineIndent) => {
+    return prevLineIndent === currentLineIndent;
+
+  }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+    if (linesInfo.prevLineInfo.sibling.length === 0) {
+
+      linesInfo.prevLineInfo.sibling.push(currentLine);
+    }
+    currentLine.parent = linesInfo.prevLineInfo.parent;
+    if (currentLine.parent !== null) {
+      currentLine.parent.children.push(currentLine);
+    }
+
+    //Set previous line and current line
+    //as a file type if uncertain of file type
+    //Assume that they are files until new
+    //information comes out
+    if (_.isUndefined(linesInfo.prevLineInfo.inferType)) {
+      linesInfo.prevLineInfo.inferType = 'file';
+    }
+
+    if (_.isUndefined(currentLine.inferType)) {
+      currentLine.inferType = 'file';
+    }
+
+  })
     .when((prevLineIndent, currentLineIndent) => {
-      return prevLineIndent === currentLineIndent;
-
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
-      if (linesInfo.prevLineInfo.sibling.length === 0) {
-
-        linesInfo.prevLineInfo.sibling.push(currentLine);
-      }
-      currentLine.parent = linesInfo.prevLineInfo.parent;
-      if (currentLine.parent !== null) {
-        currentLine.parent.children.push(currentLine);
-      }
-
-      //Set previous line and current line
-      //as a file type if uncertain of file type
-      //Assume that they are files until new
-      //information comes out
-      if (_.isUndefined(linesInfo.prevLineInfo.inferType)) {
-        linesInfo.prevLineInfo.inferType = 'file';
-      }
-
-      if (_.isUndefined(currentLine.inferType)) {
-        currentLine.inferType = 'file';
-      }
-
-    }).when((prevLineIndent, currentLineIndent) => {
       //Previous line indent is less than current
       return prevLineIndent < currentLineIndent;
 
@@ -85,7 +86,8 @@ let singleLineInfoFunctions = {
         currentLine.inferType = 'file';
       }
 
-    }).when((prevLineIndent, currentLineIndent) => {
+    })
+    .when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent > currentLineIndent;
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
@@ -114,7 +116,8 @@ let singleLineInfoFunctions = {
           prevLine = prevLine.parent;
         }
       }
-    }).any(() => {
+    })
+    .any(() => {
       return;
     }),
   relations: (linesInfo, currentLine, isFirstLine) => {
@@ -154,4 +157,5 @@ let singleLineInfoFunctions = {
   }
 };
 
-export default singleLineInfoFunctions;
+export
+default singleLineInfoFunctions;

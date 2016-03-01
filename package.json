@@ -20,6 +20,7 @@
     "lodash": "^4.5.1",
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
+    "rimraf": "^2.5.2",
     "strscanner": "0.0.8"
   },
   "devDependencies": {

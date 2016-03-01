@@ -4,7 +4,7 @@ junk
   fileinline
   /morestoraging
     itemthathastext
-    f/oldupshop
+    foldupshop
       s*tuff
       morestuff
 

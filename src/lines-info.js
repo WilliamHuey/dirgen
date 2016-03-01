@@ -39,7 +39,8 @@ _.assign(linesInfo.prototype, {
 
     let lineInfo = {
       length: line.length,
-      trimLength: line.trim().length
+      trimLength: line.trim()
+        .length
     };
 
     //Only set the line count info for empty lines
@@ -76,4 +77,5 @@ _.assign(linesInfo.prototype, {
   }
 });
 
-export default linesInfo;
+export
+default linesInfo;
