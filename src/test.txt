@@ -9,7 +9,7 @@ junk
       morestuff
 
     fileoftext
-  fil/eitaw/ay.txt
+  fileitaway.txt
   1
     notright
     blah.ext

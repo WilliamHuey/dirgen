@@ -14,6 +14,7 @@ import _ from 'lodash';
 import normalizePath from 'normalize-path';
 import trampa from 'trampa';
 import rimraf from 'rimraf';
+import filenamify from 'filenamify';
 
 //Source modules
 import folderExists from './folder-exists';
@@ -124,17 +125,28 @@ default (linesInfo, rootPath) => {
   //Hard code this folder for now
   if (folderExists('testing')) {
     console.log("folder exists and removing");
-    rimraf(hardCodeRootFolder, () => {});
-    fs.mkdirSync(hardCodeRootFolder);
+    rimraf(hardCodeRootFolder, () => {
+      //Create a folder after deleting it
+      fs.mkdir(hardCodeRootFolder, () => {
+        console.log("creating folder after deleting");
+        //Get the first line from the linesInfo
+        createStructure(linesInfo.firstLine,
+          hardCodeRootFolder,
+          linesInfo.firstContentLineIndentAmount);
+      });
+    });
   } else {
     //Create when no root folder exists
-    fs.mkdirSync(hardCodeRootFolder);
+    fs.mkdir(hardCodeRootFolder, () => {
+      console.log("created folder when none existed");
+      //Get the first line from the linesInfo
+      createStructure(linesInfo.firstLine,
+        hardCodeRootFolder,
+        linesInfo.firstContentLineIndentAmount);
+    });
   }
 
-  //Get the first line from the linesInfo
-  createStructure(linesInfo.firstLine,
-    hardCodeRootFolder,
-    linesInfo.firstContentLineIndentAmount);
+
 
   //Also create the structure for all the siblings too
 
