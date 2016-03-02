@@ -28,5 +28,8 @@ module.exports = {
   eslint: {
     configFile: './.eslintrc'
   },
+  babel: {
+    presets: ['es2015', 'stage-3']
+  },
   target: 'node'
 };
