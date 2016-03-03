@@ -32,6 +32,22 @@ rc file has the name dirgen.config.js
 
 */
 
+const makeDirectory = () => {
+  console.log('make directory');
+  fs.mkdir(hardCodeRootFolder, () => {
+    console.log("creating folder after deleting");
+    //Get the first line from the linesInfo
+    createStructure(linesInfo.firstLine,
+      hardCodeRootFolder,
+      linesInfo.firstContentLineIndentAmount);
+  });
+};
+
+async function generateFolder() {
+  // console.log(linesInfo.firstLine);
+  console.log('gen folder');
+  await makeDirectory();
+}
 
 const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
@@ -127,13 +143,7 @@ default (linesInfo, rootPath) => {
     console.log("folder exists and removing");
     rimraf(hardCodeRootFolder, () => {
       //Create a folder after deleting it
-      fs.mkdir(hardCodeRootFolder, () => {
-        console.log("creating folder after deleting");
-        //Get the first line from the linesInfo
-        createStructure(linesInfo.firstLine,
-          hardCodeRootFolder,
-          linesInfo.firstContentLineIndentAmount);
-      });
+      generateFolder();
     });
   } else {
     //Create when no root folder exists
