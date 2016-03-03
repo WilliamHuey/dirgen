@@ -5,6 +5,8 @@
   ],
   "plugins": [
     "transform-runtime",
-    "transform-async-to-generator"
+    "transform-async-to-generator",
+    "syntax-async-functions",
+    "syntax-async-generators"
   ]
 }

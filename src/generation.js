@@ -34,6 +34,7 @@ rc file has the name dirgen.config.js
 
 const makeDirectory = () => {
   console.log('make directory');
+  console.log('hardCodeRootFolder', hardCodeRootFolder);
   fs.mkdir(hardCodeRootFolder, () => {
     console.log("creating folder after deleting");
     //Get the first line from the linesInfo
