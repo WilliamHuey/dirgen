@@ -19,6 +19,13 @@ import filenamify from 'filenamify';
 //Source modules
 import folderExists from './folder-exists';
 
+
+import 'regenerator/runtime';
+
+async function sayHello() {
+  console.log(await Promise.resolve('hello world'));
+}
+
 /*
 write both files and folder
 
