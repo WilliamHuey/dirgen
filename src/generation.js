@@ -15,25 +15,11 @@ import normalizePath from 'normalize-path';
 import trampa from 'trampa';
 import rimraf from 'rimraf';
 import filenamify from 'filenamify';
+import { existsAsync, mkdirAsync } from 'fs-extra-promise';
 
 //Source modules
 import folderExists from './folder-exists';
 
-let test = function(thing) {
-  console.log("ts");
-  fs.mkdir('stuff', (thing)=> {
-    // console.log("stuff is made", thing);
-  })
-};
-
-async function sayHello() {
-  await test('sf');
-  // console.log(await Promise.resolve('hello world'));
-}
-
-// At the top level, we have to use the promise format
-// rather than the async format
-sayHello().catch(err => console.log(err));
 
 /*
 write both files and folder
@@ -48,7 +34,7 @@ rc file has the name dirgen.config.js
 
 */
 
-let createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
+const createStructure = async(linesInfo, rootPath, firstContentLineIndentAmount) => {
 
   console.log("createStructure");
   // console.log("linesInfo is ", linesInfo);
@@ -76,13 +62,13 @@ let createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
     let parentPath = path.join(rootPath, linesInfo.structureName);
     console.log("parentPath", parentPath);
-    fs.mkdirSync(parentPath);
+    // fs.mkdirSync(parentPath);
+    await mkdirAsync(parentPath);
 
     if (linesInfo.children.length > 0) {
 
       _.each(linesInfo.children, (line) => {
         // console.log("children is ", line.structureName);
-
 
         createStructure(line, parentPath, firstContentLineIndentAmount);
       });
@@ -115,36 +101,6 @@ let createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
 };
 
-
-const makeDirectory =  function(hardCodeRootFolder, linesInfo) {
-  // console.log("make dir, linesInfo", linesInfo);
-  //  let genDir = function(err) {
-  //   console.log("err", err);
-  // }
-  //   fs.mkdir(hardCodeRootFolder, genDir);
-
-createStructure(linesInfo, hardCodeRootFolder, linesInfo.firstContentLineIndentAmount);
-
-  // }
-};
-
-async function generateFolder(hardCodeRootFolder, linesInfo) {
-  await makeDirectory(hardCodeRootFolder,
-    linesInfo);
-}
-
-
-// console.time('compute');
-//
-// function loop(n, acc) {
-//   return n === 0 ? trampa.wrap(acc) : trampa.lazy(function() {
-//     return loop(n - 1, acc + 1);
-//   });
-// }
-//
-// loop(123456, 0).run();
-// console.timeEnd('compute');
-
 export
 default (linesInfo, rootPath) => {
   // console.log(`generation lines info is`, linesInfo);
@@ -159,9 +115,12 @@ default (linesInfo, rootPath) => {
   //Hard code this folder for now
   if (folderExists('testing')) {
     console.log("folder exists and removing");
-    rimraf(hardCodeRootFolder, () => {
+    rimraf(hardCodeRootFolder, async () => {
+      await mkdirAsync(hardCodeRootFolder);
       //Create a folder after deleting it
-      generateFolder(hardCodeRootFolder, linesInfo);
+      createStructure(linesInfo.firstLine,
+        hardCodeRootFolder,
+        linesInfo.firstContentLineIndentAmount);
     });
   } else {
     //Create when no root folder exists
@@ -173,9 +132,5 @@ default (linesInfo, rootPath) => {
         linesInfo.firstContentLineIndentAmount);
     });
   }
-
-
-
-  //Also create the structure for all the siblings too
 
 };
