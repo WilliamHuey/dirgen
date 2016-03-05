@@ -73,7 +73,6 @@ const createStructure = async(linesInfo, rootPath, firstContentLineIndentAmount)
         createStructure(line, parentPath, firstContentLineIndentAmount);
       });
     }
-
   }
 
   //Only the top-most level need the siblings generation
@@ -113,24 +112,27 @@ default (linesInfo, rootPath) => {
   //the files and folders to be generated
 
   //Hard code this folder for now
-  if (folderExists('testing')) {
+  if (fileExists('testing')) {
     console.log("folder exists and removing");
     rimraf(hardCodeRootFolder, async () => {
-      await mkdirAsync(hardCodeRootFolder);
       //Create a folder after deleting it
-      createStructure(linesInfo.firstLine,
-        hardCodeRootFolder,
-        linesInfo.firstContentLineIndentAmount);
+      await mkdirAsync(hardCodeRootFolder)
+      .then(function() {
+        createStructure(linesInfo.firstLine,
+          hardCodeRootFolder,
+          linesInfo.firstContentLineIndentAmount);
+      });
     });
   } else {
     //Create when no root folder exists
-    fs.mkdir(hardCodeRootFolder, () => {
-      console.log("created folder when none existed");
-      //Get the first line from the linesInfo
-      createStructure(linesInfo.firstLine,
-        hardCodeRootFolder,
-        linesInfo.firstContentLineIndentAmount);
-    });
+    (async()=> {
+      await mkdirAsync(hardCodeRootFolder)
+      .then(function() {
+        console.log("no folder existed");
+        createStructure(linesInfo.firstLine,
+          hardCodeRootFolder,
+          linesInfo.firstContentLineIndentAmount);
+      });
+    })();
   }
-
 };
