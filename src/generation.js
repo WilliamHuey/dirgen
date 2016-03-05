@@ -40,25 +40,7 @@ rc file has the name dirgen.config.js
 
 */
 
-const makeDirectory = () => {
-  console.log('make directory');
-  console.log('hardCodeRootFolder', hardCodeRootFolder);
-  fs.mkdir(hardCodeRootFolder, () => {
-    console.log("creating folder after deleting");
-    //Get the first line from the linesInfo
-    createStructure(linesInfo.firstLine,
-      hardCodeRootFolder,
-      linesInfo.firstContentLineIndentAmount);
-  });
-};
-
-async function generateFolder() {
-  // console.log(linesInfo.firstLine);
-  console.log('gen folder');
-  await makeDirectory();
-}
-
-const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
+let createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
   // console.log("createStructure");
   // console.log("linesInfo is ", linesInfo);
@@ -125,6 +107,28 @@ const createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
 };
 
+
+const makeDirectory = function(hardCodeRootFolder, linesInfo) {
+  console.log("make dir, linesInfo", linesInfo);
+   let genDir = function(hardCodeRootFolder, linesInfo) {
+    console.log("hardCodeRootFolder", hardCodeRootFolder);
+    console.log("now make create, linesInfo", linesInfo);
+    //Get the first line from the linesInfo
+    createStructure(linesInfo.firstLine,
+      hardCodeRootFolder,
+      linesInfo.firstContentLineIndentAmount);
+  }
+    fs.mkdir(hardCodeRootFolder, genDir);
+
+  // }
+};
+
+async function generateFolder(hardCodeRootFolder, linesInfo) {
+  await makeDirectory(hardCodeRootFolder,
+    linesInfo);
+}
+
+
 // console.time('compute');
 //
 // function loop(n, acc) {
@@ -152,7 +156,7 @@ default (linesInfo, rootPath) => {
     console.log("folder exists and removing");
     rimraf(hardCodeRootFolder, () => {
       //Create a folder after deleting it
-      generateFolder();
+      generateFolder(hardCodeRootFolder, linesInfo);
     });
   } else {
     //Create when no root folder exists
