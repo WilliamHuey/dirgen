@@ -19,8 +19,16 @@ import filenamify from 'filenamify';
 //Source modules
 import folderExists from './folder-exists';
 
+let test = function(thing) {
+  console.log("ts");
+  fs.mkdir('stuff', (thing)=> {
+    // console.log("stuff is made", thing);
+  })
+};
+
 async function sayHello() {
-  console.log(await Promise.resolve('hello world'));
+  await test('sf');
+  // console.log(await Promise.resolve('hello world'));
 }
 
 // At the top level, we have to use the promise format
@@ -42,10 +50,10 @@ rc file has the name dirgen.config.js
 
 let createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 
-  // console.log("createStructure");
+  console.log("createStructure");
   // console.log("linesInfo is ", linesInfo);
-  // console.log("rootPath", rootPath);
-
+  console.log("rootPath", rootPath);
+// console.log("linesInfo", linesInfo);
   //Join the path safely by converting all backward
   //slashes to forward slashes
   let structureName = linesInfo.structureName,
@@ -108,17 +116,14 @@ let createStructure = (linesInfo, rootPath, firstContentLineIndentAmount) => {
 };
 
 
-const makeDirectory = function(hardCodeRootFolder, linesInfo) {
-  console.log("make dir, linesInfo", linesInfo);
-   let genDir = function(hardCodeRootFolder, linesInfo) {
-    console.log("hardCodeRootFolder", hardCodeRootFolder);
-    console.log("now make create, linesInfo", linesInfo);
-    //Get the first line from the linesInfo
-    createStructure(linesInfo.firstLine,
-      hardCodeRootFolder,
-      linesInfo.firstContentLineIndentAmount);
-  }
-    fs.mkdir(hardCodeRootFolder, genDir);
+const makeDirectory =  function(hardCodeRootFolder, linesInfo) {
+  // console.log("make dir, linesInfo", linesInfo);
+  //  let genDir = function(err) {
+  //   console.log("err", err);
+  // }
+  //   fs.mkdir(hardCodeRootFolder, genDir);
+
+createStructure(linesInfo, hardCodeRootFolder, linesInfo.firstContentLineIndentAmount);
 
   // }
 };
