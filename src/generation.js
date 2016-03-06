@@ -1,26 +1,19 @@
 'use strict';
 
-/*
-log out the generated paths
-*/
-
 //Native Nodejs modules
 import fs from 'fs';
 import path from 'path';
 
 //Vendor modules
-import fileExists from 'file-exists';
 import _ from 'lodash';
 import normalizePath from 'normalize-path';
 import trampa from 'trampa';
-import rimraf from 'rimraf';
 import filenamify from 'filenamify';
-import { existsAsync, mkdirAsync, ensureDirAsync, isDirectoryAsync } from 'fs-extra-promise';
-import fse from 'fs-extra';
-
-//Source modules
-import folderExists from './folder-exists';
-
+import {
+  existsAsync,
+  mkdirAsync,
+  ensureDirAsync,
+  removeAsync} from 'fs-extra-promise';
 
 /*
 write both files and folder
@@ -63,11 +56,10 @@ const createStructure = async(linesInfo, rootPath, firstContentLineIndentAmount)
 
     let parentPath = path.join(rootPath, linesInfo.structureName);
     console.log("parentPath", parentPath);
-    // fs.mkdirSync(parentPath);
     await mkdirAsync(parentPath);
 
     if (linesInfo.children.length > 0) {
-
+      console.log("child present");
       _.each(linesInfo.children, (line) => {
         // console.log("children is ", line.structureName);
 
@@ -84,89 +76,29 @@ const createStructure = async(linesInfo, rootPath, firstContentLineIndentAmount)
       createStructure(line, rootPath, firstContentLineIndentAmount);
     });
   }
-
-  /*
-  How to keep track reliably of the current path?
-  Keeping track of the plain string value will do
-  by slicing and appending structure name to the string
-  However, must ensure there must be certainty that
-  the string manipulation will not cause
-  race conditions
-  */
-
-  // if file
-  //   createFile()
-  // if folder
-  //   createFolder(children, rootPath, parentDir)
-
 };
 
 export
 default (linesInfo, rootPath) => {
-  // console.log(`generation lines info is`, linesInfo);
-
   //TODO: Not taking in the rootpath directly
   //for now the path for now with dummy folder
-  let hardCodeRootFolder = rootPath;
-  console.log("rootPath", rootPath);
-  console.log("fileExists(rootPath)", fileExists(rootPath));
-  console.log("folderExists(rootPath)", folderExists(rootPath));
-  // console.log("ensureDirAsync(rootPath)", ensureDirAsync(rootPath));
 
-
-
-  async function dirGen () {
-    // ensureDirAsync(rootPath)
-
-    console.log("asynvc run");
-    const folderExists = await isDirectoryAsync(rootPath);
-    console.log("ready after check", folderExists);
-    // ensureDirAsync(rootPath);
-
-    if (await fse.ensureDir(rootPath)) {
-      console.log("fse.ensureDir found");
+(async function dirGen() {
+    //Check for root folder
+    const hasRootDirAsync = await existsAsync(rootPath);
+    if (hasRootDirAsync) {
+      //Root folder exists and is to be removed
+      await removeAsync(rootPath);
+      await mkdirAsync(rootPath);
+      createStructure(linesInfo.firstLine,
+        rootPath,
+        linesInfo.firstContentLineIndentAmount);
     } else {
-      console.log("fse.ensureDir not found");
+      //No root folder found
+      await mkdirAsync(rootPath);
+      createStructure(linesInfo.firstLine,
+        rootPath,
+        linesInfo.firstContentLineIndentAmount);
     }
-
-    if (await ensureDirAsync(rootPath)) {
-      console.log("ensureDirAsync folder found");
-    } else {
-      console.log("ensureDirAsync not found");
-    }
-
-    if (await existsAsync(rootPath)) {
-      console.log("folder exists and removing");
-      rimraf(hardCodeRootFolder, async () => {
-        //Create a folder after deleting it
-        await mkdirAsync(hardCodeRootFolder)
-        .then(function() {
-          createStructure(linesInfo.firstLine,
-            hardCodeRootFolder,
-            linesInfo.firstContentLineIndentAmount);
-        });
-      });
-    } else {
-      await mkdirAsync(hardCodeRootFolder)
-      .then(function() {
-        console.log("no folder existed");
-        createStructure(linesInfo.firstLine,
-          hardCodeRootFolder,
-          linesInfo.firstContentLineIndentAmount);
-      });
-    }
-  };
-
-  (async function() {
-    await dirGen();
-  });
-
-
-
-
-  //Check for any specified folder to house
-  //the files and folders to be generated
-
-  //Hard code this folder for now
-
+  })();
 };
