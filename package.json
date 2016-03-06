@@ -21,6 +21,7 @@
     "lodash": "^4.6.0",
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
+    "renderkid": "^2.0.0",
     "strscanner": "0.0.8",
     "trampa": "^1.0.0"
   },
@@ -42,10 +43,26 @@
   "private": false,
   "license": "MIT",
   "keywords": [
-    "template",
     "generation",
+    "create",
+    "produce",
+    "layout",
+    "template",
+    "file",
+    "files",
+    "folder",
     "folders",
     "structure",
-    "indentation"
+    "heirarchy",
+    "indentation",
+    "indented",
+    "indent",
+    "tab",
+    "whitespace",
+    "space",
+    "python-like",
+    "console",
+    "cli",
+    "command-line"
   ]
 }

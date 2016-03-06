@@ -3,7 +3,6 @@
 //Vendor modules
 import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
-import PrettyError from 'pretty-error';
 import _ from 'lodash';
 
 //Vendor modules

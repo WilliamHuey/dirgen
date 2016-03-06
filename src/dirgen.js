@@ -17,7 +17,6 @@ import Lexer from './lexer';
 import Validations from './validations';
 import generateStructure from './generation';
 
-// unlimited(10000);
 const lexer = new Lexer();
 const validator = new Validations();
 
@@ -34,68 +33,63 @@ let linesInfo = {
 
 //Read through all the lines of a supplied file
 readline.createInterface({
-  input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
-}).on('line', line => {
-  // console.log("process line prevLineInfo", prevLineInfo);
+    input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
+  })
+  .on('line', line => {
+    // console.log("process line prevLineInfo", prevLineInfo);
 
-  //Get properties from the current line in detail with
-  //the lexer
-  let lexResults = lexer.lex(line);
+    //Get properties from the current line in detail with
+    //the lexer
+    let lexResults = lexer.lex(line);
 
-  //Accumulate general information lines
-  addLinesInfo.setGeneralData(line, linesInfo);
+    //Accumulate general information lines
+    addLinesInfo.setGeneralData(line, linesInfo);
 
-  //Do not further process a line that is
-  //only whitespace or that is without content
-  if (line.length === 0 || lexResults.currentTrimmedValue.length === 0) 
-    return;
-  
-  //Use this object when performing checks
-  //with subsequent lines
-  let currentLine = {
-    structureName: linesInfo.currentTrimmedValue,
-    sibling: [],
-    parent: null,
-    children: [],
-    nameDetails: lexResults
-  };
+    //Do not further process a line that is
+    //only whitespace or that is without content
+    if (line.length === 0 || lexResults.currentTrimmedValue.length === 0) {
+      return;
+    }
 
-  // console.log("lexResults", currentLine.nameDetails);
+    //Use this object when performing checks
+    //with subsequent lines
+    let currentLine = {
+      structureName: linesInfo.currentTrimmedValue,
+      sibling: [],
+      parent: null,
+      children: [],
+      nameDetails: lexResults
+    };
 
-  //Get the information from prior lines to determine
-  //the siblings, parent, and children key values
-  addLinesInfo.setLineData(currentLine, linesInfo);
+    // console.log("lexResults", currentLine.nameDetails);
 
-  //Validate the recently set line data
+    //Get the information from prior lines to determine
+    //the siblings, parent, and children key values
+    addLinesInfo.setLineData(currentLine, linesInfo);
 
-  // console.log("process the line", currentLine);
+    //Validate the recently set line data
 
-  //Save the line data object reference for future comparison
-  //by updating previous value with current
+    // console.log("process the line", currentLine);
 
-}).on('close', () => {
-  console.log('closing the file');
-  // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
-  // console.log("linesinfo", linesInfo);
+    //Save the line data object reference for future comparison
+    //by updating previous value with current
 
-  //Hand off general line information
-  //to create the actual files and folders
+  })
+  .on('close', () => {
+    console.log('closing the file');
+    // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
+    // console.log("linesinfo", linesInfo);
 
-  /*
-      api-
-      validator(subject, {content: true})
+    //Hand off general line information
+    //to create the actual files and folders
 
-      pretty error will be generate the errors
-      underneath the scenes
-    */
+    let rootPath = `${process.cwd()}/demo/root-output/`;
 
-  let rootPath = `${process.cwd()}/demo/root-output/`;
+    //But validate the presence of the firstLine
+    //if nothing, skip generation
+    validator.presenceFirstLine(linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
 
-  //But validate the presence of the firstLine
-  //if nothing, skip generation
-  validator.presenceFirstLine(linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
+    // console.log("validator ", validator);
+    console.timeEnd('timer');
 
-  // console.log("validator ", validator);
-  console.timeEnd('timer');
-
-});
+  });

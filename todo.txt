@@ -1,10 +1,7 @@
 
 Validations
 -lexer
-  character restrictions
-    255 length as upper limit for all oses
-    specific reserved characters
--When the file does not have any content
+-255 length as upper limit for all oses
 -Invalid characters - os specific checks
 -repeated lines check - warn for overwrite
 -two level of severity, warning and errors
