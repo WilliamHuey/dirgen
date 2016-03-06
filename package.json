@@ -15,15 +15,12 @@
   },
   "dependencies": {
     "detect-indent": "^4.0.0",
-    "file-exists": "^1.0.0",
     "filenamify": "^1.2.0",
-    "fs-extra": "^0.26.5",
     "fs-extra-promise": "^0.3.1",
     "guard-js": "^0.1.1",
     "lodash": "^4.6.0",
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
-    "rimraf": "^2.5.2",
     "strscanner": "0.0.8",
     "trampa": "^1.0.0"
   },
