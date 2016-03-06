@@ -1,6 +1,5 @@
 console.time('timer');
 
-
 'use strict';
 
 //Native Nodejs modules
@@ -9,7 +8,6 @@ import fs from 'fs';
 
 //Vendor modules
 // import unlimited from 'unlimited';
-import PrettyError from 'pretty-error';
 import _ from 'lodash';
 
 //Source modules
@@ -36,57 +34,54 @@ let linesInfo = {
 
 //Read through all the lines of a supplied file
 readline.createInterface({
-    input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
-  })
-  .on('line', line => {
-    // console.log("process line prevLineInfo", prevLineInfo);
+  input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
+}).on('line', line => {
+  // console.log("process line prevLineInfo", prevLineInfo);
 
-    //Get properties from the current line in detail with
-    //the lexer
-    let lexResults = lexer.lex(line);
+  //Get properties from the current line in detail with
+  //the lexer
+  let lexResults = lexer.lex(line);
 
-    //Accumulate general information lines
-    addLinesInfo.setGeneralData(line, linesInfo);
+  //Accumulate general information lines
+  addLinesInfo.setGeneralData(line, linesInfo);
 
-    //Do not further process a line that is
-    //only whitespace or that is without content
-    if (line.length === 0 ||
-      lexResults.currentTrimmedValue.length === 0) return;
+  //Do not further process a line that is
+  //only whitespace or that is without content
+  if (line.length === 0 || lexResults.currentTrimmedValue.length === 0) 
+    return;
+  
+  //Use this object when performing checks
+  //with subsequent lines
+  let currentLine = {
+    structureName: linesInfo.currentTrimmedValue,
+    sibling: [],
+    parent: null,
+    children: [],
+    nameDetails: lexResults
+  };
 
-    //Use this object when performing checks
-    //with subsequent lines
-    let currentLine = {
-      structureName: linesInfo.currentTrimmedValue,
-      sibling: [],
-      parent: null,
-      children: [],
-      nameDetails: lexResults
-    };
+  // console.log("lexResults", currentLine.nameDetails);
 
-    // console.log("lexResults", currentLine.nameDetails);
+  //Get the information from prior lines to determine
+  //the siblings, parent, and children key values
+  addLinesInfo.setLineData(currentLine, linesInfo);
 
-    //Get the information from prior lines to determine
-    //the siblings, parent, and children key values
-    addLinesInfo.setLineData(currentLine, linesInfo);
+  //Validate the recently set line data
 
-    //Validate the recently set line data
+  // console.log("process the line", currentLine);
 
-    // console.log("process the line", currentLine);
+  //Save the line data object reference for future comparison
+  //by updating previous value with current
 
-    //Save the line data object reference for future comparison
-    //by updating previous value with current
+}).on('close', () => {
+  console.log('closing the file');
+  // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
+  // console.log("linesinfo", linesInfo);
 
+  //Hand off general line information
+  //to create the actual files and folders
 
-  })
-  .on('close', () => {
-    console.log('closing the file');
-    // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
-    // console.log("linesinfo", linesInfo);
-
-    //Hand off general line information
-    //to create the actual files and folders
-
-    /*
+  /*
       api-
       validator(subject, {content: true})
 
@@ -94,19 +89,13 @@ readline.createInterface({
       underneath the scenes
     */
 
-    if (_.isNull(linesInfo.firstLine)) {
-      let renderedError = (new PrettyError())
-        .render(new Error('There are no lines to generate files or folders from the supplied template file.'));
-      console.log(renderedError);
-      return;
-    }
+  let rootPath = `${process.cwd()}/demo/root-output/`;
 
-    let rootPath = `${process.cwd()}/demo/root-output/`;
+  //But validate the presence of the firstLine
+  //if nothing, skip generation
+  validator.presenceFirstLine(linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
 
-    //But validate the presence of the firstLine
-    //if nothing, skip generation
-    validator.presenceFirstLine(linesInfo, generateStructure, rootPath);
+  // console.log("validator ", validator);
+  console.timeEnd('timer');
 
-    // console.log("validator ", validator);
-    console.timeEnd('timer');
-  });
+});
