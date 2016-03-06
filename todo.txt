@@ -1,5 +1,7 @@
 
 Validations
+-refactor prettyError code
+
 -lexer
 -255 length as upper limit for all oses
 -Invalid characters - os specific checks

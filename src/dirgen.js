@@ -6,10 +6,6 @@ console.time('timer');
 import readline from 'readline';
 import fs from 'fs';
 
-//Vendor modules
-// import unlimited from 'unlimited';
-import _ from 'lodash';
-
 //Source modules
 import AddLinesInfo from './lines-info';
 const addLinesInfo = new AddLinesInfo();
@@ -35,7 +31,7 @@ let linesInfo = {
 readline.createInterface({
     input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
   })
-  .on('line', line => {
+  .on('line', (line) => {
     // console.log("process line prevLineInfo", prevLineInfo);
 
     //Get properties from the current line in detail with

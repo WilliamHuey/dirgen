@@ -24,7 +24,7 @@ rc file has the name dirgen.config.js
 
 */
 
-const createStructure = async(linesInfo, rootPath, firstContentLineIndentAmount) => {
+const createStructure = async function (linesInfo, rootPath, firstContentLineIndentAmount) {
 
   // console.log("createStructure");
   // console.log("linesInfo is ", linesInfo);

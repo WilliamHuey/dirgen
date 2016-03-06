@@ -1,12 +1,13 @@
 {
+  "extends": "standard",
+  "plugins": [
+    "standard"
+  ],
   "root": true,
   "env": {
     "es6": true,
     "node": true
   },
-  /**
-   * ES6
-   */
   "ecmaFeatures": {
     "arrowFunctions": true,
     "binaryLiterals": true,
@@ -31,14 +32,8 @@
     "globalReturn": true
   },
   "rules": {
-    /**
-     * Strict mode
-     */
     "strict": 0,
     "no-var": 2,
-    /**
-     * Basic errors
-     */
     "comma-dangle": [2, "never"],
     "no-cond-assign": [2, "always"],
     "no-console": 0,
@@ -62,26 +57,20 @@
     "use-isnan": 2,
     "block-scoped-var": 2,
     "quotes": [1, "single"],
-    /**
-     * Variables
-     */
     "no-shadow": 0,
     "no-shadow-restricted-names": 2,
     "no-unused-vars": [0, {
       "vars": "local",
       "args": "after-used"
-    }],
+      }],
     "no-use-before-define": 2,
-    /**
-     * Best practices
-     */
     "consistent-return": 2,
     "complexity": [2, 5],
     "curly": [2, "multi-line"],
     "default-case": 2,
     "dot-notation": [2, {
       "allowKeywords": true
-    }],
+      }],
     "eqeqeq": 2,
     "guard-for-in": 0,
     "no-caller": 2,
@@ -115,36 +104,33 @@
     "vars-on-top": 0,
     "wrap-iife": [2, "any"],
     "yoda": 2,
-    /**
-     * Style
-     */
     "indent": 0,
     "brace-style": [2,
-      "1tbs", {
-      "allowSingleLine": true
-    }],
+        "1tbs", {
+        "allowSingleLine": true
+      }],
     "quotes": [
-      0, "single", "avoid-escape"
-    ],
+        0, "single", "avoid-escape"
+      ],
     "camelcase": [2, {
       "properties": "never"
-    }],
+      }],
     "comma-spacing": [2, {
       "before": false,
       "after": true
-    }],
+      }],
     "comma-style": [2, "last"],
     "eol-last": 0,
     "key-spacing": [2, {
-        "beforeColon": false,
-        "afterColon": true
-    }],
+      "beforeColon": false,
+      "afterColon": true
+      }],
     "new-cap": [2, {
       "newIsCap": true
-    }],
+      }],
     "no-multiple-empty-lines": [0, {
       "max": 2
-    }],
+      }],
     "no-nested-ternary": 2,
     "no-new-object": 2,
     "no-spaced-func": 2,
@@ -157,12 +143,12 @@
     "semi-spacing": [2, {
       "before": false,
       "after": true
-    }],
-    "space-after-keywords": 2,
+      }],
+    "keyword-spacing": 2,
     "space-before-blocks": 2,
     "space-before-function-paren": [2, "never"],
     "space-infix-ops": 2,
-    "space-return-throw-case": 2,
+    "keyword-spacing": 2,
     "spaced-comment": 0
   }
 }

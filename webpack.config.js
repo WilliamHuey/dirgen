@@ -8,16 +8,15 @@ module.exports = {
   },
   module: {
     exprContextCritical: false,
+    preLoaders: [
+      {test: /\.js$/, loader: "eslint-loader", exclude: /node_modules/}
+    ],
     loaders: [{
       test: /\.js$/,
       include: path.join(__dirname, '/src'),
       exclude: /node_modules/,
       loader: "babel-loader"
-    }, {
-      test: /\.js$/,
-      loader: "eslint-loader",
-      exclude: /node_modules/
-    }, {
+    },{
       test: /\.json$/,
       loader: 'json-loader'
     }]
@@ -26,7 +25,7 @@ module.exports = {
     extensions: ['', '.config.js', '.js']
   },
   eslint: {
-    configFile: './.eslintrc'
+    configFile: './.eslintrc.json'
   },
   babel: {
     presets: ['es2015', 'stage-3']

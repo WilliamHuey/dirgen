@@ -12,7 +12,7 @@ import characterMap from './character-map';
 let lexer = () => {};
 
 _.assign(lexer.prototype, {
-  lex: line => {
+  lex: (line) => {
     // console.log("line in lexer is ", line);
     let scanner = strscan(line),
       lineTokenStats = {
