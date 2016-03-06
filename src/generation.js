@@ -15,7 +15,8 @@ import normalizePath from 'normalize-path';
 import trampa from 'trampa';
 import rimraf from 'rimraf';
 import filenamify from 'filenamify';
-import { existsAsync, mkdirAsync } from 'fs-extra-promise';
+import { existsAsync, mkdirAsync, ensureDirAsync, isDirectoryAsync } from 'fs-extra-promise';
+import fse from 'fs-extra';
 
 //Source modules
 import folderExists from './folder-exists';
@@ -106,26 +107,46 @@ default (linesInfo, rootPath) => {
 
   //TODO: Not taking in the rootpath directly
   //for now the path for now with dummy folder
-  let hardCodeRootFolder = './testing';
+  let hardCodeRootFolder = rootPath;
+  console.log("rootPath", rootPath);
+  console.log("fileExists(rootPath)", fileExists(rootPath));
+  console.log("folderExists(rootPath)", folderExists(rootPath));
+  // console.log("ensureDirAsync(rootPath)", ensureDirAsync(rootPath));
 
-  //Check for any specified folder to house
-  //the files and folders to be generated
 
-  //Hard code this folder for now
-  if (fileExists('testing')) {
-    console.log("folder exists and removing");
-    rimraf(hardCodeRootFolder, async () => {
-      //Create a folder after deleting it
-      await mkdirAsync(hardCodeRootFolder)
-      .then(function() {
-        createStructure(linesInfo.firstLine,
-          hardCodeRootFolder,
-          linesInfo.firstContentLineIndentAmount);
+
+  async function dirGen () {
+    // ensureDirAsync(rootPath)
+
+    console.log("asynvc run");
+    const folderExists = await isDirectoryAsync(rootPath);
+    console.log("ready after check", folderExists);
+    // ensureDirAsync(rootPath);
+
+    if (await fse.ensureDir(rootPath)) {
+      console.log("fse.ensureDir found");
+    } else {
+      console.log("fse.ensureDir not found");
+    }
+
+    if (await ensureDirAsync(rootPath)) {
+      console.log("ensureDirAsync folder found");
+    } else {
+      console.log("ensureDirAsync not found");
+    }
+
+    if (await existsAsync(rootPath)) {
+      console.log("folder exists and removing");
+      rimraf(hardCodeRootFolder, async () => {
+        //Create a folder after deleting it
+        await mkdirAsync(hardCodeRootFolder)
+        .then(function() {
+          createStructure(linesInfo.firstLine,
+            hardCodeRootFolder,
+            linesInfo.firstContentLineIndentAmount);
+        });
       });
-    });
-  } else {
-    //Create when no root folder exists
-    (async()=> {
+    } else {
       await mkdirAsync(hardCodeRootFolder)
       .then(function() {
         console.log("no folder existed");
@@ -133,6 +154,19 @@ default (linesInfo, rootPath) => {
           hardCodeRootFolder,
           linesInfo.firstContentLineIndentAmount);
       });
-    })();
-  }
+    }
+  };
+
+  (async function() {
+    await dirGen();
+  });
+
+
+
+
+  //Check for any specified folder to house
+  //the files and folders to be generated
+
+  //Hard code this folder for now
+
 };

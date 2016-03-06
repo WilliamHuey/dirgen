@@ -42,7 +42,7 @@ let linesInfo = {
 
 //Read through all the lines of a supplied file
 readline.createInterface({
-    input: fs.createReadStream(`${process.cwd()}/src/test.txt`)
+    input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
   })
   .on('line', line => {
     // console.log("process line prevLineInfo", prevLineInfo);
@@ -107,7 +107,7 @@ readline.createInterface({
       return;
     }
 
-    let rootPath = '.\\';
+    let rootPath = `${process.cwd()}/demo/root-output/`;
 
     //But validate the presence of the firstLine
     //if nothing, skip generation
