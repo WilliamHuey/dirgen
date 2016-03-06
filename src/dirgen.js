@@ -1,12 +1,6 @@
 console.time('timer');
 
-/*
-  TODO:
-  **GENERATION
-  **VALIDATIONS
-  **INDENT LEVEL FACTOR
-  **COMMAND LINE
-*/
+
 'use strict';
 
 //Native Nodejs modules

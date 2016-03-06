@@ -1,0 +1,31 @@
+
+Validations
+-lexer
+  character restrictions
+    255 length as upper limit for all oses
+    specific reserved characters
+-When the file does not have any content
+-Invalid characters - os specific checks
+-repeated lines check - warn for overwrite
+-two level of severity, warning and errors
+
+Commandline
+-take input arguments
+
+Generation
+-overwrite all files for now
+-Not taking in the rootpath directly
+for now the path for now with dummy folder
+
+Module
+-What should be checked in to the final npm repo?
+-Selective check-ins for the dist folder:
+  -not dist folder on git, but allow for npm?
+  npmignore and gitignore
+/*
+  TODO:
+  **VALIDATIONS
+  **GENERATION
+  **COMMAND LINE
+  **INDENT LEVEL FACTOR
+*/
