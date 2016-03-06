@@ -12,6 +12,7 @@ import filenamify from 'filenamify';
 import {
   existsAsync,
   mkdirAsync,
+  writeFileAsync,
   ensureDirAsync,
   removeAsync} from 'fs-extra-promise';
 
@@ -48,6 +49,7 @@ const createStructure = async(linesInfo, rootPath, firstContentLineIndentAmount)
     //Create self structure, file
     //callback is not really needed
     console.log("file is", linesInfo.structureName);
+    writeFileAsync(structureCreatePath);
   } else {
     //Folder will be the only other structure type
     //Create self structure, folder
