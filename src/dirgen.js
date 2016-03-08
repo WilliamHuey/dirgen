@@ -67,9 +67,6 @@ readline.createInterface({
 
     // console.log("process the line", currentLine);
 
-    //Save the line data object reference for future comparison
-    //by updating previous value with current
-
   })
   .on('close', () => {
     console.log('closing the file');
