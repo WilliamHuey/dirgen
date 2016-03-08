@@ -17,12 +17,10 @@ let singleLineInfoFunctions = {
   setStructureTypeByChar: (currentLine) => {
     //If the line has a slash in front than it is a folder,
     //regardless of whether or not it has periods in its name
-    // console.log("currentLine", currentLine.structureName);
 
     if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
       currentLine.inferType = 'folder';
     } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
-      // console.log("period means a file");
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
     }
@@ -93,7 +91,6 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
-      // console.log("here prevLine", prevLine);
 
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
@@ -122,7 +119,6 @@ let singleLineInfoFunctions = {
     }),
   relations: (linesInfo, currentLine, isFirstLine) => {
 
-    // console.log("isFirstLine", isFirstLine);
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&
       linesInfo.contentLineCount > 1 &&
@@ -142,7 +138,6 @@ let singleLineInfoFunctions = {
           linesInfo.prevLineInfo.nameDetails.indentAmount,
           currentLine.nameDetails.indentAmount, linesInfo, currentLine);
 
-      // prevLineIndent, currentLineIndent, linesInfo, currentLine, contentLineCount
     } else if (linesInfo.contentLineCount === 1 &&
       currentLine.structureName.length > 0 && isFirstLine) {
       //First content line

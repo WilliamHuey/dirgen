@@ -1,18 +1,18 @@
 
 Validations
-
+warn on
 -255 length as upper limit for all oses
 -Invalid characters - os specific checks
+
 -repeated lines check - warn for overwrite
 -two level of severity, warning and errors
 
+Generation
+-Use trampa to protect against deeply nested folder because of recursion
+
 Commandline
 -take input arguments
-
-Generation
--overwrite all files for now
--Not taking in the rootpath directly
-for now the path for now with dummy folder
+(info in the js file)
 
 Module
 -What should be checked in to the final npm repo?
