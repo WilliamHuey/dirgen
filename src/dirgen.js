@@ -8,11 +8,11 @@ import fs from 'fs';
 
 //Source modules
 import AddLinesInfo from './lines-info';
-const addLinesInfo = new AddLinesInfo();
 import Lexer from './lexer';
 import Validations from './validations';
 import generateStructure from './generation';
 
+const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
 const validator = new Validations();
 
@@ -43,7 +43,8 @@ readline.createInterface({
 
     //Do not further process a line that is
     //only whitespace or that is without content
-    if (line.length === 0 || lexResults.currentTrimmedValue.length === 0) {
+    if (line.length === 0 ||
+      lexResults.currentTrimmedValue.length === 0) {
       return;
     }
 
@@ -64,8 +65,9 @@ readline.createInterface({
     currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
     //Validate the recently set line data
-    validator.charCountUnder255(currentLine.nameDetails.contentLength);
-
+    validator.charCountUnder255(currentLine.nameDetails.contentLength,
+      linesInfo.contentLineCount, currentLine.structureName,
+      currentLine.inferType);
 
   })
   .on('close', () => {

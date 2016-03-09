@@ -13,8 +13,13 @@ renderKid.style({
     color: "black",
     paddingTop: 1
   },
-  "message-header": {
+  "message-header-error": {
     background: "red",
+    color: "black",
+    padding: 2
+  },
+  "message-header-warning": {
+    background: "orange",
     color: "black",
     padding: 2
   }
@@ -32,17 +37,17 @@ prettyError.appendStyle({
    }
 });
 
-const messageTemplate = (msg) => {
+const messageTemplate = (msg, type) => {
   return `<message>
-    <message-header>
-      Error:
-    </message-header>
+    <message-header-error>
+      ${type}
+    </message-header-error>
     ${msg}
   </message>`;
 };
 
-const displayMessage = (msg) => {
-  console.log(renderKid.render(messageTemplate(msg)));
+const displayMessage = (msg, type) => {
+  console.log(renderKid.render(messageTemplate(msg, type)));
 };
 
 const displayStack = (msg) => {
@@ -51,11 +56,11 @@ const displayStack = (msg) => {
 
 const message = {
   error: (msg) => {
-    displayMessage(msg);
+    displayMessage(msg, 'Error:');
     displayStack(msg);
   },
   warn: (msg) => {
-    displayMessage(msg);
+    displayMessage(msg, 'Warning:');
   }
 };
 

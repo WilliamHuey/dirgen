@@ -18,9 +18,11 @@ _.assign(validator.prototype, {
       message.error('Supplied template file has no content to generate.');
     }
   },
-  charCountUnder255: (count) => {
-    if(count > 255) {
-      message.warn(`Current line count of ${count}, exceeds 255.`);
+  charCountUnder255: (count, lineNum, content, inferType) => {
+    if (count > 255) {
+      message.warn(`Line #${lineNum}: ${content}, has a character
+        count of ${count}, which exceeds 255. ${inferType.charAt(0).toUpperCase() +
+        inferType.slice(1)} was not created.`);
     }
   }
 });

@@ -65,7 +65,7 @@
       }],
     "no-use-before-define": 2,
     "consistent-return": 2,
-    "complexity": [2, 5],
+    "complexity": [2, 7],
     "curly": [2, "multi-line"],
     "default-case": 2,
     "dot-notation": [2, {

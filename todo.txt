@@ -1,5 +1,3 @@
-error with content on the very last line when against the very left
-
 Validations
 warn on
 -255 length as upper limit for all oses
@@ -18,6 +16,7 @@ Commandline
 Optimize
 Remove the lodash dependency or rollup?
 npm start more compatible with windows
+reduce the cyclomatic complexity
 
 Module
 -What should be checked in to the final npm repo?
