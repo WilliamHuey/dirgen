@@ -74,6 +74,7 @@ _.assign(linesInfo.prototype, {
     //the necessary data is gather
     singleLineInfoFunctions.updatePrevLine(linesInfo, currentLine);
 
+    return currentLine;
   }
 });
 

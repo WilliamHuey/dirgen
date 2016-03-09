@@ -1,3 +1,4 @@
+error with content on the very last line when against the very left
 
 Validations
 warn on
@@ -13,6 +14,10 @@ Generation
 Commandline
 -take input arguments
 (info in the js file)
+
+Optimize
+Remove the lodash dependency or rollup?
+npm start more compatible with windows
 
 Module
 -What should be checked in to the final npm repo?

@@ -17,6 +17,11 @@ _.assign(validator.prototype, {
     } else {
       message.error('Supplied template file has no content to generate.');
     }
+  },
+  charCountUnder255: (count) => {
+    if(count > 255) {
+      message.warn(`Current line count of ${count}, exceeds 255.`);
+    }
   }
 });
 

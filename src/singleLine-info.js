@@ -98,9 +98,15 @@ let singleLineInfoFunctions = {
           //a sibling to the current line
           if (prevLine.parent.sibling.length === 0) {
             prevLine.parent.sibling.push(currentLine);
-            prevLine.parent.parent.children.push(currentLine);
+            //Check against last line having less indent than previous
+            if (!_.isNull(prevLine.parent.parent)) {
+              prevLine.parent.parent.children.push(currentLine);
+            }
           }
-          currentLine.parent = prevLine.parent.parent;
+          //Check against last line having less indent than previous
+          if (!_.isNull(prevLine.parent.parent)) {
+            currentLine.parent = prevLine.parent.parent;
+          }
 
           //Assume currentline to be a file, unless proven later on
           if (_.isUndefined(currentLine.inferType)) {

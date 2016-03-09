@@ -53,6 +53,9 @@ const message = {
   error: (msg) => {
     displayMessage(msg);
     displayStack(msg);
+  },
+  warn: (msg) => {
+    displayMessage(msg);
   }
 };
 

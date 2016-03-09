@@ -61,11 +61,11 @@ readline.createInterface({
 
     //Get the information from prior lines to determine
     //the siblings, parent, and children key values
-    addLinesInfo.setLineData(currentLine, linesInfo);
+    currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
     //Validate the recently set line data
+    validator.charCountUnder255(currentLine.nameDetails.contentLength);
 
-    // console.log("process the line", currentLine);
 
   })
   .on('close', () => {
