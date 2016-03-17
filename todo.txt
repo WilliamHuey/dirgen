@@ -1,6 +1,6 @@
 Validations
-warn on
--255 length as upper limit for all oses
+-error on indented more without parent indented by one less
+-warning should have different colors
 -Invalid characters - os specific checks
 
 -repeated lines check - warn for overwrite
