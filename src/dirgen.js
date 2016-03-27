@@ -24,7 +24,9 @@ let linesInfo = {
   totalLineCount: 0,
   firstIndentationType: null,
   firstIndentationAmount: null,
-  firstLine: null
+  firstLine: null,
+  firstContentLineIndentAmount: null,
+  requireIndentFactor: false
 };
 
 //Read through all the lines of a supplied file

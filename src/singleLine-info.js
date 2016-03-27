@@ -40,6 +40,12 @@ let singleLineInfoFunctions = {
       //Need to know the first content line indent amount to note the sibling check
       //read marker
       linesInfo.firstContentLineIndentAmount = currentLine.nameDetails.indentAmount;
+
+      //See if the indentation needs to be increased
+      //for a consistent relative spacing per line
+      if(linesInfo.firstContentLineIndentAmount > 0) {
+        linesInfo.requireIndentFactor = true;
+      }
     })
   //Previous line indent is equal to the current line
   .when((prevLineIndent, currentLineIndent) => {
@@ -73,6 +79,7 @@ let singleLineInfoFunctions = {
       return prevLineIndent < currentLineIndent;
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+      console.log("linesInfo.firstContentLineIndentAmount", linesInfo.firstContentLineIndentAmount);
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
       linesInfo.prevLineInfo.children.push(currentLine);

@@ -9,7 +9,7 @@ import message from './messages';
 let validator = () => {};
 
 //validator.<rule>(<data>, <callback>, <callback arguments>)
-_.assign(validator.prototype, {
+Object.assign(validator.prototype, {
   presenceFirstLine: (firstLine, callback, callbackArgs) => {
 
     if (!_.isNull(firstLine)) {
