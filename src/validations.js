@@ -18,6 +18,9 @@ Object.assign(validator.prototype, {
       message.error('Supplied template file has no content to generate.');
     }
   },
+  properIndentLevel: (lineNum, content, firstIndent, currentIndent) => {
+    console.log("properIndentLevel");
+  },
   charCountUnder255: (count, lineNum, content, inferType) => {
     if (count > 255) {
       message.warn(`Line #${lineNum}: ${content}, has a character

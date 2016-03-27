@@ -1,12 +1,12 @@
 Validations
 -indentation errors
-  - more indented than should be child level
+  - more indented than should be at child level
   - outdent line is not between the factor slots
 -Invalid characters - os specific checks
 
 -repeated lines check - warn for overwrite
 -collect all warnings
--when errors occur the program should exit immediately
+-when errors occur the program should exit immediately, however the timer should still be kept?
 
 Generation
 -Use trampa to protect against deeply nested folder because of recursion

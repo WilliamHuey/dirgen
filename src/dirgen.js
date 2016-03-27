@@ -25,6 +25,9 @@ let linesInfo = {
   firstIndentationType: null,
   firstIndentationAmount: null,
   firstLine: null,
+  //firstIndentationAmount will become the
+  //indent scaling factor when the first
+  //content line does not have an indentation level
   firstContentLineIndentAmount: null,
   requireIndentFactor: false
 };
@@ -75,7 +78,7 @@ readline.createInterface({
   .on('close', () => {
     console.log('closing the file');
     // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
-    console.log("linesinfo", linesInfo);
+    // console.log("linesinfo", linesInfo);
 
     //Hand off general line information
     //to create the actual files and folders

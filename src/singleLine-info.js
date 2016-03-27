@@ -43,7 +43,7 @@ let singleLineInfoFunctions = {
 
       //See if the indentation needs to be increased
       //for a consistent relative spacing per line
-      if(linesInfo.firstContentLineIndentAmount > 0) {
+      if (linesInfo.firstContentLineIndentAmount > 0) {
         linesInfo.requireIndentFactor = true;
       }
     })
@@ -79,7 +79,21 @@ let singleLineInfoFunctions = {
       return prevLineIndent < currentLineIndent;
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
-      console.log("linesInfo.firstContentLineIndentAmount", linesInfo.firstContentLineIndentAmount);
+
+        // console.log("currentLineIndent", currentLineIndent);
+      if (!linesInfo.requireIndentFactor) {
+
+        console.log("linesInfo.firstIndentationAmount", linesInfo.firstIndentationAmount);
+        console.log("prevLineIndent", prevLineIndent);
+        console.log("currentLineIndent", currentLineIndent);
+        if (currentLineIndent - prevLineIndent === linesInfo.firstIndentationAmount) {
+          console.log("appropriate indenting factor");
+        } else {
+          console.log("not allowed indenting factor");
+        }
+        //validator needs to be here
+      }
+
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
       linesInfo.prevLineInfo.children.push(currentLine);
