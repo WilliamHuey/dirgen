@@ -18,8 +18,19 @@ Object.assign(validator.prototype, {
       message.error('Supplied template file has no content to generate.');
     }
   },
-  properIndentLevel: (lineNum, content, firstIndent, currentIndent) => {
-    console.log("properIndentLevel");
+  properIndentLevel: (lineNum, content, firstIndent, prevLineIndent, currentIndent, requireIndentFactor) => {
+    if (!requireIndentFactor) {
+      console.log("prevLineIndent", prevLineIndent);
+      console.log("currentIndent", currentIndent);
+      console.log("firstIndent",firstIndent);
+      if (currentIndent - prevLineIndent === firstIndent) {
+        console.log("appropriate indenting factor");
+      } else {
+        console.log("not allowed indenting factor");
+      }
+      //validator needs to be here
+    }
+
   },
   charCountUnder255: (count, lineNum, content, inferType) => {
     if (count > 255) {

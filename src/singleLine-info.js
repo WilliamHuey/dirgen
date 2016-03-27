@@ -1,5 +1,11 @@
+//Vendor modules
 import guard from 'guard-js';
 import _ from 'lodash';
+
+//Source modules
+import Validations from './validations';
+
+const validator = new Validations();
 
 const structureMarker = {
   folder: 47,
@@ -79,20 +85,12 @@ let singleLineInfoFunctions = {
       return prevLineIndent < currentLineIndent;
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
-
-        // console.log("currentLineIndent", currentLineIndent);
-      if (!linesInfo.requireIndentFactor) {
-
-        console.log("linesInfo.firstIndentationAmount", linesInfo.firstIndentationAmount);
-        console.log("prevLineIndent", prevLineIndent);
-        console.log("currentLineIndent", currentLineIndent);
-        if (currentLineIndent - prevLineIndent === linesInfo.firstIndentationAmount) {
-          console.log("appropriate indenting factor");
-        } else {
-          console.log("not allowed indenting factor");
-        }
-        //validator needs to be here
-      }
+      //Validate the indent level of child relative to parent
+      validator.properIndentLevel(linesInfo.contentLineCount, currentLine.structureName,
+         linesInfo.firstIndentationAmount,
+         prevLineIndent,
+       currentLineIndent,
+     linesInfo.requireIndentFactor);
 
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
