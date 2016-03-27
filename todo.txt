@@ -1,0 +1,34 @@
+Validations
+-indentation errors
+  - more indented than should be child level
+  - outdent line is not between the factor slots
+-Invalid characters - os specific checks
+
+-repeated lines check - warn for overwrite
+-collect all warnings
+-when errors occur the program should exit immediately
+
+Generation
+-Use trampa to protect against deeply nested folder because of recursion
+
+Commandline
+-take input arguments
+(info in the js file)
+
+Optimize
+Remove the lodash dependency or rollup?
+npm start more compatible with windows
+reduce the cyclomatic complexity
+
+Module
+-What should be checked in to the final npm repo?
+-Selective check-ins for the dist folder:
+  -not dist folder on git, but allow for npm?
+  npmignore and gitignore
+/*
+  TODO:
+  **VALIDATIONS
+  **GENERATION
+  **COMMAND LINE
+  **INDENT LEVEL FACTOR
+*/
