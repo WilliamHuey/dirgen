@@ -1,6 +1,6 @@
 Validations
+-different indentation types
 -indentation errors
-  - more indented than should be at child level
   - outdent line is not between the factor slots
 -Invalid characters - os specific checks
 

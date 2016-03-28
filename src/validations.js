@@ -18,19 +18,19 @@ Object.assign(validator.prototype, {
       message.error('Supplied template file has no content to generate.');
     }
   },
-  properIndentLevel: (lineNum, content, firstIndent, prevLineIndent, currentIndent, requireIndentFactor) => {
-    if (!requireIndentFactor) {
-      console.log("prevLineIndent", prevLineIndent);
-      console.log("currentIndent", currentIndent);
-      console.log("firstIndent",firstIndent);
-      if (currentIndent - prevLineIndent === firstIndent) {
-        console.log("appropriate indenting factor");
-      } else {
-        console.log("not allowed indenting factor");
-      }
-      //validator needs to be here
+  properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
+  firstIndentType, currentIndentType) => {
+    //Scaling indent factor and firstIndent is the same
+    if (!(currentIndentAmt - prevLineIndentAmt ===
+       firstIndentAmt)) {
+      // console.log("on line", lineNum);
+      // console.log("not allowed indenting factor");
+      message.error(`Line #${lineNum}:
+         '${content.trim()}', has an indent
+         amount of ${currentIndentAmt - prevLineIndentAmt} ${currentIndentType}(s),
+         which is different from the
+         first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s).`);
     }
-
   },
   charCountUnder255: (count, lineNum, content, inferType) => {
     if (count > 255) {

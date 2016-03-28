@@ -90,7 +90,8 @@ let singleLineInfoFunctions = {
          linesInfo.firstIndentationAmount,
          prevLineIndent,
        currentLineIndent,
-     linesInfo.requireIndentFactor);
+       linesInfo.firstIndentationType,
+       currentLine.nameDetails.indentType);
 
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
