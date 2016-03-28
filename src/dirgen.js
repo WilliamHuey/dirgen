@@ -2,6 +2,8 @@ console.time('timer');
 
 'use strict';
 
+import "babel-polyfill";
+
 //Native Nodejs modules
 import readline from 'readline';
 import fs from 'fs';
@@ -71,14 +73,14 @@ readline.createInterface({
 
     //Validate the recently set line data
     validator.charCountUnder255(currentLine.nameDetails.contentLength,
-      linesInfo.contentLineCount, currentLine.structureName,
+      linesInfo.totalLineCount, currentLine.structureName,
       currentLine.inferType);
 
   })
   .on('close', () => {
-    console.log('closing the file');
+    // console.log('closing the file');
     // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
-    console.log("linesinfo", linesInfo);
+    // console.log("linesinfo", linesInfo);
 
     //Hand off general line information
     //to create the actual files and folders

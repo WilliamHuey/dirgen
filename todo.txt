@@ -1,9 +1,10 @@
 Validations
--different indentation types
+
+-different indentation types space and tab mix
 -indentation errors
   - outdent line is not between the factor slots
 -Invalid characters - os specific checks
-
+  -auto sanitize mode, or error out mode
 -repeated lines check - warn for overwrite
 -collect all warnings
 -when errors occur the program should exit immediately, however the timer should still be kept?
