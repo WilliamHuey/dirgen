@@ -1,5 +1,6 @@
 Validations
 
+-print out the type of structure for the indent warning message
 -different indentation types space and tab mix
 -indentation errors
   - outdent line is not between the factor slots
@@ -15,6 +16,8 @@ Generation
 Commandline
 -take input arguments
 (info in the js file)
+
+testing
 
 Optimize
 Remove the lodash dependency or rollup?

@@ -26,6 +26,7 @@
     "trampa": "^1.0.0"
   },
   "devDependencies": {
+    "ava": "^0.13.0",
     "babel": "^6.5.2",
     "babel-core": "^6.7.4",
     "babel-eslint": "^6.0.0",

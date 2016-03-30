@@ -19,15 +19,19 @@ Object.assign(validator.prototype, {
     }
   },
   properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
-  firstIndentType, currentIndentType) => {
+  firstIndentType, currentIndentType, indentType) => {
+    if(indentType === 'outdent') {
+      console.log("outdented string");
+      return;
+    }
     //Scaling indent factor and firstIndent is the same
-    if (!(currentIndentAmt - prevLineIndentAmt ===
+    if (!(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
        firstIndentAmt)) {
       // console.log("on line", lineNum);
       // console.log("not allowed indenting factor");
       message.error(`Line #${lineNum}:
          '${content.trim()}', has an indent
-         amount of ${currentIndentAmt - prevLineIndentAmt} ${currentIndentType}(s),
+         amount of ${Math.abs(currentIndentAmt - prevLineIndentAmt)} ${currentIndentType}(s) relative to parent folder,
          which is different from the
          first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s).`);
     }

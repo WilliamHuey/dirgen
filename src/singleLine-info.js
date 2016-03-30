@@ -119,6 +119,15 @@ let singleLineInfoFunctions = {
       let prevLine = linesInfo.prevLineInfo;
 
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
+
+        //Validate the indent level of child relative to parent
+        validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
+           linesInfo.firstIndentationAmount,
+           prevLine.nameDetails.indentAmount,
+         currentLineIndent,
+         linesInfo.firstIndentationType,
+         currentLine.nameDetails.indentType, 'outdent');
+
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
           //Same prior level of indent means the prior is
           //a sibling to the current line
