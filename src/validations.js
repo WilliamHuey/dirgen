@@ -20,12 +20,19 @@ Object.assign(validator.prototype, {
   },
   properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
   firstIndentType, currentIndentType, indentType) => {
-    if(indentType === 'outdent') {
-      console.log("outdented string");
+    //TODO: pretty error needs to stop execution outright
+    if (indentType === 'outdent' && !(currentIndentAmt % firstIndentAmt === 0) &&
+    !(currentIndentAmt >= firstIndentAmt)) {
+      console.log(`Line num: ${lineNum}` + "outdented string");
+      throw (new Error('bad outdent'))
+      message.error('Bad Outdent');
+
       return;
     }
+    console.log("lineNum", lineNum);
+    console.log("now currentIndentAmt", currentIndentAmt);
     //Scaling indent factor and firstIndent is the same
-    if (!(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
+    if (indentType !== 'outdent' && !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
        firstIndentAmt)) {
       // console.log("on line", lineNum);
       // console.log("not allowed indenting factor");

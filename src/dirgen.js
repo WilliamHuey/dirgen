@@ -41,6 +41,8 @@ readline.createInterface({
   .on('line', (line) => {
     // console.log("process line prevLineInfo", prevLineInfo);
 
+
+
     //Get properties from the current line in detail with
     //the lexer
     let lexResults = lexer.lex(line);
@@ -91,7 +93,7 @@ readline.createInterface({
     //if nothing, skip generation
     validator.presenceFirstLine(linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
 
-    // console.log("validator ", validator);
+    console.log("almost end");
     console.timeEnd('timer');
 
   });
