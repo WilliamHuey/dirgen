@@ -10,6 +10,17 @@ let validator = () => {};
 
 //validator.<rule>(<data>, <callback>, <callback arguments>)
 Object.assign(validator.prototype, {
+  sameIndentType: (lineNum, content,
+  firstIndentType, currentIndentType) => {
+    //Protect against null, which signifies no indent level
+    if(!_.isNull(currentIndentType) &&
+     currentIndentType !== firstIndentType) {
+      throw (message.error(`Line #${lineNum}:
+         '${content.trim()}',
+         has indent type of '${currentIndentType}'
+         which is inconsistent with the first defined outdent type of '${firstIndentType}'.`));
+    }
+  },
   presenceFirstLine: (firstLine, callback, callbackArgs) => {
 
     if (!_.isNull(firstLine)) {
@@ -21,11 +32,13 @@ Object.assign(validator.prototype, {
   properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
   firstIndentType, currentIndentType, indentType) => {
     //TODO: pretty error needs to stop execution outright
-    if (indentType === 'outdent' && !(currentIndentAmt % firstIndentAmt === 0) &&
+    if (indentType === 'outdent' &&
+    !(currentIndentAmt % firstIndentAmt === 0) &&
     !(currentIndentAmt >= firstIndentAmt)) {
       // console.log(`Line num: ${lineNum}` + "outdented string");
       throw (message.error(`Line #${lineNum}:
-         '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the first defined outdent of ${firstIndentAmt} ${firstIndentType}(s).`));
+         '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the
+         first defined outdent of ${firstIndentAmt} ${firstIndentType}(s).`));
     }
     // console.log("lineNum", lineNum);
     // console.log("now currentIndentAmt", currentIndentAmt);

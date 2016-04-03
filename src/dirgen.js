@@ -41,8 +41,6 @@ readline.createInterface({
   .on('line', (line) => {
     // console.log("process line prevLineInfo", prevLineInfo);
 
-
-
     //Get properties from the current line in detail with
     //the lexer
     let lexResults = lexer.lex(line);
@@ -67,16 +65,23 @@ readline.createInterface({
       nameDetails: lexResults
     };
 
-    // console.log("lexResults", currentLine.nameDetails);
-
     //Get the information from prior lines to determine
     //the siblings, parent, and children key values
     currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
     //Validate the recently set line data
-    validator.charCountUnder255(currentLine.nameDetails.contentLength,
-      linesInfo.totalLineCount, currentLine.structureName,
+
+    validator.charCountUnder255(
+      currentLine.nameDetails.contentLength,
+      linesInfo.totalLineCount,
+      currentLine.structureName,
       currentLine.inferType);
+
+    validator.sameIndentType(
+      linesInfo.totalLineCount,
+      currentLine.structureName,
+      linesInfo.firstIndentationType,
+      currentLine.nameDetails.indentType);
 
   })
   .on('close', () => {
@@ -91,6 +96,7 @@ readline.createInterface({
 
     //But validate the presence of the firstLine
     //if nothing, skip generation
+    //presenceFirstLine also sets off the generation
     validator.presenceFirstLine(linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
 
     console.log("almost end");

@@ -1,13 +1,11 @@
 Validations
 
--print out the type of structure for the indent error warning message
--different indentation types space and tab mix
 -Invalid characters - os specific checks
   -auto sanitize mode, or error out mode
 -repeated lines check - warn for overwrite
 -collect all warnings
 -when errors occur the program should exit immediately, however the timer should still be kept?
--detect if the file has changed in the middle of operations
+
 
 Generation
 -Use trampa to protect against deeply nested folder because of recursion
@@ -22,6 +20,7 @@ Optimize
 Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
+-detect if the file has changed in the middle of operations
 
 Module
 -What should be checked in to the final npm repo?
