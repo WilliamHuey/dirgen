@@ -1,14 +1,13 @@
 Validations
 
--print out the type of structure for the indent warning message
+-print out the type of structure for the indent error warning message
 -different indentation types space and tab mix
--indentation errors
-  - outdent line is not between the factor slots
 -Invalid characters - os specific checks
   -auto sanitize mode, or error out mode
 -repeated lines check - warn for overwrite
 -collect all warnings
 -when errors occur the program should exit immediately, however the timer should still be kept?
+-detect if the file has changed in the middle of operations
 
 Generation
 -Use trampa to protect against deeply nested folder because of recursion

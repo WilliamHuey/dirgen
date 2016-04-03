@@ -88,15 +88,13 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
 
       //TODO: check for the indent type
-      console.log(("----------------------"));
       //Validate the indent level of child relative to parent
       validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
          linesInfo.firstIndentationAmount,
          prevLineIndent,
        currentLineIndent,
        linesInfo.firstIndentationType,
-       currentLine.nameDetails.indentType);
-       console.log("----------------------");
+       currentLine.nameDetails.indentType, 'indent');
 
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
@@ -117,7 +115,7 @@ let singleLineInfoFunctions = {
       //TODO: check for the indent type
 
 
-      console.log("\n       outdent");
+      // console.log("\n       outdent");
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
 
@@ -131,9 +129,9 @@ let singleLineInfoFunctions = {
          currentLineIndent,
          linesInfo.firstIndentationType,
          currentLine.nameDetails.indentType, 'outdent');
-         console.log("currentLineIndent", currentLineIndent);
-        console.log("currentLine structureName", currentLine.structureName);
-        console.log("cont with the exec outdent \n");
+        //  console.log("currentLineIndent", currentLineIndent);
+        // console.log("currentLine structureName", currentLine.structureName);
+        // console.log("cont with the exec outdent \n");
 
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
           //Same prior level of indent means the prior is

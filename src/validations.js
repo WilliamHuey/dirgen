@@ -23,24 +23,22 @@ Object.assign(validator.prototype, {
     //TODO: pretty error needs to stop execution outright
     if (indentType === 'outdent' && !(currentIndentAmt % firstIndentAmt === 0) &&
     !(currentIndentAmt >= firstIndentAmt)) {
-      console.log(`Line num: ${lineNum}` + "outdented string");
-      throw (new Error('bad outdent'))
-      message.error('Bad Outdent');
-
-      return;
+      // console.log(`Line num: ${lineNum}` + "outdented string");
+      throw (message.error(`Line #${lineNum}:
+         '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the first defined outdent of ${firstIndentAmt} ${firstIndentType}(s).`));
     }
-    console.log("lineNum", lineNum);
-    console.log("now currentIndentAmt", currentIndentAmt);
+    // console.log("lineNum", lineNum);
+    // console.log("now currentIndentAmt", currentIndentAmt);
     //Scaling indent factor and firstIndent is the same
     if (indentType !== 'outdent' && !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
        firstIndentAmt)) {
       // console.log("on line", lineNum);
       // console.log("not allowed indenting factor");
-      message.error(`Line #${lineNum}:
+      throw (message.error(`Line #${lineNum}:
          '${content.trim()}', has an indent
          amount of ${Math.abs(currentIndentAmt - prevLineIndentAmt)} ${currentIndentType}(s) relative to parent folder,
          which is different from the
-         first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s).`);
+         first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s).`));
     }
   },
   charCountUnder255: (count, lineNum, content, inferType) => {

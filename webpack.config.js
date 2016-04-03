@@ -1,10 +1,12 @@
 var path = require('path');
 
 module.exports = {
-  entry: './src/dirgen.js',
+  entry: {
+    dirgen: "./src/dirgen.js"
+  },
   output: {
     path: path.join(__dirname, '/dist/'),
-    filename: 'dirgen.js'
+    filename: '[name].js'
   },
   module: {
     exprContextCritical: false,
