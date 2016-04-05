@@ -1,11 +1,7 @@
 Validations
 
--Invalid characters - os specific checks
-  -auto sanitize mode, or error out mode
 -repeated lines check - warn for overwrite
--collect all warnings
 -when errors occur the program should exit immediately, however the timer should still be kept?
-
 
 Generation
 -Use trampa to protect against deeply nested folder because of recursion
@@ -21,6 +17,7 @@ Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
 -detect if the file has changed in the middle of operations
+- error out mode on invalid characters
 
 Module
 -What should be checked in to the final npm repo?

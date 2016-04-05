@@ -21,6 +21,7 @@
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
     "renderkid": "^2.0.0",
+    "sanitize-filename": "^1.5.3",
     "strscanner": "0.0.8",
     "trampa": "^1.0.0"
   },

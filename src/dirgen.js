@@ -83,6 +83,9 @@ readline.createInterface({
       linesInfo.firstIndentationType,
       currentLine.nameDetails.indentType);
 
+    validator.cleanFileName(linesInfo.totalLineCount,
+    currentLine.structureName);
+
   })
   .on('close', () => {
     // console.log('closing the file');

@@ -1,6 +1,6 @@
 'use strict';
 
-//A list of characters that can cause problems for different operating systems
+//A list of characters that may cause problems for different operating systems
 
 export default {
   33: '!',

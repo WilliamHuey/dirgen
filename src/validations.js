@@ -2,6 +2,7 @@
 
 //Vendor modules
 import _ from 'lodash';
+import sanitize from 'sanitize-filename';
 
 //Source modules
 import message from './messages';
@@ -10,6 +11,14 @@ let validator = () => {};
 
 //validator.<rule>(<data>, <callback>, <callback arguments>)
 Object.assign(validator.prototype, {
+  cleanFileName: (lineNum, content) => {
+    let cleanedName = sanitize(content)
+    if(cleanedName !== content) {
+      message.warn(`Line #${lineNum}:
+        '${content.trim()}', has illegal characters
+        which has been replaced, resulting in '${cleanedName}'.`);
+    }
+  },
   sameIndentType: (lineNum, content,
   firstIndentType, currentIndentType) => {
     //Protect against null, which signifies no indent level
