@@ -13,7 +13,7 @@ Object.assign(validator.prototype, {
   sameIndentType: (lineNum, content,
   firstIndentType, currentIndentType) => {
     //Protect against null, which signifies no indent level
-    if(!_.isNull(currentIndentType) &&
+    if (!_.isNull(currentIndentType) &&
      currentIndentType !== firstIndentType) {
       throw (message.error(`Line #${lineNum}:
          '${content.trim()}',

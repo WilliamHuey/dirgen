@@ -8,7 +8,6 @@ import path from 'path';
 import _ from 'lodash';
 import normalizePath from 'normalize-path';
 import trampa from 'trampa';
-import filenamify from 'filenamify';
 import {
   existsAsync,
   mkdirAsync,
