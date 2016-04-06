@@ -14,33 +14,42 @@ import {
   writeFileAsync,
   removeAsync} from 'fs-extra-promise';
 
-const createStructure = async function (linesInfo, rootPath, firstContentLineIndentAmount) {
+import Validations from './validations';
+
+const validator = new Validations();
+
+const createStructure = async function (lineInfo, rootPath, firstContentLineIndentAmount) {
+  //lineInfo is a single line
 
   //Join the path safely by converting all backward
   //slashes to forward slashes
-  let structureName = linesInfo.structureName,
+  let structureName = lineInfo.structureName,
     structureRoughPath = path.join(rootPath, structureName),
     structureCreatePath = normalizePath(structureRoughPath);
 
-  if (linesInfo.inferType === 'file') {
+    validator.repeatedLines(
+      lineInfo.structureName,
+      lineInfo.sibling);
+
+  if (lineInfo.inferType === 'file') {
     writeFileAsync(structureCreatePath);
   } else {
     //Folder will be the only other structure type
-    let parentPath = path.join(rootPath, linesInfo.structureName);
+    let parentPath = path.join(rootPath, lineInfo.structureName);
 
     await mkdirAsync(parentPath);
 
     //Create children structures if folder has children
-    if (linesInfo.children.length > 0) {
-      _.each(linesInfo.children, (line) => {
+    if (lineInfo.children.length > 0) {
+      _.each(lineInfo.children, (line) => {
         createStructure(line, parentPath, firstContentLineIndentAmount);
       });
     }
   }
 
   //Only the top-most level need the siblings generation
-  if (!_.isUndefined(linesInfo.sibling) && linesInfo.sibling.length > 0 && firstContentLineIndentAmount === linesInfo.nameDetails.indentAmount) {
-    _.each(linesInfo.sibling, (line) => {
+  if (!_.isUndefined(lineInfo.sibling) && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount) {
+    _.each(lineInfo.sibling, (line) => {
       createStructure(line, rootPath, firstContentLineIndentAmount);
     });
   }

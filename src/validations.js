@@ -11,6 +11,9 @@ let validator = () => {};
 
 //validator.<rule>(<data>, <callback>, <callback arguments>)
 Object.assign(validator.prototype, {
+  repeatedLines: (lineNum, content, siblings) => {
+
+  },
   cleanFileName: (lineNum, content) => {
     let cleanedName = sanitize(content)
     if(cleanedName !== content) {

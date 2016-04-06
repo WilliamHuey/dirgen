@@ -39,11 +39,11 @@ readline.createInterface({
     input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
   })
   .on('line', (line) => {
-    // console.log("process line prevLineInfo", prevLineInfo);
-
     //Get properties from the current line in detail with
     //the lexer
     let lexResults = lexer.lex(line);
+
+    // console.log("linesInfo", linesInfo);
 
     //Accumulate general information lines
     addLinesInfo.setGeneralData(line, linesInfo);

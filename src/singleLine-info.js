@@ -6,7 +6,6 @@ import _ from 'lodash';
 import Validations from './validations';
 
 const validator = new Validations();
-
 const structureMarker = {
   folder: 47,
   file: 46
@@ -30,6 +29,9 @@ let singleLineInfoFunctions = {
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
     }
+  },
+  countLine: (linesInfo, currentLine) => {
+    currentLine.nameDetails.line = linesInfo.totalLineCount;
   },
   indentation: (linesInfo, currentLine) => {
     if (linesInfo.firstIndentationType === null && currentLine.nameDetails.indentType !== null) {
