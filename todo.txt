@@ -1,6 +1,6 @@
 Validations
 
--also needs to tag the currentline content line
+
 -repeated lines check - warn for overwrite
 -when errors occur the program should exit immediately, however the timer should still be kept?
 

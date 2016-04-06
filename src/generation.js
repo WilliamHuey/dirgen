@@ -27,10 +27,6 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
     structureRoughPath = path.join(rootPath, structureName),
     structureCreatePath = normalizePath(structureRoughPath);
 
-    validator.repeatedLines(
-      lineInfo.structureName,
-      lineInfo.sibling);
-
   if (lineInfo.inferType === 'file') {
     writeFileAsync(structureCreatePath);
   } else {
@@ -41,6 +37,12 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
 
     //Create children structures if folder has children
     if (lineInfo.children.length > 0) {
+
+      validator.repeatedLines(
+        lineInfo.nameDetails.line,
+        lineInfo.structureName,
+        lineInfo.children);
+
       _.each(lineInfo.children, (line) => {
         createStructure(line, parentPath, firstContentLineIndentAmount);
       });
@@ -50,6 +52,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   //Only the top-most level need the siblings generation
   if (!_.isUndefined(lineInfo.sibling) && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount) {
     _.each(lineInfo.sibling, (line) => {
+      //TODO: validate for when the siblings dupes
       createStructure(line, rootPath, firstContentLineIndentAmount);
     });
   }

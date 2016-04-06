@@ -11,12 +11,18 @@ let validator = () => {};
 
 //validator.<rule>(<data>, <callback>, <callback arguments>)
 Object.assign(validator.prototype, {
-  repeatedLines: (lineNum, content, siblings) => {
+  repeatedLines: (lineNum, content, children) => {
+    let keyDupes = new Map();
+    console.log("lineNum", lineNum);
+    //console.log("children", children);
+    _(children).each((val) => {
+      console.log("val", val);
+    });
 
   },
   cleanFileName: (lineNum, content) => {
-    let cleanedName = sanitize(content)
-    if(cleanedName !== content) {
+    let cleanedName = sanitize(content);
+    if (cleanedName !== content) {
       message.warn(`Line #${lineNum}:
         '${content.trim()}', has illegal characters
         which has been replaced, resulting in '${cleanedName}'.`);
