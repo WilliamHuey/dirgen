@@ -5,9 +5,6 @@ import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
 import _ from 'lodash';
 
-//Vendor modules
-import characterMap from './character-map';
-
 //Should also detect indentation and well as symbols
 let lexer = () => {};
 
