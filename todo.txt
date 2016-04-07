@@ -1,7 +1,6 @@
 Validations
 
-
--repeated lines check - warn for overwrite
+-repeated lines check in the top-most level
 -when errors occur the program should exit immediately, however the timer should still be kept?
 
 Generation
@@ -18,7 +17,7 @@ Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
 -detect if the file has changed in the middle of operations
-- error out mode on invalid characters
+-- pluralizing the error messages
 
 Module
 -What should be checked in to the final npm repo?

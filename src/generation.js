@@ -40,7 +40,6 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
 
       validator.repeatedLines(
         lineInfo.nameDetails.line,
-        lineInfo.structureName,
         lineInfo.children);
 
       _.each(lineInfo.children, (line) => {

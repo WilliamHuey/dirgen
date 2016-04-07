@@ -11,14 +11,26 @@ let validator = () => {};
 
 //validator.<rule>(<data>, <callback>, <callback arguments>)
 Object.assign(validator.prototype, {
-  repeatedLines: (lineNum, content, children) => {
-    let keyDupes = new Map();
-    console.log("lineNum", lineNum);
-    //console.log("children", children);
+  repeatedLines: (lineNum, children) => {
+    let childStructureNames = new Map();
+    let structureName = null;
     _(children).each((val) => {
-      console.log("val", val);
+      //Child structure name
+      structureName = val.structureName;
+      let childLineNum = val.nameDetails.line;
+      //Push to the array of collected repeats
+      if(childStructureNames.has(val.structureName)) {
+        childStructureNames.set(childStructureNames.get(val.structureName).push(childLineNum));
+        let repeatedEntries = childStructureNames.get(val.structureName);
+        //Send the message after saving the repeated value
+        message.warn(`Line #${repeatedEntries[0]}: '${structureName}', has repeated entries on
+        line(s): ${repeatedEntries.slice(1)}.
+        The last repeated value line overwritten all previous entries.`);
+      } else {
+        //Initialize the array for the first child found
+        childStructureNames.set(val.structureName, [childLineNum]);
+      }
     });
-
   },
   cleanFileName: (lineNum, content) => {
     let cleanedName = sanitize(content);
