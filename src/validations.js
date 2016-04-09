@@ -9,8 +9,18 @@ import message from './messages';
 
 let validator = () => {};
 
-//validator.<rule>(<data>, <callback>, <callback arguments>)
 Object.assign(validator.prototype, {
+  topLevelRepeatedLines: (firstResult, lastLineNum) => {
+    //Recursively loop through all the siblings
+
+    //Any sibling has an immediate first link
+    //to its successive sibling
+
+    //First top level line is the only top level means search stops early
+
+
+
+  },
   repeatedLines: (lineNum, children) => {
     let childStructureNames = new Map();
     let structureName = null;

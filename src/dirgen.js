@@ -70,7 +70,6 @@ readline.createInterface({
     currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
     //Validate the recently set line data
-
     validator.charCountUnder255(
       currentLine.nameDetails.contentLength,
       linesInfo.totalLineCount,
@@ -83,14 +82,19 @@ readline.createInterface({
       linesInfo.firstIndentationType,
       currentLine.nameDetails.indentType);
 
-    validator.cleanFileName(linesInfo.totalLineCount,
-    currentLine.structureName);
+    validator.cleanFileName(
+      linesInfo.totalLineCount,
+      currentLine.structureName);
+
+    // console.log("linesInfo", linesInfo);
 
   })
   .on('close', () => {
     // console.log('closing the file');
     // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
     // console.log("linesinfo", linesInfo);
+
+    console.log("linesInfo.firstLine.sibling[0].sibling[0]", linesInfo.firstLine.sibling[0].sibling[0], "\n\n");
 
     //Hand off general line information
     //to create the actual files and folders
@@ -100,7 +104,9 @@ readline.createInterface({
     //But validate the presence of the firstLine
     //if nothing, skip generation
     //presenceFirstLine also sets off the generation
-    validator.presenceFirstLine(linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
+    //validator.<rule>(<data>, <callback>, <callback arguments>)
+    validator.presenceFirstLine(
+      linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
 
     console.log("almost end");
     console.timeEnd('timer');

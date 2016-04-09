@@ -66,12 +66,9 @@ default(linesInfo, rootPath) => {
     if (hasRootDirAsync) {
       //Root folder exists and is to be removed
       await removeAsync(rootPath);
-      await mkdirAsync(rootPath);
-      createStructure(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
-    } else {
-      //No root folder found
-      await mkdirAsync(rootPath);
-      createStructure(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
     }
+    await mkdirAsync(rootPath);
+    //TODO: repeated lines check in the top-most level
+    createStructure(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
   })();
 };
