@@ -19,7 +19,7 @@ Object.assign(validator.prototype, {
       structureName = val.structureName;
       let childLineNum = val.nameDetails.line;
       //Push to the array of collected repeats
-      if(childStructureNames.has(val.structureName)) {
+      if (childStructureNames.has(val.structureName)) {
         childStructureNames.set(childStructureNames.get(val.structureName).push(childLineNum));
         let repeatedEntries = childStructureNames.get(val.structureName);
         //Send the message after saving the repeated value
