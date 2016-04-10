@@ -33,23 +33,33 @@ Object.assign(validator.prototype, {
       // console.log("lastLineNum", lastLineNum);
 
       //console.log("searchLine.structureName", searchLine.structureName);
-      console.log("searchLine.structureName", searchLine.structureName);
+      // console.log("searchLine.structureName", searchLine.structureName);
       if (siblingsLines.has(searchLine.structureName)) {
         console.log("repeated line");
         siblingsLines.set(searchLine.structureName,
           siblingsLines.get(searchLine.structureName).concat([searchLineNum]));
         console.log("siblingsLines.get(searchLine.structureName",  siblingsLines.get(searchLine.structureName));
-
       } else {
         siblingsLines.set(searchLine.structureName, [searchLineNum]);
       }
 
+      //Only display warning messages for values
+      //of arrays that greater than 1, meaning repeats
+      if (searchLineNum === lastLineNum) {
+        for (let [key, value] of siblingsLines) {
+          console.log(key + " = " + value);
+        }
+      }
+
       searchLine = searchLine.sibling[0];
       searchLineNum = searchLine.nameDetails.line;
-      // console.log("searchLine",searchLine);
+      // console.log("later searchLine", searchLine);
 
-      console.log("searchLineNum", searchLineNum);
+
     }
+
+    //throw new Error('asdgsdgsdfgdsg');
+    return 1;
 
   },
   repeatedLines: (lineNum, children) => {
@@ -62,7 +72,8 @@ Object.assign(validator.prototype, {
       //Push to the array of collected repeats
       if (childStructureNames.has(val.structureName)) {
         //TODO: set proper key and value for the map
-        childStructureNames.set(childStructureNames.get(val.structureName).push(childLineNum));
+        childStructureNames.set(val.structureName,
+          childStructureNames.get(val.structureName).push(childLineNum));
         let repeatedEntries = childStructureNames.get(val.structureName);
         //Send the message after saving the repeated value
         message.warn(`Line #${repeatedEntries[0]}: '${structureName}', has repeated entries on

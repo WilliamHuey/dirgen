@@ -2,7 +2,9 @@ Validations
 
 -list groups of repeated line number
   -aggregate all the warnings on the first level
-  -for the nested later level lines
+    -and then for the nested later level lines
+  -combinations of warnings
+  -also list out all warnings before the critical errors
 -repeated lines check in the top-most level
 -when errors occur the program should exit immediately, however the timer should still be kept?
 
