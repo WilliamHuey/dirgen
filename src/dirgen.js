@@ -94,7 +94,7 @@ readline.createInterface({
     // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
     // console.log("linesinfo", linesInfo);
 
-    console.log("linesInfo.firstLine.sibling[0].sibling[0]", linesInfo.firstLine.sibling[0].sibling[0], "\n\n");
+    // console.log("linesInfo.firstLine.sibling[0].sibling[0]", linesInfo.firstLine.sibling[0].sibling[0], "\n\n");
 
     //Hand off general line information
     //to create the actual files and folders

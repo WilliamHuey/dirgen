@@ -10,15 +10,46 @@ import message from './messages';
 let validator = () => {};
 
 Object.assign(validator.prototype, {
-  topLevelRepeatedLines: (firstResult, lastLineNum) => {
+  topLevelRepeatedLines: (firstLine, lastLineNum) => {
     //Recursively loop through all the siblings
 
     //Any sibling has an immediate first link
     //to its successive sibling
 
+    let searchLine = firstLine,
+      searchLineNum = searchLine.nameDetails.line,
+      siblingsLines = new Map();
+
     //First top level line is the only top level means search stops early
+    console.log("firstLine.sibling", firstLine.sibling);
+    if (_.isNull(firstLine.sibling) ||
+      firstLine.sibling.length === 0) {
+      return;
+    }
 
+    while (searchLineNum <= lastLineNum) {
+      // console.log("still searching");
+      // console.log("searchLineNum", searchLineNum);
+      // console.log("lastLineNum", lastLineNum);
 
+      //console.log("searchLine.structureName", searchLine.structureName);
+      console.log("searchLine.structureName", searchLine.structureName);
+      if (siblingsLines.has(searchLine.structureName)) {
+        console.log("repeated line");
+        siblingsLines.set(searchLine.structureName,
+          siblingsLines.get(searchLine.structureName).concat([searchLineNum]));
+        console.log("siblingsLines.get(searchLine.structureName",  siblingsLines.get(searchLine.structureName));
+
+      } else {
+        siblingsLines.set(searchLine.structureName, [searchLineNum]);
+      }
+
+      searchLine = searchLine.sibling[0];
+      searchLineNum = searchLine.nameDetails.line;
+      // console.log("searchLine",searchLine);
+
+      console.log("searchLineNum", searchLineNum);
+    }
 
   },
   repeatedLines: (lineNum, children) => {
@@ -30,6 +61,7 @@ Object.assign(validator.prototype, {
       let childLineNum = val.nameDetails.line;
       //Push to the array of collected repeats
       if (childStructureNames.has(val.structureName)) {
+        //TODO: set proper key and value for the map
         childStructureNames.set(childStructureNames.get(val.structureName).push(childLineNum));
         let repeatedEntries = childStructureNames.get(val.structureName);
         //Send the message after saving the repeated value

@@ -69,6 +69,11 @@ default(linesInfo, rootPath) => {
     }
     await mkdirAsync(rootPath);
     //TODO: repeated lines check in the top-most level
+
+    validator.topLevelRepeatedLines(
+      linesInfo.firstLine,
+      linesInfo.prevLineInfo.nameDetails.line);
+
     createStructure(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
   })();
 };
