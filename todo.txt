@@ -1,11 +1,8 @@
 Validations
 
--list groups of repeated line number
-  -aggregate all the warnings on the first level
-    -and then for the nested later level lines
-  -combinations of warnings
-  -also list out all warnings before the critical errors
--repeated lines check in the top-most level
+
+
+
 -when errors occur the program should exit immediately, however the timer should still be kept?
 
 Generation
@@ -23,6 +20,8 @@ npm start more compatible with windows
 reduce the cyclomatic complexity
 -detect if the file has changed in the middle of operations
 -- pluralizing the error messages
+-combinations of warnings
+-also list out all warnings before the critical errors
 
 Module
 -What should be checked in to the final npm repo?
