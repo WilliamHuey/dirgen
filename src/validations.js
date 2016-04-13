@@ -24,7 +24,7 @@ let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLi
     //of arrays that greater than 1, meaning repeats
     if (searchLineNum === lastLineNum) {
       for (let [key, value] of siblingsLines) {
-        if(value.length >= 2) {
+        if (value.length >= 2) {
           message.warn(`Line #${value[0]}: '${key}', has repeated entries on
           line(s): ${value.slice(1)}.
           The last repeated value line overwritten all previous entries.`);

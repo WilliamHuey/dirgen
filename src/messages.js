@@ -52,6 +52,7 @@ const displayMessage = (msg, type) => {
 
 const displayStack = (msg) => {
   console.error(prettyError.render(new Error(msg)));
+  process.exit();
 };
 
 const message = {
