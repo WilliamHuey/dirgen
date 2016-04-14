@@ -17,7 +17,7 @@
     "detect-indent": "^4.0.0",
     "fs-extra-promise": "^0.3.1",
     "guard-js": "^0.1.1",
-    "lodash": "^4.10.0",
+    "lodash": "^4.11.0",
     "normalize-path": "^2.0.1",
     "pretty-error": "^2.0.0",
     "renderkid": "^2.0.0",

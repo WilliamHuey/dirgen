@@ -1,7 +1,5 @@
 Validations
 
--when errors occur the program should exit immediately, however the timer should still be kept?
-
 Generation
 -Use trampa to protect against deeply nested folder because of recursion
 
@@ -11,7 +9,7 @@ Commandline
 
 testing
 
-Optimize
+Backlog/Optimize
 Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
@@ -19,6 +17,7 @@ reduce the cyclomatic complexity
 -- pluralizing the error messages
 -combinations of warnings
 -also list out all warnings before the critical errors
+--process.exit() concerns when running programmatically
 
 Module
 -What should be checked in to the final npm repo?
