@@ -7,7 +7,7 @@ import path from 'path';
 //Vendor modules
 import _ from 'lodash';
 import normalizePath from 'normalize-path';
-import trampa from 'trampa';
+import recursive from 'tail-call/core';
 import {
   existsAsync,
   mkdirAsync,
@@ -17,7 +17,10 @@ import {
 import Validations from './validations';
 
 const validator = new Validations();
+const tailCall = recursive.recur;
 
+//Convert createStructure into a tail recursive function
+let createStructureTC = null;
 const createStructure = async function (lineInfo, rootPath, firstContentLineIndentAmount) {
   //lineInfo is a single line
 
@@ -43,7 +46,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
         lineInfo.children);
 
       _.each(lineInfo.children, (line) => {
-        createStructure(line, parentPath, firstContentLineIndentAmount);
+        createStructureTC(line, parentPath, firstContentLineIndentAmount);
       });
     }
   }
@@ -52,10 +55,12 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   if (!_.isUndefined(lineInfo.sibling) && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount) {
     _.each(lineInfo.sibling, (line) => {
       //TODO: validate for when the siblings dupes
-      createStructure(line, rootPath, firstContentLineIndentAmount);
+      createStructureTC(line, rootPath, firstContentLineIndentAmount);
     });
   }
 };
+
+createStructureTC = tailCall(createStructure);
 
 export
 default(linesInfo, rootPath) => {
@@ -75,7 +80,7 @@ default(linesInfo, rootPath) => {
       linesInfo.firstLine,
       linesInfo.prevLineInfo.nameDetails.line);
 
-    createStructure(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
+    createStructureTC(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
     console.log("!!!!!!!!!!!! created");
   })();
 };

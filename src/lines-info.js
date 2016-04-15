@@ -45,11 +45,6 @@ _.assign(linesInfo.prototype, {
     //Only set the line count info for empty lines
     if (!linesInfoFunctions.countLines(lineInfo)) return;
 
-    // console.log("line", line);
-    // console.log("lineSetInfo.totalLineCount", lineSetInfo.totalLineCount);
-    // console.log("--------------------------");
-    // console.log("data", data);
-
     //Execute all other data gathering functions
     //for gathering data for lines
     _.each(_.keys(_.omit(linesInfoFunctions, 'countLines')),
