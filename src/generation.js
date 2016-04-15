@@ -66,15 +66,14 @@ default(linesInfo, rootPath) => {
     if (hasRootDirAsync) {
       //Root folder exists and is to be removed
       await removeAsync(rootPath);
+      await mkdirAsync(rootPath);
+    } else {
+      await mkdirAsync(rootPath);
     }
-    await mkdirAsync(rootPath);
-    //TODO: repeated lines check in the top-most level
 
-    let stuff = validator.topLevelRepeatedLines(
+    validator.topLevelRepeatedLines(
       linesInfo.firstLine,
       linesInfo.prevLineInfo.nameDetails.line);
-
-    // console.log("stuff", stuff);
 
     createStructure(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
     console.log("!!!!!!!!!!!! created");

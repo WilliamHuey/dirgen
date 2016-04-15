@@ -22,6 +22,7 @@ let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLi
 
     //Only display warning messages for values
     //of arrays that greater than 1, meaning repeats
+    let repeatChecks = false;
     if (searchLineNum === lastLineNum) {
       for (let [key, value] of siblingsLines) {
         if (value.length >= 2) {
@@ -30,7 +31,11 @@ let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLi
           The last repeated value line overwritten all previous entries.`);
         }
       }
+      repeatChecks = true;
     }
+
+    //Stop searching if the all repeats are checked
+    if (repeatChecks) return;
 
     searchSiblings(searchLine.sibling[0], searchLine.sibling[0].nameDetails.line,
     lastLineNum, siblingsLines);
