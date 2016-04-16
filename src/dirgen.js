@@ -12,17 +12,16 @@ import fs from 'fs';
 import AddLinesInfo from './lines-info';
 import Lexer from './lexer';
 import Validations from './validations';
+import Timer from './timer';
 import generateStructure from './generation';
 
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
 const validator = new Validations();
 
-process.on('exit', function() {
-  let diff = process.hrtime(time);
-
-  console.log('File and folder creation took %d nanoseconds', diff[0] * 1e9 + diff[1]);
-});
+//Time the whole process after erroring out
+//or by the finishing of generation
+(new Timer()).onExit(time);
 
 //Track the status of the lines
 let linesInfo = {

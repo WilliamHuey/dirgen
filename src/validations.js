@@ -3,12 +3,16 @@
 //Vendor modules
 import _ from 'lodash';
 import sanitize from 'sanitize-filename';
+import recursive from 'tail-call/core';
 
 //Source modules
 import message from './messages';
 
+const tailCall = recursive.recur;
 let validator = () => {};
 
+//Tail recursive utility function for top-level sibling searches
+let searchSiblingsTC = null;
 let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLines) {
   //Check until to the very last line is reached
   if (searchLineNum <= lastLineNum) {
@@ -37,18 +41,19 @@ let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLi
     //Stop searching if the all repeats are checked
     if (repeatChecks) return;
 
-    searchSiblings(searchLine.sibling[0], searchLine.sibling[0].nameDetails.line,
+    searchSiblingsTC(searchLine.sibling[0], searchLine.sibling[0].nameDetails.line,
     lastLineNum, siblingsLines);
   }
 };
 
+searchSiblingsTC = tailCall(searchSiblings);
+
 Object.assign(validator.prototype, {
   topLevelRepeatedLines: (firstLine, lastLineNum) => {
-    //Recursively loop through all the siblings
 
+    //Recursively loop through all the siblings
     //Any sibling has an immediate first link
     //to its successive sibling
-
     let searchLine = firstLine,
       searchLineNum = searchLine.nameDetails.line,
       siblingsLines = new Map();
@@ -59,15 +64,17 @@ Object.assign(validator.prototype, {
       return;
     }
 
-    searchSiblings(searchLine, searchLineNum, lastLineNum, siblingsLines);
+    searchSiblingsTC(searchLine, searchLineNum, lastLineNum, siblingsLines);
   },
   repeatedLines: (lineNum, children) => {
     let childStructureNames = new Map();
     let structureName = null;
     _(children).each((val) => {
+
       //Child structure name
       structureName = val.structureName;
       let childLineNum = val.nameDetails.line;
+
       //Push to the array of collected repeats
       if (childStructureNames.has(val.structureName)) {
         childStructureNames.set(val.structureName,

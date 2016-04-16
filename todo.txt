@@ -1,10 +1,7 @@
-Validations
-
-Generation
--Use tail-call to protect against deeply nested folder because of recursion
-  validations on top level
+check if the environment is nodejs or browser
 
 Commandline
+vorpal
 -take input arguments
 (info in the js file)
 
