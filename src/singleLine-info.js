@@ -15,17 +15,20 @@ let singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo === null) {
       linesInfo.prevLineInfo = currentLine;
+
       //Also set the first actual content line encounter
       linesInfo.firstLine = currentLine;
     }
   },
   setStructureTypeByChar: (currentLine) => {
+
     //If the line has a slash in front than it is a folder,
     //regardless of whether or not it has periods in its name
 
     if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
       currentLine.inferType = 'folder';
     } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
+
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
     }
@@ -43,8 +46,10 @@ let singleLineInfoFunctions = {
     .when((prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
       return isFirstLine;
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
+
       //Assume is file type unless new information comes up
       currentLine.inferType = 'file';
+
       //Need to know the first content line indent amount to note the sibling check
       //read marker
       linesInfo.firstContentLineIndentAmount = currentLine.nameDetails.indentAmount;
@@ -55,6 +60,7 @@ let singleLineInfoFunctions = {
         linesInfo.requireIndentFactor = true;
       }
     })
+
   //Previous line indent is equal to the current line
   .when((prevLineIndent, currentLineIndent) => {
     return prevLineIndent === currentLineIndent;
@@ -127,15 +133,18 @@ let singleLineInfoFunctions = {
          currentLine.nameDetails.indentType, 'outdent');
 
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
+
           //Same prior level of indent means the prior is
           //a sibling to the current line
           if (prevLine.parent.sibling.length === 0) {
             prevLine.parent.sibling.push(currentLine);
+
             //Check against last line having less indent than previous
             if (!_.isNull(prevLine.parent.parent)) {
               prevLine.parent.parent.children.push(currentLine);
             }
           }
+
           //Check against last line having less indent than previous
           if (!_.isNull(prevLine.parent.parent)) {
             currentLine.parent = prevLine.parent.parent;
@@ -148,6 +157,7 @@ let singleLineInfoFunctions = {
 
           break;
         } else {
+
           //Continue the search by going up the parents
           prevLine = prevLine.parent;
         }
@@ -179,6 +189,7 @@ let singleLineInfoFunctions = {
 
     } else if (linesInfo.contentLineCount === 1 &&
       currentLine.structureName.length > 0 && isFirstLine) {
+
       //First content line
       singleLineInfoFunctions
         .compareIndent(

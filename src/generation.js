@@ -22,8 +22,8 @@ const tailCall = recursive.recur;
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = async function (lineInfo, rootPath, firstContentLineIndentAmount) {
-  //lineInfo is a single line
 
+  //lineInfo is a single line
   //Join the path safely by converting all backward
   //slashes to forward slashes
   let structureName = lineInfo.structureName,
@@ -33,6 +33,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   if (lineInfo.inferType === 'file') {
     writeFileAsync(structureCreatePath);
   } else {
+
     //Folder will be the only other structure type
     let parentPath = path.join(rootPath, lineInfo.structureName);
 
@@ -66,9 +67,11 @@ export
 default(linesInfo, rootPath) => {
 
   (async function dirGen() {
+
     //Check for root folder
     const hasRootDirAsync = await existsAsync(rootPath);
     if (hasRootDirAsync) {
+
       //Root folder exists and is to be removed
       await removeAsync(rootPath);
       await mkdirAsync(rootPath);

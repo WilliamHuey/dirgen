@@ -31,6 +31,7 @@ const linesInfoFunctions = {
 
 _.assign(linesInfo.prototype, {
   setGeneralData: (line, lineSetInfo) => {
+
     //Update current line data with line set info
     data = {
       line,

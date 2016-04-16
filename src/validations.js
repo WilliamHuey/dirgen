@@ -14,8 +14,10 @@ let validator = () => {};
 //Tail recursive utility function for top-level sibling searches
 let searchSiblingsTC = null;
 let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLines) {
+
   //Check until to the very last line is reached
   if (searchLineNum <= lastLineNum) {
+
     //Log repeats in an array within a map
     if (siblingsLines.has(searchLine.structureName)) {
       siblingsLines.set(searchLine.structureName,
