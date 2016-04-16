@@ -1,7 +1,8 @@
 Validations
 
 Generation
--Use trampa to protect against deeply nested folder because of recursion
+-Use tail-call to protect against deeply nested folder because of recursion
+  validations on top level
 
 Commandline
 -take input arguments

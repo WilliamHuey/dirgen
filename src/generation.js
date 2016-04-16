@@ -81,6 +81,5 @@ default(linesInfo, rootPath) => {
       linesInfo.prevLineInfo.nameDetails.line);
 
     createStructureTC(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount);
-    console.log("!!!!!!!!!!!! created");
   })();
 };

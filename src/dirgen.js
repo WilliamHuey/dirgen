@@ -1,6 +1,6 @@
-console.time('timer');
-
 'use strict';
+
+let time = process.hrtime();
 
 import "babel-polyfill";
 
@@ -17,6 +17,12 @@ import generateStructure from './generation';
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
 const validator = new Validations();
+
+process.on('exit', function() {
+  let diff = process.hrtime(time);
+
+  console.log('File and folder creation took %d nanoseconds', diff[0] * 1e9 + diff[1]);
+});
 
 //Track the status of the lines
 let linesInfo = {
@@ -91,10 +97,6 @@ readline.createInterface({
   })
   .on('close', () => {
     // console.log('closing the file');
-    // console.log("linesInfo.firstLine", linesInfo.firstLine, "\n\n");
-    // console.log("linesinfo", linesInfo);
-
-    // console.log("linesInfo.firstLine.sibling[0].sibling[0]", linesInfo.firstLine.sibling[0].sibling[0], "\n\n");
 
     //Hand off general line information
     //to create the actual files and folders
@@ -107,8 +109,5 @@ readline.createInterface({
     //validator.<rule>(<data>, <callback>, <callback arguments>)
     validator.presenceFirstLine(
       linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
-
-    console.log("almost end");
-    console.timeEnd('timer');
 
   });
