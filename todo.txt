@@ -1,17 +1,15 @@
-check if the environment is nodejs or browser
+testing
+ava
 
 Commandline
-vorpal
+yargs - non-immersive command line mode
 -take input arguments
 (info in the js file)
-
-testing
 
 Backlog/Optimize
 Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
--detect if the file has changed in the middle of operations
 -- pluralizing the error messages
 -combinations of warnings
 -also list out all warnings before the critical errors

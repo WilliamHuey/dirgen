@@ -1,5 +1,13 @@
 'use strict';
 
+if(typeof process === 'undefined' &&
+  typeof window !== 'undefined') {
+  console.error('Not in a Node environment,
+  (most likely in a browser),
+  can not advance with file and folder generation.');
+  return;
+}
+
 let time = process.hrtime();
 
 import "babel-polyfill";
