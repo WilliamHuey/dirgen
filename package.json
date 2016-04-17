@@ -11,7 +11,8 @@
     }
   ],
   "scripts": {
-    "start": "node_modules/webpack/bin/webpack.js --watch"
+    "start": "node_modules/webpack/bin/webpack.js --watch",
+    "test": "ava ./tests/verify.js"
   },
   "ava": {
     "require": [
