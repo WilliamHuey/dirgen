@@ -1,10 +1,11 @@
 'use strict';
 
-if(typeof process === 'undefined' &&
-  typeof window !== 'undefined') {
+if(typeof process === 'undefined') {
   console.error('Not in a Node environment,
-  (most likely in a browser),
   can not advance with file and folder generation.');
+  if(typeof window !== 'undefined') {
+    console.error('Most likely in a browser');
+  }
   return;
 }
 
