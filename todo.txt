@@ -1,5 +1,5 @@
 testing
-ava
+ava - compile tests on test file changes
 
 Commandline
 yargs - non-immersive command line mode
