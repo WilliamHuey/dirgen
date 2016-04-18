@@ -37,7 +37,8 @@
     "renderkid": "^2.0.0",
     "sanitize-filename": "^1.5.3",
     "strscanner": "0.0.8",
-    "tail-call": "0.0.1"
+    "tail-call": "0.0.1",
+    "yargs": "^4.6.0"
   },
   "devDependencies": {
     "ava": "^0.14.0",
