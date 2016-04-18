@@ -1,7 +1,8 @@
 testing
-ava - compile tests on test file changes
+ava - black box testing /
 
 Commandline
+use the bin property in package.json which should be included within a bin folder
 yargs - non-immersive command line mode
 -take input arguments
 (info in the js file)
