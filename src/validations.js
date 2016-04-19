@@ -7,6 +7,7 @@ import recursive from 'tail-call/core';
 
 //Source modules
 import message from './messages';
+import structureMarker from './character-code';
 
 const tailCall = recursive.recur;
 let validator = () => {};
@@ -95,9 +96,16 @@ Object.assign(validator.prototype, {
   cleanFileName: (lineNum, content) => {
     let cleanedName = sanitize(content);
     if (cleanedName !== content) {
-      message.warn(`Line #${lineNum}:
-        '${content.trim()}', has illegal characters
-        which has been replaced, resulting in '${cleanedName}'.`);
+
+      //One slash in front of line implied a folder
+      //but any invalid character persist after the first slash
+      //will cause the line to be invalid
+      if(!(content.charCodeAt(0) === structureMarker.folder &&
+        content.slice(1) === cleanedName)) {
+        message.warn(`Line #${lineNum}:
+          '${content.trim()}', has illegal characters
+          which has been replaced, resulting in '${cleanedName}'.`);
+      }
     }
   },
   sameIndentType: (lineNum, content,

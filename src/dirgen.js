@@ -51,7 +51,7 @@ let linesInfo = {
 
 //Read through all the lines of a supplied file
 readline.createInterface({
-    input: fs.createReadStream(`${process.cwd()}/demo/test.txt`)
+    input: fs.createReadStream(`${process.cwd()}/demo/example.txt`)
   })
   .on('line', (line) => {
     //Get properties from the current line in detail with

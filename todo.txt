@@ -1,5 +1,7 @@
+
 testing
 ava - black box testing /
+hamcrest assertion lib
 
 Commandline
 use the bin property in package.json which should be included within a bin folder

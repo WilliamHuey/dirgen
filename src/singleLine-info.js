@@ -4,12 +4,9 @@ import _ from 'lodash';
 
 //Source modules
 import Validations from './validations';
+import structureMarker from './character-code';
 
 const validator = new Validations();
-const structureMarker = {
-  folder: 47,
-  file: 46
-};
 
 let singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
