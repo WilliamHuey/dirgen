@@ -100,7 +100,7 @@ Object.assign(validator.prototype, {
       //One slash in front of line implied a folder
       //but any invalid character persist after the first slash
       //will cause the line to be invalid
-      if(!(content.charCodeAt(0) === structureMarker.folder &&
+      if (!(content.charCodeAt(0) === structureMarker.folder &&
         content.slice(1) === cleanedName)) {
         message.warn(`Line #${lineNum}:
           '${content.trim()}', has illegal characters

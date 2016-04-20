@@ -1,15 +1,20 @@
+Commandline
+
+dirgen -
+
+---
+yargs - non-immersive command line mode
+-take input arguments
+(info in the js file)
+
 
 testing
 ava - black box testing /
 hamcrest assertion lib
 
-Commandline
-use the bin property in package.json which should be included within a bin folder
-yargs - non-immersive command line mode
--take input arguments
-(info in the js file)
 
 Backlog/Optimize
+-right and left trim
 Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
@@ -19,6 +24,7 @@ reduce the cyclomatic complexity
 --process.exit() concerns when running programmatically
 
 Module
+-module type support
 -What should be checked in to the final npm repo?
 -Selective check-ins for the dist folder:
   -not dist folder on git, but allow for npm?
