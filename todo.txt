@@ -6,6 +6,7 @@ dirgen -
 yargs - non-immersive command line mode
 -take input arguments
 (info in the js file)
+-cache the creation of the command line
 
 
 testing
