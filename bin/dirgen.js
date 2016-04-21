@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+console.time('start');
 console.log("dirgen global commmand line execution");
 
 require('babel-core/register')({
@@ -7,3 +8,5 @@ require('babel-core/register')({
 });
 
 require('../lib/dirgen').default();
+
+console.timeEnd('start');
