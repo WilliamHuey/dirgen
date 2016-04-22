@@ -3,7 +3,7 @@ Commandline
 dirgen -
 
 ---
-yargs - non-immersive command line mode
+yargs
 -take input arguments
 (info in the js file)
 -cache the creation of the command line

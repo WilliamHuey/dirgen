@@ -7,6 +7,6 @@ require('babel-core/register')({
    presets: [ 'es2015' ]
 });
 
-require('../lib/dirgen').default();
+require('../lib/dirgen');
 
 console.timeEnd('start');
