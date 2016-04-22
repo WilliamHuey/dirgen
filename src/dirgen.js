@@ -1,14 +1,5 @@
 'use strict';
 
-//Check JavaScript environment before executing
-if (typeof process === 'undefined') {
-  console.error(`Not in a Node environment,can not advance with file and folder generation.`);
-}
-
-if (typeof window !== 'undefined') {
-  console.error('Most likely in a browser');
-}
-
 //Start timing the whole genration process
 let time = process.hrtime();
 
@@ -49,74 +40,94 @@ let linesInfo = {
   requireIndentFactor: false
 };
 
-//Read through all the lines of a supplied file
-readline.createInterface({
-    input: fs.createReadStream(`${process.cwd()}/demo/example.txt`)
-  })
-  .on('line', (line) => {
-    //Get properties from the current line in detail with
-    //the lexer
-    let lexResults = lexer.lex(line);
+//Demo template location and output
+const commandType = {
+  demo: {
+    template: `${process.cwd()}/demo/example.txt`,
+    output: `${process.cwd()}/demo/root-output/`
+  }
+};
 
-    // console.log("linesInfo", linesInfo);
+//Check if command is for demoing
+let commandTypeAction = (type, action) => {
+  if (type === 'demo') {
+    return commandType[type][action];
+  }
+};
 
-    //Accumulate general information lines
-    addLinesInfo.setGeneralData(line, linesInfo);
+module.exports = function(args) {
 
-    //Do not further process a line that is
-    //only whitespace or that is without content
-    if (line.length === 0 ||
-      lexResults.currentTrimmedValue.length === 0) {
-      return;
-    }
+  console.log("args", args);
 
-    //Use this object when performing checks
-    //with subsequent lines
-    let currentLine = {
-      structureName: linesInfo.currentTrimmedValue,
-      sibling: [],
-      parent: null,
-      children: [],
-      nameDetails: lexResults
-    };
+  //Read through all the lines of a supplied file
+  readline.createInterface({
+      input: fs.createReadStream(commandTypeAction(args, 'template'))
+    })
+    .on('line', (line) => {
+      //Get properties from the current line in detail with
+      //the lexer
+      let lexResults = lexer.lex(line);
 
-    //Get the information from prior lines to determine
-    //the siblings, parent, and children key values
-    currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
+      // console.log("linesInfo", linesInfo);
 
-    //Validate the recently set line data
-    validator.charCountUnder255(
-      currentLine.nameDetails.contentLength,
-      linesInfo.totalLineCount,
-      currentLine.structureName,
-      currentLine.inferType);
+      //Accumulate general information lines
+      addLinesInfo.setGeneralData(line, linesInfo);
 
-    validator.sameIndentType(
-      linesInfo.totalLineCount,
-      currentLine.structureName,
-      linesInfo.firstIndentationType,
-      currentLine.nameDetails.indentType);
+      //Do not further process a line that is
+      //only whitespace or that is without content
+      if (line.length === 0 ||
+        lexResults.currentTrimmedValue.length === 0) {
+        return;
+      }
 
-    validator.cleanFileName(
-      linesInfo.totalLineCount,
-      currentLine.structureName);
+      //Use this object when performing checks
+      //with subsequent lines
+      let currentLine = {
+        structureName: linesInfo.currentTrimmedValue,
+        sibling: [],
+        parent: null,
+        children: [],
+        nameDetails: lexResults
+      };
 
-    // console.log("linesInfo", linesInfo);
+      //Get the information from prior lines to determine
+      //the siblings, parent, and children key values
+      currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
-  })
-  .on('close', () => {
-    // console.log('closing the file');
+      //Validate the recently set line data
+      validator.charCountUnder255(
+        currentLine.nameDetails.contentLength,
+        linesInfo.totalLineCount,
+        currentLine.structureName,
+        currentLine.inferType);
 
-    //Hand off general line information
-    //to create the actual files and folders
+      validator.sameIndentType(
+        linesInfo.totalLineCount,
+        currentLine.structureName,
+        linesInfo.firstIndentationType,
+        currentLine.nameDetails.indentType);
 
-    let rootPath = `${process.cwd()}/demo/root-output/`;
+      validator.cleanFileName(
+        linesInfo.totalLineCount,
+        currentLine.structureName);
 
-    //But validate the presence of the firstLine
-    //if nothing, skip generation
-    //presenceFirstLine also sets off the generation
-    //validator.<rule>(<data>, <callback>, <callback arguments>)
-    validator.presenceFirstLine(
-      linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
+      // console.log("linesInfo", linesInfo);
 
-  });
+    })
+    .on('close', () => {
+      // console.log('closing the file');
+
+      //Hand off general line information
+      //to create the actual files and folders
+
+      let rootPath = commandTypeAction(args, 'output');
+
+      //But validate the presence of the firstLine
+      //if nothing, skip generation
+      //presenceFirstLine also sets off the generation
+      //validator.<rule>(<data>, <callback>, <callback arguments>)
+      validator.presenceFirstLine(
+        linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
+
+    });
+};

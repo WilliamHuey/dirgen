@@ -67,7 +67,7 @@
       "args": "after-used"
       }],
     "no-use-before-define": 2,
-    "consistent-return": 2,
+    "consistent-return": 0,
     "complexity": [2, 7],
     "curly": [2, "multi-line"],
     "default-case": 2,
