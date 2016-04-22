@@ -15,6 +15,7 @@ import Lexer from './lexer';
 import Validations from './validations';
 import Timer from './timer';
 import generateStructure from './generation';
+import commandTypeAction from './command-type';
 
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
@@ -40,30 +41,14 @@ let linesInfo = {
   requireIndentFactor: false
 };
 
-//Demo template location and output
-const commandType = {
-  demo: {
-    template: `${process.cwd()}/demo/example.txt`,
-    output: `${process.cwd()}/demo/root-output/`
-  }
-};
-
-//Check if command is for demoing
-let commandTypeAction = (type, action) => {
-  if (type === 'demo') {
-    return commandType[type][action];
-  }
-};
-
-module.exports = function(args) {
-
-  console.log("args", args);
+export default (args) => {
 
   //Read through all the lines of a supplied file
   readline.createInterface({
       input: fs.createReadStream(commandTypeAction(args, 'template'))
     })
     .on('line', (line) => {
+
       //Get properties from the current line in detail with
       //the lexer
       let lexResults = lexer.lex(line);
@@ -128,6 +113,5 @@ module.exports = function(args) {
       //validator.<rule>(<data>, <callback>, <callback arguments>)
       validator.presenceFirstLine(
         linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
-
     });
 };

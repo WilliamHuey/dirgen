@@ -1,13 +1,9 @@
-Commandline
-
-dirgen -
 
 ---
-yargs
+commandline - yargs
 -take input arguments
 (info in the js file)
 -cache the creation of the command line
-
 
 testing
 ava - black box testing /
@@ -23,6 +19,13 @@ reduce the cyclomatic complexity
 -combinations of warnings
 -also list out all warnings before the critical errors
 --process.exit() concerns when running programmatically
+--sanitize (warn on attempt of creating file/folder using a character that is allowed in current os but is forbidden in other oses)
+permitted value of true, false,step
+--trim-name (windows will not allow filenames with whitespace at the ends of the filename)
+--encoding type
+--permission level
+--overwrite
+-warn [skip|ignore|walk]
 
 Module
 -module type support
