@@ -9,7 +9,7 @@ if (typeof window !== 'undefined') {
   console.error('Most likely in a browser');
 }
 
-console.time('Command Line Time');
+console.time('Command Line Load Time');
 
 require('babel-core/register')({
    presets: [ 'es2015' ]
@@ -17,4 +17,4 @@ require('babel-core/register')({
 
 require('../lib/dirgen');
 
-console.timeEnd('Command Line Time');
+console.timeEnd('Command Line Load Time');

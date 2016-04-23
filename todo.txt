@@ -1,11 +1,11 @@
 
 ---
-commandline - yargs
+commandline - nash
 -validation for the input args
--no output folder given, then use the template file name as the output folder name
+
 -take input arguments
 (info in the js file)
--cache the creation of the command line
+
 
 testing
 ava - black box testing /
@@ -28,6 +28,7 @@ permitted value of true, false,step
 --permission level
 --overwrite
 -warn [skip|ignore|walk]
+-cache the creation of the command line
 
 Module
 -module type support
