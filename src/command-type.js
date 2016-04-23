@@ -1,8 +1,12 @@
+import path from 'path';
+
+const rootModulePath = path.resolve(__dirname, '../');
+
 //Demo template location and output
 const commandType = {
   demo: {
-    template: `${process.cwd()}/demo/example.txt`,
-    output: `${process.cwd()}/demo/example-output/`
+    template: `${rootModulePath}/demo/example.txt`,
+    output: `${rootModulePath}/demo/example-output/`
   }
 };
 
