@@ -1,3 +1,5 @@
+'use strict';
+
 //Vendor modules
 import path from 'path';
 
