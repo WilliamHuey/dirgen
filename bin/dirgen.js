@@ -9,8 +9,7 @@ if (typeof window !== 'undefined') {
   console.error('Most likely in a browser');
 }
 
-console.time('start');
-console.log("dirgen global commmand line execution");
+console.time('Command Line Time');
 
 require('babel-core/register')({
    presets: [ 'es2015' ]
@@ -18,4 +17,4 @@ require('babel-core/register')({
 
 require('../lib/dirgen');
 
-console.timeEnd('start');
+console.timeEnd('Command Line Time');
