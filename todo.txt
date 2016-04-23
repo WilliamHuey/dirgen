@@ -1,4 +1,4 @@
-
+use strict on all files
 ---
 commandline - nash
 -validation for the input args
