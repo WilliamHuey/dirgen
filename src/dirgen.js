@@ -41,11 +41,11 @@ let linesInfo = {
   requireIndentFactor: false
 };
 
-export default (args) => {
+export default (action, actionParams) => {
 
   //Read through all the lines of a supplied file
   readline.createInterface({
-      input: fs.createReadStream(commandTypeAction(args, 'template'))
+      input: fs.createReadStream(commandTypeAction(action, 'template', actionParams))
     })
     .on('line', (line) => {
 
@@ -105,7 +105,7 @@ export default (args) => {
       //Hand off general line information
       //to create the actual files and folders
 
-      let rootPath = commandTypeAction(args, 'output');
+      let rootPath = commandTypeAction(action, 'output', actionParams);
 
       //But validate the presence of the firstLine
       //if nothing, skip generation

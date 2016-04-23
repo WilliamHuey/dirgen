@@ -11,8 +11,12 @@ const commandType = {
 };
 
 //Check if command is for demoing
-export default (type, action) => {
+export default (type, action, generateParams) => {
+
   if (type === 'demo') {
     return commandType[type][action];
+  } else {
+    console.log("need to process generateParams", generateParams);
+    return generateParams[action];
   }
 };

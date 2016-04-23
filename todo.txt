@@ -10,7 +10,10 @@ commandline - nash
 testing
 ava - black box testing /
 hamcrest assertion lib
-
+t.ok() → t.truthy()
+t.notOk() → t.falsy()
+t.same() → t.deepEqual()
+t.notSame() → t.notDeepEqual()
 
 Backlog/Optimize
 -right and left trim
