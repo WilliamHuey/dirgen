@@ -1,5 +1,6 @@
 'use strict';
 
+//Vendor modules
 import RenderKid from 'renderkid';
 import PrettyError from 'pretty-error';
 

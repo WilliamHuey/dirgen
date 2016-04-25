@@ -1,10 +1,9 @@
-use strict on all files
----
+
+
+
 commandline - nash
 -validation for the input args
-
--take input arguments
-(info in the js file)
+-- no commands, than it will be help
 
 
 testing
