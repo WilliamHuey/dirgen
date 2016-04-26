@@ -12,10 +12,10 @@ import fs from 'fs';
 //Source modules
 import AddLinesInfo from './lines-info';
 import Lexer from './lexer';
-import Validations from './validations';
-import Timer from './timer';
+import Validations from './lines-validations';
+import Timer from './process-timer';
 import generateStructure from './generation';
-import commandTypeAction from './command-type';
+import commandTypeAction from './cli-command-type';
 
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();

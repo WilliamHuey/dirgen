@@ -1,8 +1,5 @@
-
 commandline - nash
 --validation for the input args
---version in the help too
---non-match command will trigger help
 
 testing
 ava - black box testing /

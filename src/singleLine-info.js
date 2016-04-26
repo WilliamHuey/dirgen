@@ -5,7 +5,7 @@ import guard from 'guard-js';
 import _ from 'lodash';
 
 //Source modules
-import Validations from './validations';
+import Validations from './lines-validations';
 import structureMarker from './character-code';
 
 const validator = new Validations();

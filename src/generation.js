@@ -14,7 +14,7 @@ import {
   writeFileAsync,
   removeAsync} from 'fs-extra-promise';
 
-import Validations from './validations';
+import Validations from './lines-validations';
 
 const validator = new Validations();
 const tailCall = recursive.recur;
