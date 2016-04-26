@@ -15,6 +15,6 @@ require('babel-core/register')({
    presets: [ 'es2015' ]
 });
 
-require('../lib/dirgen');
+require('../lib/dirgen-cli-commands');
 
 console.timeEnd('Command Line Load Time');

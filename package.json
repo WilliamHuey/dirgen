@@ -11,7 +11,7 @@
     }
   ],
   "bin": {
-    "dirgen": "./bin/dirgen.js"
+    "dirgen": "./bin/dirgen-cli-entry.js"
   },
   "scripts": {
     "start": "node_modules/webpack/bin/webpack.js --watch",

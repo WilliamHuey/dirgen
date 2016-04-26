@@ -1,7 +1,6 @@
 
 commandline - nash
--validation for the input args
--- no commands, than it will be help
+--validation for the input args
 --version in the help too
 --non-match command will trigger help
 
