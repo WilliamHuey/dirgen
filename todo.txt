@@ -1,6 +1,4 @@
 
-
-
 commandline - nash
 -validation for the input args
 -- no commands, than it will be help
