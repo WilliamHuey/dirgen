@@ -1,5 +1,7 @@
-commandline - nash
---validation for the input args
+commandline
+--check for textual format when reading template file
+--pretty warnings for the cli
+--warn on existing folder
 --warn of excess arguments in the command line
 
 testing

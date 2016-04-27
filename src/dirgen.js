@@ -5,7 +5,7 @@ let time = process.hrtime();
 
 import "babel-polyfill";
 
-//Native Nodejs modules
+//Native modules
 import readline from 'readline';
 import fs from 'fs';
 

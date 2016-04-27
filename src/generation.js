@@ -1,6 +1,6 @@
 'use strict';
 
-//Native Nodejs modules
+//Native modules
 import fs from 'fs';
 import path from 'path';
 
