@@ -1,7 +1,5 @@
-eslint not working
 
 commandline
---check for textual format when reading template file
 --pretty warnings for the cli
 --warn of excess arguments in the command line
 
