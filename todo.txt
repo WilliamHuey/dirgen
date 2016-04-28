@@ -1,7 +1,8 @@
+eslint not working
+
 commandline
 --check for textual format when reading template file
 --pretty warnings for the cli
---warn on existing folder
 --warn of excess arguments in the command line
 
 testing
@@ -29,6 +30,7 @@ permitted value of true, false,step
 --overwrite
 -warn [skip|ignore|walk]
 -cache the creation of the command line
+--warn on existing folder
 
 Module
 -module type support
