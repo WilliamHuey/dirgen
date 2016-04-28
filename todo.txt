@@ -1,7 +1,3 @@
-commandline
---warn of excess arguments in the command line
-and options
-
 testing
 ava - black box testing /
 hamcrest assertion lib

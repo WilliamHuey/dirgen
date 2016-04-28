@@ -4,8 +4,8 @@
 import RenderKid from 'renderkid';
 import PrettyError from 'pretty-error';
 
-let renderKid = new RenderKid();
-let prettyError = new PrettyError();
+const renderKid = new RenderKid();
+const prettyError = new PrettyError();
 
 renderKid.style({
   "message": {
