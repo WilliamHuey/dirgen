@@ -1,7 +1,6 @@
-
 commandline
---pretty warnings for the cli
 --warn of excess arguments in the command line
+and options
 
 testing
 ava - black box testing /
