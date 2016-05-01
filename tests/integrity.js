@@ -12,8 +12,8 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   var exec = childProcess.exec;
 
-  lab.experiment.skip('with no commands or arguments', function() {
-    lab.test('triggers help message', function(done) {
+  lab.experiment.skip('with no commands or options', function() {
+    lab.test('will display the help message', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js', function(error, stdout, stderr) {
 
@@ -26,7 +26,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   lab.experiment.skip('and with the generate command', function() {
 
-    lab.test('and no arguments triggers error message', function(done) {
+    lab.test('and no arguments displays an error message', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate', function(error, stdout, stderr) {
 
@@ -52,7 +52,42 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   */
 
-  lab.experiment('and with remaining commands', function() {
+  lab.experiment('and with information commands', function() {
+
+    lab.test('with help command will display the help message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js help', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Description'));
+        done(error);
+      });
+    });
+
+    lab.test('with help alias command, "h", will display the help message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js h', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Description'));
+        done(error);
+      });
+    });
+
+    lab.test('with help alias option , "--help" will display the help message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js --help', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Description'));
+        done(error);
+      });
+    });
+
+    lab.test('with version command produces the same version number as in the package.json file', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js version', function(error, stdout, stderr) {
+        __.assertThat(stdout, __.containsString(process.env.npm_package_version));
+        done(error);
+      });
+    });
 
     lab.test('with version command will display the module information message', function(done) {
 
@@ -91,7 +126,14 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   });
 
-  /* alias for the commands */
+  /*
+
+  alias for the commands
+  generation console time
+  error messages for file generation
+  file integrity checks
+  */
+
 
 
 });
