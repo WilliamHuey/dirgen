@@ -24,15 +24,38 @@ lab.test('with no commands or arguments triggers help', (done) => {
 
   console.log("proces.cwd()", process.cwd());
 
-  var execFileSync = childProcess.execFileSync;
-  var cli = execFileSync('/Users/williamhuey/Desktop/Coding/JavaScript/npm-modules/dirgen/bin/dirgen-cli-entry.js');
+  console.log("__dirname", __dirname);
 
-  console.log("cli", cli.toString('utf8'));
+  //node ../lib/dirgen-cli-commands.js g agds dds
+  var exec= childProcess.exec;
+  var cli = exec(`node ${__dirname}/../bin/dirgen-cli-entry.js`, function(error, stdout, stderr) {
+    console.log("error", error);
+    console.log("stdout", stdout);
+    console.log("stderr", stderr);
+    // console.log("callback for execfile");
 
-
-    __.assertThat((1 + 1), __.equalTo(2));
+    // __.assertThat((1 + 1), __.equalTo(2));
     done();
+  });
+
+  // console.log("cli", cli.toString('utf8'));
+
+  cli.stdout.on('data', (data) => {
+    console.log('stdout:', data);
+  });
+  //
+  cli.stderr.on('data', (data) => {
+    console.log('stderr:', data);
+  });
+  //
+  cli.once('close', (data) => {
+    console.log('close: ', data);
+  });
+
+
+
 });
+
 
 
 });
