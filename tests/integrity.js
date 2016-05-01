@@ -54,9 +54,27 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   lab.experiment('and with remaining commands', function() {
 
-    lab.test('with version command will display the module information', function(done) {
+    lab.test('with version command will display the module information message', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js version', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Dirgen v'));
+        done(error);
+      });
+    });
+
+    lab.test('with version alias command, "v", will display the module information message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js v', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Dirgen v'));
+        done(error);
+      });
+    });
+
+    lab.test('with version alias option , "--version" will display the module information message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js --version', function(error, stdout, stderr) {
 
         __.assertThat(stdout, __.containsString('Dirgen v'));
         done(error);
