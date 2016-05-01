@@ -9,7 +9,7 @@ if (typeof process === 'undefined') {
   console.error('Most likely in a browser');
 }
 
-console.time('Command Line Load Time');
+//console.time('Command Line Load Time');
 
 require('babel-core/register')({
    presets: [ 'es2015' ]
@@ -17,4 +17,4 @@ require('babel-core/register')({
 
 require('../lib/dirgen-cli-commands');
 
-console.timeEnd('Command Line Load Time');
+//console.timeEnd('Command Line Load Time');

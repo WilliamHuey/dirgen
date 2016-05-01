@@ -12,7 +12,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   var exec = childProcess.exec;
 
-  lab.experiment('with no commands or arguments', function() {
+  lab.experiment.skip('with no commands or arguments', function() {
     lab.test('triggers help message', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js', function(error, stdout, stderr) {
@@ -24,8 +24,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
   });
 
 
-
-  lab.experiment('and with the generate command', function() {
+  lab.experiment.skip('and with the generate command', function() {
 
     lab.test('and no arguments triggers error message', function(done) {
 
@@ -36,7 +35,6 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
   });
-
 
 
   /*
@@ -52,21 +50,31 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
     'with generate command and valid template file but invalid destination folder triggers error message'
 
-
-
   */
+
+  lab.experiment('and with remaining commands', function() {
+
+    lab.test('with version command will display the module information', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js version', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Dirgen v'));
+        done(error);
+      });
+    });
+
+    /*
+      'with "demo" command will create the example folder'
+
+      'with "demo" command will create the files and folders that will match the demo template file'
+
+
+    */
+
+  });
+
+  /* alias for the commands */
 
 
 });
 
-lab.experiment('On valid cli commands and arguments', function() {
-
-  /*
-    'with "demo" command will create the example folder'
-
-    'with "demo" command will create the files and folders that will match the demo template file'
-
-    'with'
-  */
-
-});
