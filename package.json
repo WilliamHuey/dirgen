@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "node_modules/webpack/bin/webpack.js --watch",
-    "test": "node_modules/lab/bin/lab ./tests/integrity.js -vp"
+    "test": "node_modules/lab/bin/lab ./tests/integrity.js -v"
   },
   "ava": {
     "require": [
@@ -62,6 +62,7 @@
     "hamjest": "^2.13.0",
     "json-loader": "^0.5.4",
     "lab": "^10.3.2",
+    "mocha": "^2.4.5",
     "webpack": "^1.13.0"
   },
   "engine": "node >= 0.10.x",

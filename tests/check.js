@@ -1,11 +1,15 @@
-
-
-// require('lab').script();
-// var __ = require('hamjest');
+// describe('Sample Test', function(){
+//      it("Should test rest api", function(done){
+//             console.log("Should test rest api");
+//             done();
+//
+//     });
+//
+// });
 
 var childProcess = require('child_process'),
   path = require('path');
-
+console.log("childProcess", childProcess);
 var bin = path.resolve(__dirname, '../bin/'),
   cliEntry = bin + '/dirgen-cli-entry.js';
 
