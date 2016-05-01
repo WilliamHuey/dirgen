@@ -21,63 +21,18 @@ console.log("cliEntry", cliEntry);
 lab.test('with no commands or arguments triggers help', (done) => {
 
   console.log("with no commands");
-  // console.log("process.env", process.env);
 
   console.log("proces.cwd()", process.cwd());
 
-  var exec = require('child_process').exec;
-var ls = exec('node', [' --help'], { stdio: 'inherit' });
+  var execFileSync = childProcess.execFileSync;
+  var cli = execFileSync('/Users/williamhuey/Desktop/Coding/JavaScript/npm-modules/dirgen/bin/dirgen-cli-entry.js');
 
-  ls.stdout.on('data', (data) => {
-    console.log('stdout: ${data}', data);
-  });
+  console.log("cli", cli.toString('utf8'));
 
-  ls.stderr.on('data', (data) => {
-    console.log('stderr: ${data}', data);
-  });
-
-  ls.on('close', (code) => {
-    console.log('child process exited with code ${code}');
-  });
-
-  // var exec = childProcess.exec;
-  // var cli = exec('node ../dirgen/bin/dirgen-cli-entry.js', function(error, stdout, stderr) {
-  //   console.log("stdout", stdout);
-  //   console.log("error", error);
-  //   console.log("stderr", stderr);
-  // });
-  //
-  // cli.stdout.on('data', (data) => {
-  //   console.log(`stdout: ${data}`);
-  // });
-  //
-  // cli.stderr.on('data', (data) => {
-  //   console.log(`stderr: ${data}`);
-  // });
-  //
-  // cli.on('close', (data) => {
-  //   console.log(`close: ${data}`);
-  // });
 
     __.assertThat((1 + 1), __.equalTo(2));
     done();
 });
 
-
-
-
-// console.log("process.cwd(),", process.cwd());
-
-//
-// console.log("__dirname", __dirname);
-//
-// var exec = child.exec;
-//
-// var entry = exec("node " + bin + "/dirgen-cli-entry.js g ", function (error, stdout, stderr) {
-//   // if you also want to change current process working directory:
-//   console.log("error", error);
-//   console.log("stdout", stdout);
-//   console.log("stderr", stderr);
-// });
 
 });
