@@ -1,81 +1,33 @@
+'use strict'
+
 import test from 'ava';
 import child from 'child_process';
 import path from 'path';
+// import spawn from 'spawn-please';
 
-var exec = require('child_process').exec;
+// console.log('proces env path', process.env.PATH );
+console.log("process.cwd(),", process.cwd());
+var bin = path.resolve(process.cwd(), '../bin/');
+console.log("bin", bin);
 
+const exec = child.exec;
+const entry = exec(`node ../bin/dirgen-cli-entry.js dsfad asfds`, function (error, stdout, stderr) {
+  // if you also want to change current process working directory:
+  console.log("error", error);
+  console.log("stdout", stdout);
+  console.log("stderr", stderr);
+});
 
+entry.on('close', function(){
+  console.log("close on entry");
+});
 
-
-// console.log("__dirname", __dirname);
-// console.log("path.resolve(${__dirname}", path.resolve(__dirname, '../dist'));
-
-const cmd = path.resolve(__dirname, '../dist/dirgen.js');
+const cmd = path.resolve(__dirname, '../bin/dirgen-cli-entry.js');
 // console.log("cmd", cmd);
 const nodeCmd = 'node ' + cmd;
-
 // console.log("nodeCmd", nodeCmd);
-//
-// const execFile = require('child_process').execFile;
 
-
-test('show the help command with no template or folder', t => {
-
-  const
-    spawn = require( 'child_process' ).spawn,
-    ls = spawn( 'node', [ './makeASound.js'] );
-
-ls.stdout.on( 'data', ( data ) => {
-    console.log( `stdout: ${data}` );
-});
-
-ls.stderr.on( 'data', ( data ) => {
-    console.log( `stderr: ${data}` );
-});
-
-ls.on( 'close', ( code ) => {
-    console.log( `child process exited with code ${code}` );
-});
-
-
-  // exec('node ./makeASound.js', function(error, stdout, stderr) {
-  //   console.log("error", error);
-  //   console.log("stdout", stdout);
-  //   console.log("stderr", stderr);
-  // });
-
-
-  // const child = execFile('node', [cmd] ,(error, stdout, stderr) => {
-  //   if (error) {
-  //     throw error;
-  //   }
-  //   console.log(stdout);
-  // });
-
-  // var child = spawn(process.execPath, [__filename, 'child'])
-
-//   const exec = require('child_process').exec;
-// const child = exec('../dist/dirgen.js',
-//   (error, stdout, stderr) => {
-//
-//     console.log(`stdout: ${stdout}`);
-//     console.log(`stderr: ${stderr}`);
-//     if (error !== null) {
-//       console.log(`exec error: ${error}`);
-//     }
-//     throw(new Error('stop'));
-// });
-
-//   const spawn = require('child_process').spawn;
-//   const ls = spawn(nodeCmd);
-//
-//   ls.stdout.on('data', (data) => {
-//     console.log(`stdout: ${data}`);
-//   });
-//   ls.stderr.on('data', (data) => {
-//   console.log(`stderr: ${data}`);
-// });
-
+// test('show the help command with no template or folder', t => {
 
     // t.notDeepEqual([1, 2], [1, 2]);
     // child.exec(nodeCmd, function(err, stdout) {
@@ -85,4 +37,4 @@ ls.on( 'close', ( code ) => {
     //   // done(err);
     //   t.notDeepEqual([1, 2], [1, 2]);
     // });
-});
+// });

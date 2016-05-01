@@ -1,6 +1,6 @@
 'use strict';
 
-//Start timing the whole genration process
+//Start timing the whole generation process
 let time = process.hrtime();
 
 import "babel-polyfill";
