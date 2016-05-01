@@ -8,6 +8,8 @@ var childProcess = require('child_process'),
 var lab = exports.lab = require('lab').script(),
   __ = require('hamjest');
 
+lab.experiment('flag: --completion', function() {
+
 //Testing cli file as the entry point of the dirgen module
 var bin = path.resolve(__dirname, '../bin/'),
   cliEntry = bin + '/dirgen-cli-entry.js';
@@ -21,15 +23,17 @@ lab.test('with no commands or arguments triggers help', (done) => {
   console.log("with no commands");
   // console.log("process.env", process.env);
 
+  console.log("proces.cwd()", process.cwd());
+
   var exec = require('child_process').exec;
-  var ls = exec('node', ['../dirgen/bin/dirgen-cli-entry.js']);
+var ls = exec('node', [' --help'], { stdio: 'inherit' });
 
   ls.stdout.on('data', (data) => {
-    console.log('stdout: ${data}');
+    console.log('stdout: ${data}', data);
   });
 
   ls.stderr.on('data', (data) => {
-    console.log('stderr: ${data}');
+    console.log('stderr: ${data}', data);
   });
 
   ls.on('close', (code) => {
@@ -75,3 +79,5 @@ lab.test('with no commands or arguments triggers help', (done) => {
 //   console.log("stdout", stdout);
 //   console.log("stderr", stderr);
 // });
+
+});
