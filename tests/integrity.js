@@ -8,54 +8,65 @@ var childProcess = require('child_process'),
 var lab = exports.lab = require('lab').script(),
   __ = require('hamjest');
 
-lab.experiment('flag: --completion', function() {
+lab.experiment('Cli commands when input is "dirgen" and', function() {
 
-//Testing cli file as the entry point of the dirgen module
-var bin = path.resolve(__dirname, '../bin/'),
-  cliEntry = bin + '/dirgen-cli-entry.js';
+  var exec = childProcess.exec;
 
-console.log("cliEntry", cliEntry);
+  lab.experiment('with no commands or arguments', function() {
+    lab.test('triggers help message', function(done) {
 
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js', function(error, stdout, stderr) {
 
-
-lab.test('with no commands or arguments triggers help', (done) => {
-
-  console.log("with no commands");
-
-  console.log("proces.cwd()", process.cwd());
-
-  console.log("__dirname", __dirname);
-
-  //node ../lib/dirgen-cli-commands.js g agds dds
-  var exec= childProcess.exec;
-  var cli = exec(`node ${__dirname}/../bin/dirgen-cli-entry.js`, function(error, stdout, stderr) {
-    console.log("error", error);
-    console.log("stdout", stdout);
-    console.log("stderr", stderr);
-    // console.log("callback for execfile");
-
-    // __.assertThat((1 + 1), __.equalTo(2));
-    done();
+        __.assertThat(stdout, __.containsString('Description'));
+        done(error);
+      });
+    });
   });
 
-  // console.log("cli", cli.toString('utf8'));
 
-  cli.stdout.on('data', (data) => {
-    console.log('stdout:', data);
-  });
-  //
-  cli.stderr.on('data', (data) => {
-    console.log('stderr:', data);
-  });
-  //
-  cli.once('close', (data) => {
-    console.log('close: ', data);
+
+  lab.experiment('and with the generate command', function() {
+
+    lab.test('and no arguments triggers error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('No file template nor folder destination given.'));
+        done(error);
+      });
+    });
   });
 
+
+
+  /*
+    'with generate command and invalid template file but no destination folder triggers error message'
+
+    'with generate command and invalid template file but valid destination folder triggers error message'
+
+    'with generate command and invalid template file but invalid destination folder triggers error message'
+
+    'with generate command and valid template file but no destination folder triggers error message'
+
+    'with generate command and valid template file but valid destination folder triggers no error message'
+
+    'with generate command and valid template file but invalid destination folder triggers error message'
+
+
+
+  */
 
 
 });
 
+lab.experiment('On valid cli commands and arguments', function() {
 
+  /*
+    'with "demo" command will create the example folder'
+
+    'with "demo" command will create the files and folders that will match the demo template file'
+
+    'with'
+  */
 
 });
