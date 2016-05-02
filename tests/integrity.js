@@ -24,11 +24,38 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
   });
 
 
-  lab.experiment.skip('and with the generate command', function() {
+  lab.experiment('and with the generate command', function() {
 
     lab.test('and no arguments displays an error message', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('No file template nor folder destination given.'));
+        done(error);
+      });
+    });
+
+    lab.test('with generate command, and with no arguments will display the error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('No file template nor folder destination given.'));
+        done(error);
+      });
+    });
+
+    lab.test('using alias command, "g", and with no arguments will display an error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js g', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('No file template nor folder destination given.'));
+        done(error);
+      });
+    });
+
+    lab.test('using alias command, "gen", and with no arguments will display an error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js gen', function(error, stdout, stderr) {
 
         __.assertThat(stdout, __.containsString('No file template nor folder destination given.'));
         done(error);
