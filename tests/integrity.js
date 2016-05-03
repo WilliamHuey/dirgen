@@ -89,6 +89,14 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
+    lab.test('with generate command and valid template file but no destination folder will display error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate ../demo/example.txt', function(error, stdout, stderr) {
+        __.assertThat(stdout, __.containsString('No folder destination given in second command input.'));
+        done(error);
+      });
+    });
+
 
 
   });
@@ -97,14 +105,14 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
   /*
 
 
-    'with generate command and valid template file but no destination folder will display error message'
+
 
 
 
     'with generate command and valid template file but invalid destination folder will display error message'
 
 
-    //do not use the following as the demo test will verify the workings of an actual successful generation
+    //use the demo test to verify the workings of an actual successful generation
     'with generate command and valid template file and valid destination folder will display no error message'
 
   */
@@ -185,7 +193,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   /*
 
-  alias for the commands
+  demo command
   generation console time
   error messages for file generation
   file integrity checks
