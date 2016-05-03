@@ -1,10 +1,6 @@
 testing
-ava - black box testing /
+lab
 hamcrest assertion lib
-t.ok() → t.truthy()
-t.notOk() → t.falsy()
-t.same() → t.deepEqual()
-t.notSame() → t.notDeepEqual()
 
 Backlog/Optimize
 -try catch in the async await is required

@@ -17,11 +17,6 @@
     "start": "node_modules/webpack/bin/webpack.js --watch",
     "test": "node_modules/lab/bin/lab ./tests/integrity.js -vp -m 0"
   },
-  "ava": {
-    "require": [
-      "babel-register"
-    ]
-  },
   "babel": {
     "presets": [
       "es2015"
@@ -42,7 +37,6 @@
     "tail-call": "0.0.1"
   },
   "devDependencies": {
-    "ava": "^0.14.0",
     "babel": "^6.5.2",
     "babel-core": "^6.8.0",
     "babel-eslint": "^6.0.4",
@@ -62,7 +56,6 @@
     "hamjest": "^2.13.0",
     "json-loader": "^0.5.4",
     "lab": "^10.3.2",
-    "mocha": "^2.4.5",
     "webpack": "^1.13.0"
   },
   "engine": "node >= 0.10.x",
