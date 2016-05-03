@@ -61,25 +61,55 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
         done(error);
       });
     });
+
+    lab.test('with generate command and invalid template file but no destination folder will display error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate //', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('No folder destination given in second command input.'));
+        done(error);
+      });
+    });
+
+    lab.test('with generate command and invalid template file but valid destination folder will display error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate /zzz ../demo', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Not a valid file. Need a plain text file format in the first'));
+        done(error);
+      });
+    });
+
+    lab.test('with generate command and invalid template file and invalid destination folder will display error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate /zzz ../adsf', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Not a valid file. Need a plain text file format in the first'));
+        done(error);
+      });
+    });
+
+
+
   });
 
 
   /*
-    'with generate command and invalid template file but no destination folder triggers error message'
 
-    'with generate command and invalid template file but valid destination folder triggers error message'
 
-    'with generate command and invalid template file but invalid destination folder triggers error message'
+    'with generate command and valid template file but no destination folder will display error message'
 
-    'with generate command and valid template file but no destination folder triggers error message'
 
-    'with generate command and valid template file but valid destination folder triggers no error message'
 
-    'with generate command and valid template file but invalid destination folder triggers error message'
+    'with generate command and valid template file but invalid destination folder will display error message'
+
+
+    //do not use the following as the demo test will verify the workings of an actual successful generation
+    'with generate command and valid template file and valid destination folder will display no error message'
 
   */
 
-  lab.experiment('and with information commands', function() {
+  lab.experiment.skip('and with information commands', function() {
 
     lab.test('with help command will display the help message', function(done) {
 

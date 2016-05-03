@@ -7,23 +7,19 @@ t.same() → t.deepEqual()
 t.notSame() → t.notDeepEqual()
 
 Backlog/Optimize
+-try catch in the async await is required
 -right and left trim
 Remove the lodash dependency or rollup?
 npm start more compatible with windows
 reduce the cyclomatic complexity
 -- pluralizing the error messages
 -combinations of warnings
--also list out all warnings before the critical errors
---process.exit() concerns when running programmatically
---sanitize (warn on attempt of creating file/folder using a character that is allowed in current os but is forbidden in other oses)
-permitted value of true, false,step
---trim-name (windows will not allow filenames with whitespace at the ends of the filename)
+
 --encoding type
 --permission level
---overwrite
--warn [skip|ignore|walk]
--cache the creation of the command line
---warn on existing folder
+--step through
+  --overwrite
+  -warn [skip|ignore|walk]
 
 Module
 -module type support
