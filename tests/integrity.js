@@ -97,21 +97,20 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
+    lab.test('with generate command and valid template file but invalid destination folder will display error message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js generate ' + __dirname + '/../demo/example.txt ../adscd', function(error, stdout, stderr) {
+        __.assertThat(stdout, __.containsString('Not a valid folder.'));
+        done(error);
+      });
+    });
+
 
 
   });
 
 
   /*
-
-
-
-
-
-
-    'with generate command and valid template file but invalid destination folder will display error message'
-
-
     //use the demo test to verify the workings of an actual successful generation
     'with generate command and valid template file and valid destination folder will display no error message'
 
@@ -197,6 +196,9 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
   generation console time
   error messages for file generation
   file integrity checks
+    -number of file and folder count is the same as the number of items in the file
+    -name and type should reflect the file after sanitization
+
   */
 
 
