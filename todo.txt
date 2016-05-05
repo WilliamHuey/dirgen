@@ -1,3 +1,5 @@
+problem with slash in the front not generating a folder
+
 testing
 lab
 hamcrest assertion lib
