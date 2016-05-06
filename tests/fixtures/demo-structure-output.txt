@@ -1,8 +1,8 @@
 /example-output/aFolderPerhaps
 /example-output/aFolderPerhaps/fasdfaffa
 /example-output/razzle
+/example-output/razzle/what
 /example-output/razzle/storaging
-/example-output/razzle/storaging/what
 /example-output/razzle/storaging/1
 /example-output/razzle/storaging/1/blah.ext
 /example-output/razzle/storaging/1/notright
