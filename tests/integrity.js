@@ -5,6 +5,7 @@ var childProcess = require('child_process'),
   path = require('path');
 
 //Vendor modules
+var fs = require('fs-extra-promise');
 var lab = exports.lab = require('lab').script(),
   __ = require('hamjest');
 
@@ -24,7 +25,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
   });
 
 
-  lab.experiment('and with the generate command', function() {
+  lab.experiment.skip('and with the generate command', function() {
 
     lab.test('and no arguments displays an error message', function(done) {
 
@@ -116,7 +117,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   */
 
-  lab.experiment.skip('and with information commands', function() {
+  lab.experiment('and with information commands', function() {
 
     lab.test('with help command will display the help message', function(done) {
 
@@ -176,12 +177,27 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js --version', function(error, stdout, stderr) {
 
         __.assertThat(stdout, __.containsString('Dirgen v'));
-        done(error);
+
+      });
+    });
+
+    lab.test('with "demo" command will create the example folder', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js demo', function(error, stdout, stderr) {
+
+        fs.isDirectoryAsync(__dirname + '/../demo/example-output').then(function(resolve, error) {
+          __.assertThat(error, __.is( __.undefined()));
+          done(error);
+        }, function(error) {
+          __.assertThat(error, __.is( __.not(__.defined())));
+          done(error);
+        });
+
       });
     });
 
     /*
-      'with "demo" command will create the example folder'
+
 
       'with "demo" command will create the files and folders that will match the demo template file'
 
