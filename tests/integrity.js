@@ -149,7 +149,12 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     lab.test('with version command produces the same version number as in the package.json file', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js version', function(error, stdout, stderr) {
-        __.assertThat(stdout, __.containsString(process.env.npm_package_version));
+
+        var packageJsonPath = path.resolve(__dirname, '../package.json');
+
+        var versionNumber = require(packageJsonPath).version.replace(/version /i, '');
+
+        __.assertThat(stdout, __.containsString(versionNumber));
         done(error);
       });
     });
