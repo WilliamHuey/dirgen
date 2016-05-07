@@ -117,7 +117,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   */
 
-  lab.experiment('and with information commands', function() {
+  lab.experiment('and with demo and information commands', function() {
 
     lab.test('with help command will display the help message', function(done) {
 
