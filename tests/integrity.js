@@ -16,7 +16,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   var exec = childProcess.exec;
 
-  lab.experiment('with no commands or options', function() {
+  lab.experiment.skip('with no commands or options', function() {
     lab.test('will display the help message', function(done) {
       exec(cliEntryFile, function(error, stdout, stderr) {
         __.assertThat(stdout, __.containsString('Description'));
@@ -26,7 +26,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
   });
 
 
-  lab.experiment('and with the generate command', function() {
+  lab.experiment.skip('and with the generate command', function() {
 
     lab.test('and no arguments displays an error message', function(done) {
       exec(cliEntryFile + ' generate', function(error, stdout, stderr) {
@@ -109,7 +109,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   */
 
-  lab.experiment('and with demo and information commands', function() {
+  lab.experiment.skip('and with the information commands', function() {
 
     lab.test('with help command will display the help message', function(done) {
       exec(cliEntryFile + ' help', function(error, stdout, stderr) {
@@ -178,35 +178,46 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
         done(error);
       });
     });
-
-    lab.test('with "demo" command will create the example folder', function(done) {
-      exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
-
-        fs.isDirectoryAsync(__dirname + '/../demo/example-output').then(function(resolve, error) {
-          __.assertThat(error, __.is( __.undefined()));
-          done(error);
-        }, function(error) {
-          __.assertThat(error, __.is( __.not(__.defined())));
-          done(error);
-        });
-
-      });
-    });
-
-    /*
-
-
-      'with "demo" command will create the files and folders that will match the demo template file'
-
-
-    */
-
   });
+
+lab.experiment('and with the demo command', function() {
+  lab.test('with "demo" command will create the example folder', function(done) {
+    exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
+
+      fs.isDirectoryAsync(__dirname + '/../demo/example-output').then(function(resolve, error) {
+        __.assertThat(error, __.is( __.undefined()));
+        done(error);
+      }, function(error) {
+        __.assertThat(error, __.is( __.not(__.defined())));
+        done(error);
+      });
+
+    });
+  });
+
+  lab.test('with "demo" command after successfully created files and folders, will log out the generation time', function(done) {
+    exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
+      __.assertThat(stdout, __.containsString('Generation Time'));
+      done(error);
+    });
+  });
+
+  lab.test('with "demo" command will create the files and folders that will match the demo template file', function(done) {
+    exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
+      // __.assertThat(stdout, __.containsString('Generation Time'));
+      done(error);
+    });
+  });
+
+});
+
 
   /*
 
   demo command
-  generation console time
+
+
+
   error messages for file generation
   file integrity checks
     -number of file and folder count is the same as the number of items in the file
