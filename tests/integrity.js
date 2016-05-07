@@ -146,6 +146,15 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
+    lab.test('with help alias option , "-h" will display the help message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js -h', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Description'));
+        done(error);
+      });
+    });
+
     lab.test('with version command produces the same version number as in the package.json file', function(done) {
 
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js version', function(error, stdout, stderr) {
@@ -182,7 +191,16 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js --version', function(error, stdout, stderr) {
 
         __.assertThat(stdout, __.containsString('Dirgen v'));
+        done(error);
+      });
+    });
 
+    lab.test('with version alias option , "-v" will display the module information message', function(done) {
+
+      exec('node ' + __dirname +  '/../bin/dirgen-cli-entry.js -v', function(error, stdout, stderr) {
+
+        __.assertThat(stdout, __.containsString('Dirgen v'));
+        done(error);
       });
     });
 
