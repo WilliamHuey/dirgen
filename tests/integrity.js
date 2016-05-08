@@ -245,14 +245,11 @@ lab.experiment('and with the demo command', function() {
 
   /*
 
-  demo command
-
-
-
-  error messages for file generation
+  file generate
   file integrity checks
     -number of file and folder count is the same as the number of items in the file
     -name and type should reflect the file after sanitization
+    -nesting checks
 
   */
 

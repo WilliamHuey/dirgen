@@ -1,3 +1,4 @@
+check the count of files and folders
 
 problem with slash in the front not generating a folder
 
