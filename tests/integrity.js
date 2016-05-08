@@ -7,7 +7,8 @@ var childProcess = require('child_process'),
 //Vendor modules
 var fs = require('fs-extra-promise'),
   lab = exports.lab = require('lab').script(),
-  __ = require('hamjest');
+  __ = require('hamjest'),
+  _ = require('lodash');
 
 //Path definitions
 var cliEntryFile = 'node ' + __dirname +  '/../bin/dirgen-cli-entry.js';
@@ -204,8 +205,38 @@ lab.experiment('and with the demo command', function() {
 
   lab.test('with "demo" command will create the files and folders that will match the demo template file', function(done) {
     exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
-      // __.assertThat(stdout, __.containsString('Generation Time'));
-      done(error);
+      var readType = {
+        file: 'existsAsync',
+        folder: 'isDirectoryAsync'
+      }
+
+      var expectedDemoPaths = require(path.resolve(__dirname +  '/fixtures/demo-structure-output.js'));
+
+      var keyCount = _.keys(expectedDemoPaths).length;
+      var structureCheckCount = 0;
+      var doneCheck = function(keyCount, structureCheckCount, done, error) {
+        if(keyCount === structureCheckCount) {
+          done(error);
+        }
+      }
+
+      for (var key in expectedDemoPaths) {
+
+        //File defined in fixture sanity check
+        __.assertThat(expectedDemoPaths[key], __.is( __.not(__.undefined())));
+
+        //Check the file type of the structure
+        fs[readType[expectedDemoPaths[key]]](__dirname + '/../demo' + key ).then(function(resolve, error) {
+          structureCheckCount++;
+          __.assertThat(error, __.is( __.undefined()));
+          doneCheck(keyCount, structureCheckCount, done, error);
+        }, function(error) {
+          structureCheckCount++;
+          __.assertThat(error, __.is( __.not(__.defined())));
+          doneCheck(keyCount, structureCheckCount, done, error)
+        })
+      }
+
     });
   });
 
