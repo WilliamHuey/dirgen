@@ -27,7 +27,6 @@ let singleLineInfoFunctions = {
     if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
       currentLine.inferType = 'folder';
     } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
-
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
     }
@@ -46,8 +45,10 @@ let singleLineInfoFunctions = {
       return isFirstLine;
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
 
-      //Assume is file type unless new information comes up
-      currentLine.inferType = 'file';
+      //Assume file type unless the inferType is already set
+      if (currentLine === 'folder') {
+        currentLine.inferType = 'file';
+      }
 
       //Need to know the first content line indent amount to note the sibling check
       //read marker
@@ -188,6 +189,7 @@ let singleLineInfoFunctions = {
 
     } else if (linesInfo.contentLineCount === 1 &&
       currentLine.structureName.length > 0 && isFirstLine) {
+      singleLineInfoFunctions.setStructureTypeByChar(currentLine);
 
       //First content line
       singleLineInfoFunctions

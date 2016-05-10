@@ -129,7 +129,6 @@ Object.assign(validator.prototype, {
   },
   properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
   firstIndentType, currentIndentType, indentType) => {
-    //TODO: pretty error needs to stop execution outright
     if (indentType === 'outdent' &&
     !(currentIndentAmt % firstIndentAmt === 0) &&
     !(currentIndentAmt >= firstIndentAmt)) {

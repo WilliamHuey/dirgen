@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   "/example-output/aFolderPerhaps": "folder",
   "/example-output/aFolderPerhaps/fasdfaffa": "file",

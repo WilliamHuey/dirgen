@@ -1,6 +1,7 @@
 check the count of files and folders
 
-problem with slash in the front not generating a folder
+check for continued generation of files and folders after a warning has occurred
+-/a/fadsafd on the first line caused things to not continue generating
 
 testing
 lab

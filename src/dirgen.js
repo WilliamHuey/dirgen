@@ -96,8 +96,6 @@ export default (action, actionParams) => {
         linesInfo.totalLineCount,
         currentLine.structureName);
 
-      // console.log("linesInfo", linesInfo);
-
     })
     .on('close', () => {
       // console.log('closing the file');
