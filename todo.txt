@@ -6,11 +6,10 @@ generate
     additional slashes in the line will error
     questionable characters and reserved words
   -repeated lines in the same level
-  -differing indent typeof
+  -differing indent type of
   -differing indent factor
   -length of file or folder
   -lack of content in the template file
-  -check the count of files and folders
 
 
 check for continued generation of files and folders after a warning has occurred

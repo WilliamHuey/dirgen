@@ -26,7 +26,6 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     });
   });
 
-
   lab.experiment.skip('and with the generate command', function() {
 
     lab.test('and no arguments displays an error message', function(done) {
@@ -37,7 +36,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
-    lab.test('with generate command and no arguments, will display the error message', function(done) {
+    lab.test('and no arguments, will display the error message', function(done) {
       exec(cliEntryFile + ' generate', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('No file template nor folder destination given.'));
@@ -61,7 +60,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
-    lab.test('with generate command and invalid template file but no destination folder will display error message', function(done) {
+    lab.test('and invalid template file but no destination folder will display error message', function(done) {
       exec(cliEntryFile + ' generate //', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('No folder destination given in second command input.'));
@@ -69,7 +68,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
-    lab.test('with generate command and invalid template file but valid destination folder will display error message', function(done) {
+    lab.test('and invalid template file but valid destination folder will display error message', function(done) {
       exec(cliEntryFile + ' generate /zzz ../demo', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('Not a valid file. Need a plain text file format in the first'));
@@ -77,7 +76,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
-    lab.test('with generate command and invalid template file and invalid destination folder will display error message', function(done) {
+    lab.test('and invalid template file and invalid destination folder will display error message', function(done) {
       exec(cliEntryFile + ' generate /zzz ../adsf', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('Not a valid file. Need a plain text file format in the first'));
@@ -85,7 +84,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
-    lab.test('with generate command and valid template file but no destination folder will display error message', function(done) {
+    lab.test('and valid template file but no destination folder will display error message', function(done) {
       exec(cliEntryFile + ' generate ../demo/example.txt', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('No folder destination given in second command input.'));
@@ -93,7 +92,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
       });
     });
 
-    lab.test('with generate command and valid template file but invalid destination folder will display error message', function(done) {
+    lab.test('and valid template file but invalid destination folder will display error message', function(done) {
       exec(cliEntryFile + ' generate ' + __dirname + '/../demo/example.txt ../adscd', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('Not a valid folder.'));
@@ -106,7 +105,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   /*
     //use the demo test to verify the workings of an actual successful generation
-    'with generate command and valid template file and valid destination folder will display no error message'
+    'and valid template file and valid destination folder will display no error message'
 
   */
 
@@ -181,7 +180,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     });
   });
 
-lab.experiment('and with the demo command', function() {
+lab.experiment.skip('and with the demo command', function() {
   lab.test('with "demo" command will create the example folder', function(done) {
     exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
 
@@ -252,7 +251,45 @@ lab.experiment('and with the demo command', function() {
     -nesting checks
 
   */
+  lab.experiment('and with the generate command scenarios', function() {
 
+    lab.test('basic nesting with parent and child', function(done) {
+      done();
+    });
+
+    lab.test('and file sanitizing replacing only one slash will display a warning message', function(done) {
+      done();
+    });
+
+    lab.test('and file sanitizing with additional slashes will prevent creation and will display a warning message', function(done) {
+      done();
+    });
+
+    lab.test('and file sanitizing with problematic names for oses will display a warning message', function(done) {
+      done();
+    });
+
+    lab.test('and with repeated lines in the same level will display a warning message', function(done) {
+      done();
+    });
+
+    lab.test('and with mixing indent type of spaces and tabs will display an error message', function(done) {
+      done();
+    });
+
+    lab.test('and with inconsistent indent scaling factor will display an error message', function(done) {
+      done();
+    });
+
+    lab.test('and with length of name of file or folder exceeding 255 characters will display an error message', function(done) {
+      done();
+    });
+
+    lab.test('and with nothing in a template file will display an error message', function(done) {
+      done();
+    });
+
+  });
 
 
 });
