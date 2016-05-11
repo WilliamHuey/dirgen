@@ -1,4 +1,17 @@
-check the count of files and folders
+generate
+-case by case scenarios
+  -basic nesting, parent and child
+  -file sanitization
+    replace only one slash warning
+    additional slashes in the line will error
+    questionable characters and reserved words
+  -repeated lines in the same level
+  -differing indent typeof
+  -differing indent factor
+  -length of file or folder
+  -lack of content in the template file
+  -check the count of files and folders
+
 
 check for continued generation of files and folders after a warning has occurred
 -/a/fadsafd on the first line caused things to not continue generating
@@ -10,9 +23,8 @@ hamcrest assertion lib
 Backlog/Optimize
 -try catch in the async await is required
 -right and left trim
-Remove the lodash dependency or rollup?
+selective includes lodash dependency?
 npm start more compatible with windows
-reduce the cyclomatic complexity
 -- pluralizing the error messages
 -combinations of warnings
 
