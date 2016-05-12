@@ -253,10 +253,6 @@ lab.experiment.skip('and with the demo command', function() {
   */
   lab.experiment('and with the generate command scenarios', function() {
 
-    lab.test('basic nesting with parent and child', function(done) {
-      done();
-    });
-
     lab.test('and file sanitizing replacing only one slash will display a warning message', function(done) {
       done();
     });
@@ -278,6 +274,10 @@ lab.experiment.skip('and with the demo command', function() {
     });
 
     lab.test('and with inconsistent indent scaling factor will display an error message', function(done) {
+      done();
+    });
+
+    lab.test('and with inconsistent outdent scaling factor will display an error message', function(done) {
       done();
     });
 
