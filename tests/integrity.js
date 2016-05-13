@@ -253,6 +253,18 @@ lab.experiment.skip('and with the demo command', function() {
   */
   lab.experiment('and with the generate command scenarios', function() {
 
+    lab.beforeEach(function (done) {
+      exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+        done();
+      });
+    });
+
+    lab.after(function (done) {
+      exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+        done();
+      });
+    });
+
     lab.test('and file sanitizing replacing only one slash will display a warning message', function(done) {
 
       fs.mkdirAsync(__dirname + '/case-outputs/one-slash')
