@@ -254,7 +254,17 @@ lab.experiment.skip('and with the demo command', function() {
   lab.experiment('and with the generate command scenarios', function() {
 
     lab.test('and file sanitizing replacing only one slash will display a warning message', function(done) {
-      done();
+
+      fs.mkdirAsync(__dirname + '/case-outputs/one-slash')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/one-slash.txt' + ' tests/case-outputs/one-slash', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('Generation Time'));
+          done(error);
+        });
+      }, function(error) {
+        done(error);
+      });
     });
 
     lab.test('and file sanitizing with additional slashes will prevent creation and will display a warning message', function(done) {
