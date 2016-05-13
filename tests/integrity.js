@@ -265,7 +265,7 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-    lab.test('and file sanitizing replacing only one slash will display a warning message', function(done) {
+    lab.test('and file sanitizing replacing only one slash will display a generation time', function(done) {
 
       fs.mkdirAsync(__dirname + '/case-outputs/one-slash')
       .then(function() {
@@ -279,8 +279,25 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-    lab.test('and file sanitizing with additional slashes will prevent creation and will display a warning message', function(done) {
-      done();
+    lab.test('and file sanitizing with additional slashes in front will default to a folder and will display a warning message', function(done) {
+      fs.mkdirAsync(__dirname + '/case-outputs/more-than-one-slash')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/more-than-one-slash.txt' + ' tests/case-outputs/more-than-one-slash', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('has illegal characters which has'));
+
+          fs.isDirectoryAsync( __dirname + '/case-outputs/more-than-one-slash/slashesinexcess')
+          .then(function(resolve, error) {
+            __.assertThat(error, __.is( __.undefined()));
+
+            done(error);
+          }, function(error) {
+            __.assertThat(error, __.is( __.not(__.defined())));
+          });
+        });
+      }, function(error) {
+        done(error);
+      });
     });
 
     lab.test('and file sanitizing with problematic names for oses will display a warning message', function(done) {
