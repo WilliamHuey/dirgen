@@ -105,6 +105,7 @@ Object.assign(validator.prototype, {
         message.warn(`Line #${lineNum}:
           '${content.trim()}', has illegal characters
           which has been replaced, resulting in '${cleanedName}'.`);
+        return cleanedName;
       }
     }
   },

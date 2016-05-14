@@ -259,11 +259,11 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-    lab.after(function (done) {
-      exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
-        done();
-      });
-    });
+    // lab.after(function (done) {
+    //   exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+    //     done();
+    //   });
+    // });
 
     lab.test('and file sanitizing replacing only one slash will display a generation time', function(done) {
 
@@ -301,7 +301,50 @@ lab.experiment.skip('and with the demo command', function() {
     });
 
     lab.test('and file sanitizing with problematic names for oses will display a warning message', function(done) {
-      done();
+
+      var problematicCases = 0;
+
+      exec('ls ' + __dirname + '/fixtures/problematic*', function(error, stdout, stderr) {
+
+        var modulePath = new RegExp(__dirname + '/fixtures' ,"g");
+        var testFilesPaths = stdout.replace(modulePath, '').split('\n');
+
+        //Remove the blank entry in the array
+        testFilesPaths.pop();
+
+        testFilesPaths.forEach(function(testCasePath) {
+
+          var genTestFolder = path.resolve('tests/case-outputs/' +  testCasePath).replace(/.txt/i, '');
+
+          fs.mkdirAsync(genTestFolder)
+          .then(function() {
+
+            exec(cliEntryFile + ' g ' + 'tests/fixtures' +  testCasePath + ' ' + genTestFolder, function(error, stdout, stderr) {
+              problematicCases += 1;
+              __.assertThat(stdout,
+                __.containsString('has illegal characters which has'));
+
+              if(testFilesPaths.length == problematicCases) {
+                done(error);;
+              }
+            })
+          });
+        });
+
+
+      });
+
+      // fs.existsAsync(__dirname + '/case-outputs/one-slash')
+      // .then(function() {
+      //
+      // });
+
+      // fs.mkdirAsync(__dirname + '/case-outputs/problematic-for-oses')
+      // .then(function() {
+      //
+      //   done();
+      // })
+
     });
 
     lab.test('and with repeated lines in the same level will display a warning message', function(done) {

@@ -12,7 +12,7 @@ import {
   existsAsync,
   mkdirAsync,
   writeFileAsync,
-  removeAsync} from 'fs-extra-promise';
+  removeAsync } from 'fs-extra-promise';
 
 import Validations from './lines-validations';
 
@@ -26,7 +26,8 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   //lineInfo is a single line
   //Join the path safely by converting all backward
   //slashes to forward slashes
-  let structureName = lineInfo.structureName,
+  let structureName = lineInfo.nameDetails.sanitizedName ||
+   lineInfo.structureName,
     structureRoughPath = path.join(rootPath, structureName),
     structureCreatePath = normalizePath(structureRoughPath);
 
@@ -35,7 +36,8 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   } else {
 
     //Folder will be the only other structure type
-    let parentPath = path.join(rootPath, lineInfo.structureName);
+    let parentPath = path.join(rootPath, (lineInfo.nameDetails.sanitizedName ||
+       lineInfo.structureName));
 
     await mkdirAsync(parentPath);
 

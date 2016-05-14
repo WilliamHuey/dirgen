@@ -34,6 +34,7 @@ let linesInfo = {
   firstIndentationType: null,
   firstIndentationAmount: null,
   firstLine: null,
+
   //firstIndentationAmount will become the
   //indent scaling factor when the first
   //content line does not have an indentation level
@@ -75,6 +76,22 @@ export default (action, actionParams) => {
         nameDetails: lexResults
       };
 
+      /*
+      Sample nameDetails output
+      { totalLength: 7,
+         charPos: 5,
+         currentCharCode: 58,
+         structureType: null,
+         specialCharacters: { '58': [Object] },
+         indentAmount: 0,
+         indentType: null,
+         contentLength: 7,
+         currentTrimmedValue: 'thing:s',
+         specialCharactersTypeCount: 1,
+         line: 1,
+         sanitizedName: 'things' } }
+      */
+
       //Get the information from prior lines to determine
       //the siblings, parent, and children key values
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
@@ -92,9 +109,15 @@ export default (action, actionParams) => {
         linesInfo.firstIndentationType,
         currentLine.nameDetails.indentType);
 
-      validator.cleanFileName(
+      //Manipulates the currentLine object
+      const sanitizedName = validator.cleanFileName(
         linesInfo.totalLineCount,
-        currentLine.structureName);
+        currentLine.structureName,
+        currentLine);
+
+      if(sanitizedName) {
+        currentLine.nameDetails.sanitizedName = sanitizedName;
+      }
 
     })
     .on('close', () => {
@@ -109,6 +132,8 @@ export default (action, actionParams) => {
       //if nothing, skip generation
       //presenceFirstLine also sets off the generation
       //validator.<rule>(<data>, <callback>, <callback arguments>)
+
+      // console.log("linesInfo.firstLine", linesInfo.firstLine);
       validator.presenceFirstLine(
         linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
     });
