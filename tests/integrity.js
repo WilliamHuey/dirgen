@@ -330,29 +330,23 @@ lab.experiment.skip('and with the demo command', function() {
             })
           });
         });
-
-
       });
-
-      // fs.existsAsync(__dirname + '/case-outputs/one-slash')
-      // .then(function() {
-      //
-      // });
-
-      // fs.mkdirAsync(__dirname + '/case-outputs/problematic-for-oses')
-      // .then(function() {
-      //
-      //   done();
-      // })
-
     });
 
     lab.test('and with repeated lines in the same level will display a warning message', function(done) {
+
       done();
     });
 
     lab.test('and with mixing indent type of spaces and tabs will display an error message', function(done) {
-      done();
+      fs.mkdirAsync(__dirname + '/case-outputs/mix-tabs-and-spaces-indent')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/mix-tabs-and-spaces-indent.txt ' + ' tests/case-outputs/mix-tabs-and-spaces-indent', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('with the first defined outdent'));
+          done(error);
+        });
+      });
     });
 
     lab.test('and with inconsistent indent scaling factor will display an error message', function(done) {

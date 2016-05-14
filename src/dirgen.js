@@ -115,7 +115,7 @@ export default (action, actionParams) => {
         currentLine.structureName,
         currentLine);
 
-      if(sanitizedName) {
+      if (sanitizedName) {
         currentLine.nameDetails.sanitizedName = sanitizedName;
       }
 
@@ -133,6 +133,7 @@ export default (action, actionParams) => {
       //presenceFirstLine also sets off the generation
       //validator.<rule>(<data>, <callback>, <callback arguments>)
 
+      // console.log("linesInfo", linesInfo);
       // console.log("linesInfo.firstLine", linesInfo.firstLine);
       validator.presenceFirstLine(
         linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
