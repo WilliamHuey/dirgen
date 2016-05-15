@@ -2,17 +2,20 @@ generate
 -case by case scenarios
 
   -differing indent factor
-    -outdent situation
+    -outdent situation fix
+
   -length of file or folder
+    -does not error out when the long file type is on the first line
+
   -lack of content in the template file
+
+
+safer checks for when the content line is the only line in the whole file
 
 
 check for continued generation of files and folders after a warning has occurred
 -/a/fadsafd on the first line caused things to not continue generating
 
-testing
-lab
-hamcrest assertion lib
 
 Backlog/Optimize
 -try catch in the async await is required

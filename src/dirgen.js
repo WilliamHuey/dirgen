@@ -96,18 +96,18 @@ export default (action, actionParams) => {
       //the siblings, parent, and children key values
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
+      validator.sameIndentType(
+        linesInfo.totalLineCount,
+        currentLine.structureName,
+        linesInfo.firstIndentationType,
+        currentLine.nameDetails.indentType);
+
       //Validate the recently set line data
       validator.charCountUnder255(
         currentLine.nameDetails.contentLength,
         linesInfo.totalLineCount,
         currentLine.structureName,
         currentLine.inferType);
-
-      validator.sameIndentType(
-        linesInfo.totalLineCount,
-        currentLine.structureName,
-        linesInfo.firstIndentationType,
-        currentLine.nameDetails.indentType);
 
       //Manipulates the currentLine object
       const sanitizedName = validator.cleanFileName(

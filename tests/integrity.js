@@ -383,11 +383,28 @@ lab.experiment.skip('and with the demo command', function() {
     });
 
     lab.test('and with length of name of file or folder exceeding 255 characters will display an error message', function(done) {
-      done();
+      // fs.mkdirAsync(__dirname + '/case-outputs/length-greater-than-255')
+      // .then(function() {
+      //   exec(cliEntryFile + ' g ' + 'tests/fixtures/length-greater-than-255.txt ' +
+      //   ' tests/case-outputs/length-greater-than-255', function(error, stdout, stderr) {
+      //     console.log("stdout", stdout);
+      //     // __.assertThat(stdout,
+      //     //   __.containsString('different from the first defined indent amount'));
+      //     done(error);
+      //   });
+      // });
     });
 
     lab.test('and with nothing in a template file will display an error message', function(done) {
-      done();
+      fs.mkdirAsync(__dirname + '/case-outputs/nothing-in-template')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/nothing-in-template.txt ' +
+        ' tests/case-outputs/nothing-in-template', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('Supplied template file has no content to generate'));
+          done(error);
+        });
+      });
     });
 
   });
