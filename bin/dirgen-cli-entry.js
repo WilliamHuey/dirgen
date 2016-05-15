@@ -12,7 +12,7 @@ if (typeof process === 'undefined') {
 //console.time('Command Line Load Time');
 
 require('babel-core/register')({
-   presets: [ 'es2015' ]
+  presets: ['es2015']
 });
 
 require('../lib/dirgen-cli-commands');
