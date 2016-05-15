@@ -1,7 +1,6 @@
-# npm log file
 npm-debug.log
 node_modules
-
 .DS_Store
 dist
 demo/example-output
+tests/cases-outputs

@@ -46,7 +46,8 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
 
       //Assume file type unless the inferType is already set
-      if (currentLine === 'folder') {
+      if (_.isUndefined(currentLine.inferType)||
+      _.isNull(currentLine.inferType)) {
         currentLine.inferType = 'file';
       }
 

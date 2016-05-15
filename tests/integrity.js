@@ -259,11 +259,11 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-    // lab.after(function (done) {
-    //   exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
-    //     done();
-    //   });
-    // });
+    lab.after(function (done) {
+      exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+        done();
+      });
+    });
 
     lab.test('and file sanitizing replacing only one slash will display a generation time', function(done) {
 
@@ -380,19 +380,19 @@ lab.experiment.skip('and with the demo command', function() {
       //     done(error);
       //   });
       // });
+      done();
     });
 
     lab.test('and with length of name of file or folder exceeding 255 characters will display an error message', function(done) {
-      // fs.mkdirAsync(__dirname + '/case-outputs/length-greater-than-255')
-      // .then(function() {
-      //   exec(cliEntryFile + ' g ' + 'tests/fixtures/length-greater-than-255.txt ' +
-      //   ' tests/case-outputs/length-greater-than-255', function(error, stdout, stderr) {
-      //     console.log("stdout", stdout);
-      //     // __.assertThat(stdout,
-      //     //   __.containsString('different from the first defined indent amount'));
-      //     done(error);
-      //   });
-      // });
+      fs.mkdirAsync(__dirname + '/case-outputs/length-greater-than-255')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/length-greater-than-255.txt ' +
+        ' tests/case-outputs/length-greater-than-255', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('which exceeds 255.'));
+          done(error);
+        });
+      });
     });
 
     lab.test('and with nothing in a template file will display an error message', function(done) {
@@ -406,9 +406,6 @@ lab.experiment.skip('and with the demo command', function() {
         });
       });
     });
-
   });
 
-
 });
-

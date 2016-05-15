@@ -150,9 +150,7 @@ Object.assign(validator.prototype, {
     }
   },
   charCountUnder255: (count, lineNum, content, inferType) => {
-    console.log("validating the count", count);
     if (count > 255) {
-      console.log("warn of the excess");
       message.error(`Line #${lineNum}: '${content}', has a character
         count of ${count}, which exceeds 255. ${inferType.charAt(0).toUpperCase() +
         inferType.slice(1)} was not created.`);

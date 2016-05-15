@@ -1,13 +1,11 @@
+error messages, also indicate that all generation has stopped
+
 generate
 -case by case scenarios
+  -two or more slashes in name does not set the sanitizedName key
 
   -differing indent factor
     -outdent situation fix
-
-  -length of file or folder
-    -does not error out when the long file type is on the first line
-
-  -lack of content in the template file
 
 
 safer checks for when the content line is the only line in the whole file
