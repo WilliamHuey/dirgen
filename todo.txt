@@ -1,12 +1,8 @@
 generate
 -case by case scenarios
-  -file sanitization
-    replace only one slash warning
-    additional slashes in the line will error
-    questionable characters and reserved words
-  -repeated lines in the same level
-  -differing indent type of
+
   -differing indent factor
+    -outdent situation
   -length of file or folder
   -lack of content in the template file
 

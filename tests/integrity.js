@@ -358,11 +358,28 @@ lab.experiment.skip('and with the demo command', function() {
     });
 
     lab.test('and with inconsistent indent scaling factor will display an error message', function(done) {
-      done();
+      fs.mkdirAsync(__dirname + '/case-outputs/inconsistent-indent')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/inconsistent-indent.txt ' +
+        ' tests/case-outputs/inconsistent-indent', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('different from the first defined indent amount'));
+          done(error);
+        });
+      });
     });
 
     lab.test('and with inconsistent outdent scaling factor will display an error message', function(done) {
-      done();
+      // fs.mkdirAsync(__dirname + '/case-outputs/inconsistent-outdent')
+      // .then(function() {
+      //   exec(cliEntryFile + ' g ' + 'tests/fixtures/inconsistent-outdent.txt ' +
+      //   ' tests/case-outputs/inconsistent-outdent', function(error, stdout, stderr) {
+      //     console.log("stdout", stdout);
+      //     // __.assertThat(stdout,
+      //     //   __.containsString('different from the first defined indent amount'));
+      //     done(error);
+      //   });
+      // });
     });
 
     lab.test('and with length of name of file or folder exceeding 255 characters will display an error message', function(done) {
