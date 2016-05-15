@@ -235,7 +235,6 @@ lab.experiment.skip('and with the demo command', function() {
           doneCheck(keyCount, structureCheckCount, done, error)
         })
       }
-
     });
   });
 

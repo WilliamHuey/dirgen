@@ -117,7 +117,7 @@ Object.assign(validator.prototype, {
       throw (message.error(`Line #${lineNum}:
          '${content.trim()}',
          has indent type of '${currentIndentType}'
-         which is inconsistent with the first defined outdent type of '${firstIndentType}'.`));
+         which is inconsistent with the first defined outdent type of '${firstIndentType}'. Nothing was generated.`));
     }
   },
   presenceFirstLine: (firstLine, callback, callbackArgs) => {
@@ -135,7 +135,7 @@ Object.assign(validator.prototype, {
     !(currentIndentAmt >= firstIndentAmt)) {
       throw (message.error(`Line #${lineNum}:
          '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the
-         first defined outdent of ${firstIndentAmt} ${firstIndentType}(s).`));
+         first defined outdent of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`));
     }
 
     //Scaling indent factor and firstIndent is the same
@@ -146,14 +146,14 @@ Object.assign(validator.prototype, {
          '${content.trim()}', has an indent
          amount of ${Math.abs(currentIndentAmt - prevLineIndentAmt)} ${currentIndentType}(s) relative to parent folder,
          which is different from the
-         first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s).`));
+         first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`));
     }
   },
   charCountUnder255: (count, lineNum, content, inferType) => {
     if (count > 255) {
       message.error(`Line #${lineNum}: '${content}', has a character
         count of ${count}, which exceeds 255. ${inferType.charAt(0).toUpperCase() +
-        inferType.slice(1)} was not created.`);
+        inferType.slice(1)}. Nothing was generated.`);
     }
   }
 });

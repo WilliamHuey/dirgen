@@ -1,4 +1,3 @@
-error messages, also indicate that all generation has stopped
 
 generate
 -case by case scenarios
@@ -8,12 +7,8 @@ generate
     -outdent situation fix
 
 
-safer checks for when the content line is the only line in the whole file
-
-
 check for continued generation of files and folders after a warning has occurred
 -/a/fadsafd on the first line caused things to not continue generating
-
 
 Backlog/Optimize
 -try catch in the async await is required
