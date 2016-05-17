@@ -13,6 +13,7 @@ const validator = new Validations();
 let singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo === null) {
+      currentLine.isFirstLine = true;
       linesInfo.prevLineInfo = currentLine;
 
       //Also set the first actual content line encounter
@@ -27,6 +28,7 @@ let singleLineInfoFunctions = {
     if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
       currentLine.inferType = 'folder';
     } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
+
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
     }
@@ -123,6 +125,8 @@ let singleLineInfoFunctions = {
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
 
+      // console.log("prevLineInfo.isFirstLine", linesInfo.prevLineInfo.isFirstLine);
+
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
 
         //Validate the indent level of child relative to parent
@@ -131,7 +135,8 @@ let singleLineInfoFunctions = {
            prevLine.nameDetails.indentAmount,
          currentLineIndent,
          linesInfo.firstIndentationType,
-         currentLine.nameDetails.indentType, 'outdent');
+         currentLine.nameDetails.indentType, 'outdent', prevLine.parent,
+          linesInfo.prevLineInfo.isFirstLine);
 
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
 
