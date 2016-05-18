@@ -71,12 +71,9 @@ default(linesInfo, rootPath) => {
 
     //Check for root folder
     const hasRootDirAsync = await existsAsync(rootPath);
-    if (hasRootDirAsync) {
+    if (!hasRootDirAsync) {
 
-      //Root folder exists and is to be removed
-      await removeAsync(rootPath);
-      await mkdirAsync(rootPath);
-    } else {
+      //Create a folder if it does not exists
       await mkdirAsync(rootPath);
     }
 

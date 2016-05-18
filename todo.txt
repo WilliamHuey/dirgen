@@ -4,7 +4,6 @@ generate
   -two or more slashes in name does not set the sanitizedName key
 
 check for continued generation of files and folders after a warning has occurred
--/a/fadsafd on the first line caused things to not continue generating
 
 Backlog/Optimize
 -try catch in the async await is required
