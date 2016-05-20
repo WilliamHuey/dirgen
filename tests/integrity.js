@@ -17,7 +17,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   var exec = childProcess.exec;
 
-  lab.experiment('with no commands or options', function() {
+  lab.experiment.skip('with no commands or options', function() {
     lab.test('will display the help message', function(done) {
       exec(cliEntryFile, function(error, stdout, stderr) {
         __.assertThat(stdout, __.containsString('Description'));
@@ -26,7 +26,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     });
   });
 
-  lab.experiment('and with the generate command', function() {
+  lab.experiment.skip('and with the generate command', function() {
 
     lab.test('and no arguments displays an error message', function(done) {
       exec(cliEntryFile + ' generate', function(error, stdout, stderr) {
@@ -109,7 +109,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   */
 
-  lab.experiment('and with the information commands', function() {
+  lab.experiment.skip('and with the information commands', function() {
 
     lab.test('with help command will display the help message', function(done) {
       exec(cliEntryFile + ' help', function(error, stdout, stderr) {
@@ -180,7 +180,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     });
   });
 
-lab.experiment('and with the demo command', function() {
+lab.experiment.skip('and with the demo command', function() {
   lab.test('with "demo" command will create the example folder', function(done) {
     exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
 
@@ -324,7 +324,19 @@ lab.experiment('and with the demo command', function() {
                 __.containsString('has illegal characters which has'));
 
               if(testFilesPaths.length == problematicCases) {
-                done(error);;
+
+                fs.statAsync(genTestFolder + '/valid', function(error, stat) {
+                  if (error == null) {
+                    __.assertThat(error, __.is(__.falsy()))
+                    done(error);
+                  } else if (error.code == 'ENOENT') {
+                    __.assertThat(error, __.is( __.defined()));
+                    done(error);
+                  } else {
+                    __.assertThat(error, __.is( __.defined()));
+                    done(error);
+                  }
+                });
               }
             })
           });
@@ -339,7 +351,19 @@ lab.experiment('and with the demo command', function() {
         ' tests/case-outputs/repeated-lines-same-level', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('repeated entries'));
-          done(error);
+
+          fs.statAsync(__dirname + '/case-outputs/repeated-lines-same-level/afadsfsf', function(error, stat) {
+            if (error == null) {
+              __.assertThat(error, __.is(__.falsy()))
+              done(error);
+            } else if (error.code == 'ENOENT') {
+              __.assertThat(error, __.is( __.defined()));
+              done(error);
+            } else {
+              __.assertThat(error, __.is( __.defined()));
+              done(error);
+            }
+          });
         });
       });
     });

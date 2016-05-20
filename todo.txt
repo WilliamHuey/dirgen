@@ -1,9 +1,5 @@
+existsasync is not reliable?, switch it out in generation
 
-generate
--case by case scenarios
-  -two or more slashes in name does not set the sanitizedName key
-
-check for continued generation of files and folders after a warning has occurred
 
 Backlog/Optimize
 -try catch in the async await is required
