@@ -11,7 +11,7 @@ var fs = require('fs-extra-promise'),
   _ = require('lodash');
 
 //Path definitions
-var cliEntryFile = 'node ' + __dirname +  '/../bin/dirgen-cli-entry.js';
+var cliEntryFile = 'node ' + __dirname +  '/../bin/dirgen-cli-init.js';
 
 lab.experiment('Cli commands when input is "dirgen" and', function() {
 

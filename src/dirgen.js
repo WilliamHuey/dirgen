@@ -8,6 +8,7 @@ import "babel-polyfill";
 //Native modules
 import readline from 'readline';
 import fs from 'fs';
+import path from 'path';
 
 //Source modules
 import AddLinesInfo from './lines-info';
@@ -44,11 +45,32 @@ let linesInfo = {
 
 export default (action, actionParams) => {
 
+  let actionDemo = null;
+  let execPathDemo = null;
+  if(_.isObject(action)) {
+    actionDemo = action.action;
+    execPathDemo = action.execPath;
+  }
+
+  console.log("action", action);
+  console.log("actionParams", actionParams);
+  var creationTempPath;
+  if(!_.isUndefined(action.action)) {
+    creationTempPath = commandTypeAction(action.action, 'template', actionParams, execPathDemo);
+    console.log("creationTempPath", creationTempPath);
+  } else {
+    console.log("reg generate");
+    creationTempPath = commandTypeAction(action, 'template', actionParams);
+    console.log("creationTempPath");
+  }
+
+
   //Read through all the lines of a supplied file
   readline.createInterface({
-      input: fs.createReadStream(commandTypeAction(action, 'template', actionParams))
+    input: fs.createReadStream(creationTempPath)
     })
     .on('line', (line) => {
+      console.log("on line");
 
       //Get properties from the current line in detail with
       //the lexer
@@ -126,7 +148,7 @@ export default (action, actionParams) => {
       //Hand off general line information
       //to create the actual files and folders
 
-      let rootPath = commandTypeAction(action, 'output', actionParams);
+      let rootPath = commandTypeAction((actionDemo || action), 'output', actionParams, execPathDemo);
 
       //But validate the presence of the firstLine
       //if nothing, skip generation
