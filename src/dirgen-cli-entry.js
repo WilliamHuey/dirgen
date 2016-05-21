@@ -11,6 +11,6 @@ if (typeof process === 'undefined') {
 
 // console.timeEnd('Command Line Load Time');
 
-module.exports = function(execPath){
+module.exports = function(execPath) {
   require('./dirgen-cli-commands')(execPath);
 };

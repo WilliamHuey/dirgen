@@ -10,7 +10,7 @@ export default (type, action, generateParams, execPath) => {
   let rootModulePath = '';
 
   //execPath is only for the demo generation
-  if(execPath) {
+  if (execPath) {
     rootModulePath = path.resolve(execPath, '../');
   }
 

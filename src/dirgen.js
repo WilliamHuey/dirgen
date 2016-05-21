@@ -50,12 +50,12 @@ export default (action, actionParams) => {
   let execPathDemo = null;
   let creationTemplatePath = '';
 
-  if(_.isObject(action)) {
+  if (_.isObject(action)) {
     actionDemo = action.action;
     execPathDemo = action.execPath;
   }
 
-  if(!_.isUndefined(action.action)) {
+  if (!_.isUndefined(action.action)) {
 
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action, 'template', actionParams, execPathDemo);

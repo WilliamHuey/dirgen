@@ -16,6 +16,7 @@ const cliArgs = process.argv;
 
 import messenger from './validations-messages';
 
+
 const message = (msg) => {
 
   //Add a new line for the error
@@ -58,15 +59,15 @@ const helpText = `
 cli
   .command('help')
   .name('h')
-  .handler(function (data, flags, done) {
+  .handler(function(data, flags, done) {
     console.log(helpText);
   });
 
 //Option --help is an alias for command 'help'
-if(cliArgs[2] === '--help' ||
+if (cliArgs[2] === '--help' ||
 cliArgs[2] === '-h' ||
 cliArgs.length === 2) {
-  cli.run(['', '', 'help'], function () {});
+  cli.run(['', '', 'help'], function() {});
 }
 
 //Get the version from the package.json file
@@ -74,7 +75,7 @@ let packageJson = null;
 cli
   .command('version')
   .name('v')
-  .handler(function (data, flags, done) {
+  .handler(function(data, flags, done) {
     console.log(`Dirgen v${packageJson.version}`);
   });
 
@@ -82,19 +83,20 @@ const commands = ['generate', 'g', 'gen',
                   'demo', 'version', 'v', '--version', '-v', 'help', 'h', '--help', '-h' ];
 
 //Non-matching commands will trigger the help doc
-if(commands.indexOf(cliArgs[2]) < 0 && cliArgs.length > 2) {
-  console.log(`Dirgen: '${cliArgs[2]}' is not a recognized command. Type 'dirgen --help' for a list of commands.`);
+if (commands.indexOf(cliArgs[2]) < 0 && cliArgs.length > 2) {
+  console.log(`Dirgen: '${cliArgs[2]}'
+  is not a recognized command. Type 'dirgen --help' for a list of commands.`);
 }
 
 //Need this line for the commands to work
-cli.run(cliArgs, function () {});
+cli.run(cliArgs, function() {});
 
 module.exports = function(execPath) {
 
   //Show an example of how the module is used
   cli
     .command('demo')
-    .handler(function (data, flags, done) {
+    .handler(function(data, flags, done) {
       require('./dirgen').default({action: 'demo', 'execPath': execPath});
     });
 
@@ -102,7 +104,7 @@ module.exports = function(execPath) {
   cli
     .command('generate')
     .name(['gen', 'g'])
-    .handler(function (data, flags, done) {
+    .handler(function(data, flags, done) {
 
       //Quit early when not enough arguments are provided
       const commandArgsLen = data.length;
@@ -117,8 +119,8 @@ module.exports = function(execPath) {
       Promise.all([
 
         //Check for file template
-        new Promise(function(resolve, reject){
-          fs.stat(data[0], function(error){
+        new Promise(function(resolve, reject) {
+          fs.stat(data[0], function(error) {
             if (error) {
               message('Not a valid file. Need a plain text file format in the first command input.');
               return reject({ file: false });
@@ -136,8 +138,8 @@ module.exports = function(execPath) {
         }),
 
         //Check for folder
-        new Promise(function(resolve, reject){
-          fs.stat(data[1], function(error){
+        new Promise(function(resolve, reject) {
+          fs.stat(data[1], function(error) {
             if (error) {
               message('Not a valid folder. Please provide a valid folder in the second command input.');
               return reject({ folder: false });
@@ -159,15 +161,15 @@ module.exports = function(execPath) {
   //Read the version from package.json
   //In the exports function because needs access to the read path
   fs.readFile(path.resolve(execPath, '../package.json'),
-  "utf-8", function (err, data) {
+  "utf-8", function(err, data) {
     try {
       packageJson = JSON.parse(data);
-      if(cliArgs[2] === '--version' ||
+      if (cliArgs[2] === '--version' ||
         cliArgs[2] === '-v') {
-        cli.run(['', '', 'version'], function () {});
+        cli.run(['', '', 'version'], function() {});
       }
     } catch (e) {
       message('Read error on JSON file:', e);
     }
   });
-}
+};
