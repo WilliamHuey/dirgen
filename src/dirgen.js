@@ -45,38 +45,35 @@ let linesInfo = {
 
 export default (action, actionParams) => {
 
+  //Demo input params are different from typical generation
   let actionDemo = null;
   let execPathDemo = null;
+  let creationTemplatePath = '';
+
   if(_.isObject(action)) {
     actionDemo = action.action;
     execPathDemo = action.execPath;
   }
 
-  console.log("action", action);
-  console.log("actionParams", actionParams);
-  var creationTempPath;
   if(!_.isUndefined(action.action)) {
-    creationTempPath = commandTypeAction(action.action, 'template', actionParams, execPathDemo);
-    console.log("creationTempPath", creationTempPath);
-  } else {
-    console.log("reg generate");
-    creationTempPath = commandTypeAction(action, 'template', actionParams);
-    console.log("creationTempPath");
-  }
 
+    //Demo type generation
+    creationTemplatePath = commandTypeAction(action.action, 'template', actionParams, execPathDemo);
+  } else {
+
+    //Non-demo generation case
+    creationTemplatePath = commandTypeAction(action, 'template', actionParams);
+  }
 
   //Read through all the lines of a supplied file
   readline.createInterface({
-    input: fs.createReadStream(creationTempPath)
+    input: fs.createReadStream(creationTemplatePath)
     })
     .on('line', (line) => {
-      console.log("on line");
 
-      //Get properties from the current line in detail with
-      //the lexer
+      //Get properties from the current line
+      //in detail with the lexer
       let lexResults = lexer.lex(line);
-
-      // console.log("linesInfo", linesInfo);
 
       //Accumulate general information lines
       addLinesInfo.setGeneralData(line, linesInfo);

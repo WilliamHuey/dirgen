@@ -125,8 +125,6 @@ let singleLineInfoFunctions = {
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
 
-      // console.log("prevLineInfo.isFirstLine", linesInfo.prevLineInfo.isFirstLine);
-
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
 
         //Validate the indent level of child relative to parent

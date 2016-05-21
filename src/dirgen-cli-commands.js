@@ -95,7 +95,6 @@ module.exports = function(execPath) {
   cli
     .command('demo')
     .handler(function (data, flags, done) {
-      console.log("running demo execPath", execPath);
       require('./dirgen').default({action: 'demo', 'execPath': execPath});
     });
 
@@ -148,8 +147,6 @@ module.exports = function(execPath) {
           });
         })
       ]).then(function(values) {
-        console.log("just before execPath", execPath);
-        console.log("data", data);
 
         //Only generate on valid file and folder input
         if (values[0].file && values[1].folder) {
