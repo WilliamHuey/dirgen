@@ -1,13 +1,12 @@
-existsasync is not reliable?, switch it out in generation
-
-
 Backlog/Optimize
+selective includes lodash dependency?
+-- pluralizing the error messages
 -try catch in the async await is required
 -right and left trim
-selective includes lodash dependency?
 npm start more compatible with windows
--- pluralizing the error messages
 -combinations of warnings
+--programatic use should have object pass in
+--remove existsAsync when used programmatically
 
 --encoding type
 --permission level
@@ -21,10 +20,3 @@ Module
 -Selective check-ins for the dist folder:
   -not dist folder on git, but allow for npm?
   npmignore and gitignore
-/*
-  TODO:
-  **VALIDATIONS
-  **GENERATION
-  **COMMAND LINE
-  **INDENT LEVEL FACTOR
-*/
