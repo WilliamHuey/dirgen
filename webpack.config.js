@@ -2,10 +2,11 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    dirgen: "./src/dirgen.js"
+    "dirgen-cli-entry": "./src/dirgen-cli-entry.js"
+    // dirgen: ["./src/dirgen.js"]
   },
   output: {
-    path: path.join(__dirname, '/dist/'),
+    path: path.join(__dirname, '/bin/'),
     filename: '[name].js'
   },
   module: {
@@ -15,7 +16,10 @@ module.exports = {
     ],
     loaders: [{
       test: /\.js$/,
-      include: path.join(__dirname, '/src'),
+      include: [
+
+        path.join(__dirname, '/src')
+      ],
       exclude: /node_modules/,
       loader: "babel-loader"
     },{

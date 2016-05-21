@@ -1,3 +1,5 @@
+check against wiping out the original content of the folder
+
 Backlog/Optimize
 selective includes lodash dependency?
 -- pluralizing the error messages

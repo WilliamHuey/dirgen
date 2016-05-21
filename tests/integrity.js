@@ -17,7 +17,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   var exec = childProcess.exec;
 
-  lab.experiment.skip('with no commands or options', function() {
+  lab.experiment('with no commands or options', function() {
     lab.test('will display the help message', function(done) {
       exec(cliEntryFile, function(error, stdout, stderr) {
         __.assertThat(stdout, __.containsString('Description'));
@@ -26,7 +26,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     });
   });
 
-  lab.experiment.skip('and with the generate command', function() {
+  lab.experiment('and with the generate command', function() {
 
     lab.test('and no arguments displays an error message', function(done) {
       exec(cliEntryFile + ' generate', function(error, stdout, stderr) {
@@ -109,7 +109,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
 
   */
 
-  lab.experiment.skip('and with the information commands', function() {
+  lab.experiment('and with the information commands', function() {
 
     lab.test('with help command will display the help message', function(done) {
       exec(cliEntryFile + ' help', function(error, stdout, stderr) {
@@ -180,7 +180,7 @@ lab.experiment('Cli commands when input is "dirgen" and', function() {
     });
   });
 
-lab.experiment.skip('and with the demo command', function() {
+lab.experiment('and with the demo command', function() {
   lab.test('with "demo" command will create the example folder', function(done) {
     exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
 

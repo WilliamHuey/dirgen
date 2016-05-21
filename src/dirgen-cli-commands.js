@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 'use strict';
 
 console.time('Command Line Execution Time');
@@ -17,10 +15,11 @@ const rootModulePath = path.resolve(__dirname, '../');
 const cli = nash();
 const cliArgs = process.argv;
 
+import messenger from './validations-messages';
+
 const message = (msg) => {
 
-  //Do not load the messages immediately
-  const messenger = require('../src/validations-messages').default;
+
 
   //Add a new line for the error
   //Extra blank line is intentional
@@ -110,7 +109,7 @@ cli
 
       //Only generate on valid file and folder input
       if (values[0].file && values[1].folder) {
-        require('../src/dirgen').default('generate',
+        require('./dirgen').default('generate',
         { template: data[0], output: data[1] });
       }
     }, function() {});
@@ -120,7 +119,7 @@ cli
 cli
   .command('demo')
   .handler(function (data, flags, done) {
-    require('../src/dirgen').default('demo');
+    require('./dirgen').default('demo');
   });
 
 //Get assistance on the command use of this module
@@ -148,11 +147,10 @@ cli
   });
 
 //Read the version from package.json
-fs.readFile(`${rootModulePath}/package.json`, "utf-8", function (err, data) {
+fs.readFile('../package.json', "utf-8", function (err, data) {
   try {
 
     packageJson = JSON.parse(data);
-
     if(cliArgs[2] === '--version' ||
       cliArgs[2] === '-v') {
       cli.run(['', '', 'version'], function () {});
