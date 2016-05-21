@@ -1,7 +1,5 @@
 'use strict';
 
-import './dirgen-cli-commands';
-
 // console.time('Command Line Load Time');
 
 //Check JavaScript environment before executing
@@ -12,3 +10,7 @@ if (typeof process === 'undefined') {
 }
 
 // console.timeEnd('Command Line Load Time');
+
+module.exports = function(execPath){
+  require('./dirgen-cli-commands')(execPath);
+}

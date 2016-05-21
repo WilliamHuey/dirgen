@@ -19,8 +19,6 @@ import messenger from './validations-messages';
 
 const message = (msg) => {
 
-
-
   //Add a new line for the error
   //Extra blank line is intentional
   messenger.error(`${msg}\n
@@ -146,20 +144,6 @@ cli
     console.log(`Dirgen v${packageJson.version}`);
   });
 
-//Read the version from package.json
-fs.readFile('../package.json', "utf-8", function (err, data) {
-  try {
-
-    packageJson = JSON.parse(data);
-    if(cliArgs[2] === '--version' ||
-      cliArgs[2] === '-v') {
-      cli.run(['', '', 'version'], function () {});
-    }
-  } catch (e) {
-    message('Read error on JSON file:', e);
-  }
-});
-
 const commands = ['generate', 'g', 'gen',
                   'demo', 'version', 'v', '--version', '-v', 'help', 'h', '--help', '-h' ];
 
@@ -170,3 +154,21 @@ if(commands.indexOf(cliArgs[2]) < 0 && cliArgs.length > 2) {
 
 //Need this line for the commands to work
 cli.run(cliArgs, function () {});
+
+module.exports = function(execPath) {
+
+  //Read the version from package.json
+  //In the exports function because needs access to the read path
+  fs.readFile(path.resolve(execPath, '../package.json'),
+  "utf-8", function (err, data) {
+    try {
+      packageJson = JSON.parse(data);
+      if(cliArgs[2] === '--version' ||
+        cliArgs[2] === '-v') {
+        cli.run(['', '', 'version'], function () {});
+      }
+    } catch (e) {
+      message('Read error on JSON file:', e);
+    }
+  });
+}

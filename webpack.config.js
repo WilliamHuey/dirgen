@@ -2,12 +2,14 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    "dirgen-cli-entry": "./src/dirgen-cli-entry.js"
+    "dirgen-cli-entry": path.join(__dirname, "/src/dirgen-cli-entry.js")
     // dirgen: ["./src/dirgen.js"]
   },
   output: {
     path: path.join(__dirname, '/bin/'),
-    filename: '[name].js'
+    filename: '[name].js',
+    library: 'dirgen',
+    libraryTarget: 'commonjs'
   },
   module: {
     exprContextCritical: false,

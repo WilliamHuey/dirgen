@@ -1,3 +1,4 @@
 #!/usr/bin/env node
 
-require('./dirgen-cli-entry');
+require('./dirgen-cli-entry')
+  .dirgen(__dirname);
