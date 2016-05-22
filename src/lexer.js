@@ -3,12 +3,11 @@
 //Vendor modules
 import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
-import _ from 'lodash';
 
 //Should also detect indentation and well as symbols
 let lexer = () => {};
 
-_.assign(lexer.prototype, {
+Object.assign(lexer.prototype, {
   lex: (line) => {
     let scanner = strscan(line),
       lineTokenStats = {
