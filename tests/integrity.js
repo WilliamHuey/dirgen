@@ -13,11 +13,11 @@ var fs = require('fs-extra-promise'),
 //Path definitions
 var cliEntryFile = 'node ' + __dirname +  '/../bin/dirgen-cli-init.js';
 
-lab.experiment('Cli commands when input is "dirgen" and', function() {
+lab.experiment('Cli commands when input is "dirgen"', function() {
 
   var exec = childProcess.exec;
 
-  lab.experiment('with no commands or options', function() {
+  lab.experiment('and with no commands or options', function() {
     lab.test('will display the help message', function(done) {
       exec(cliEntryFile, function(error, stdout, stderr) {
         __.assertThat(stdout, __.containsString('Description'));
@@ -426,6 +426,37 @@ lab.experiment('and with the demo command', function() {
           done(error);
         });
       });
+    });
+  });
+
+  lab.experiment('and for file safety check', function() {
+
+    lab.after(function (done) {
+      exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+        done();
+      });
+    });
+
+    lab.test('should not wipe out existing files in a folder', function(done) {
+
+      fs.mkdirAsync(__dirname + '/case-outputs/not-wipe-out-existing')
+      .then(function() {
+        fs.ensureDirAsync(__dirname + '/case-outputs/not-wipe-out-existing/four')
+        .then(function(resolve, error) {
+          exec(cliEntryFile + ' g ' + 'tests/fixtures/not-wipe-out-existing.txt ' +
+          ' tests/case-outputs/not-wipe-out-existing', function(error, stdout, stderr) {
+
+            fs.isDirectoryAsync(__dirname + '/case-outputs/not-wipe-out-existing/four')
+            .then(function(resolve, error) {
+
+              __.assertThat(error, __.is( __.undefined()));
+              done(error);
+            });
+
+          });
+        });
+      });
+
     });
   });
 

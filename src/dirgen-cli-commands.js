@@ -16,7 +16,6 @@ const cliArgs = process.argv;
 
 import messenger from './validations-messages';
 
-
 const message = (msg) => {
 
   //Add a new line for the error

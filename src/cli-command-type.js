@@ -1,6 +1,6 @@
 'use strict';
 
-//Vendor modules
+//Native modules
 import path from 'path';
 
 //Check if command is for demoing
