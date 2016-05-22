@@ -2,7 +2,6 @@
 
 //Vendor modules
 import guard from 'guard-js';
-import _ from 'lodash';
 
 //Source modules
 import Validations from './lines-validations';
@@ -25,9 +24,9 @@ let singleLineInfoFunctions = {
     //If the line has a slash in front than it is a folder,
     //regardless of whether or not it has periods in its name
 
-    if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.folder)) {
+    if (currentLine.nameDetails.specialCharacters.hasOwnProperty(structureMarker.folder)) {
       currentLine.inferType = 'folder';
-    } else if (_.hasIn(currentLine.nameDetails.specialCharacters, structureMarker.file)) {
+    } else if (currentLine.nameDetails.specialCharacters.hasOwnProperty(structureMarker.file)) {
 
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
@@ -48,7 +47,7 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
 
       //Assume file type unless the inferType is already set
-      if (typeof currentLine.inferType == 'undefined' ||
+      if (typeof currentLine.inferType === 'undefined' ||
       currentLine.inferType === null) {
         currentLine.inferType = 'file';
       }

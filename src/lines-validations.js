@@ -1,7 +1,6 @@
 'use strict';
 
 //Vendor modules
-import _ from 'lodash';
 import sanitize from 'sanitize-filename';
 import recursive from 'tail-call/core';
 
@@ -62,7 +61,7 @@ Object.assign(validator.prototype, {
       siblingsLines = new Map();
 
     //First top level line is the only top level means search stops early
-    if (_.isNull(firstLine.sibling) ||
+    if (firstLine.sibling === null ||
       firstLine.sibling.length === 0) {
       return;
     }
@@ -72,8 +71,8 @@ Object.assign(validator.prototype, {
   repeatedLines: (lineNum, children) => {
     let childStructureNames = new Map();
     let structureName = null;
-    _(children).each((val) => {
 
+    for (let val in children) {
       //Child structure name
       structureName = val.structureName;
       let childLineNum = val.nameDetails.line;
@@ -91,7 +90,8 @@ Object.assign(validator.prototype, {
         //Initialize the array for the first child found
         childStructureNames.set(val.structureName, [childLineNum]);
       }
-    });
+    }
+
   },
   cleanFileName: (lineNum, content) => {
     let cleanedName = sanitize(content);
@@ -112,7 +112,7 @@ Object.assign(validator.prototype, {
   sameIndentType: (lineNum, content,
   firstIndentType, currentIndentType) => {
     //Protect against null, which signifies no indent level
-    if (!_.isNull(currentIndentType) &&
+    if (currentIndentType !== null &&
      currentIndentType !== firstIndentType) {
       throw (message.error(`Line #${lineNum}:
          '${content.trim()}',
@@ -122,7 +122,7 @@ Object.assign(validator.prototype, {
   },
   presenceFirstLine: (firstLine, callback, callbackArgs) => {
 
-    if (!_.isNull(firstLine)) {
+    if (firstLine !== null) {
       callback.apply(null, callbackArgs);
     } else {
       message.error('Supplied template file has no content to generate.');
@@ -132,7 +132,7 @@ Object.assign(validator.prototype, {
   firstIndentType, currentIndentType, indentType,
   prevLineParent, prevLineFirstLine) => {
     if (indentType === 'outdent' &&
-    _.isNull(prevLineParent) &&
+    prevLineParent === null &&
     prevLineFirstLine) {
 
     throw (message.error(`Line #${lineNum}:

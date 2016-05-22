@@ -17,6 +17,7 @@ import Validations from './lines-validations';
 import Timer from './process-timer';
 import generateStructure from './generation';
 import commandTypeAction from './cli-command-type';
+import util from './utilities';
 
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
@@ -50,12 +51,12 @@ export default (action, actionParams) => {
   let execPathDemo = null;
   let creationTemplatePath = '';
 
-  if (_.isObject(action)) {
+  if (util.isObject(action)) {
     actionDemo = action.action;
     execPathDemo = action.execPath;
   }
 
-  if (!_.isUndefined(action.action)) {
+  if (typeof action.action !== 'undefined') {
 
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action, 'template', actionParams, execPathDemo);

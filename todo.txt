@@ -1,3 +1,11 @@
+parent folder with the same name child items and repeated child names does trigger error message.
+
+Nested files and folders not generating?
+
+gsdf
+	adsfadfasdf
+	adsfadfasdf
+
 version timing problem on the tests
 test deeply nested folder structures
 
