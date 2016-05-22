@@ -1,8 +1,5 @@
 'use strict';
 
-//Vendor modules
-import _ from 'lodash';
-
 //Source modules
 import singleLineInfoFunctions from './singleLine-info';
 
@@ -48,10 +45,12 @@ Object.assign(linesInfo.prototype, {
 
     //Execute all other data gathering functions
     //for gathering data for lines
-    _.each(Object.keys(_.omit(linesInfoFunctions, 'countLines')),
-      function(value) {
-        linesInfoFunctions[value]();
-      });
+    for (let key in linesInfoFunctions) {
+      if (key !== 'countLines') {
+        linesInfoFunctions[key]();
+      }
+    }
+
   },
   setLineData: (currentLine, linesInfo) => {
     let isFirstLine = false;

@@ -14,6 +14,7 @@ import {
   writeFileAsync,
   removeAsync } from 'fs-extra-promise';
 
+//Source modules
 import Validations from './lines-validations';
 
 const validator = new Validations();
@@ -55,7 +56,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   }
 
   //Only the top-most level need the siblings generation
-  if (!_.isUndefined(lineInfo.sibling) && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount) {
+  if (typeof lineInfo.sibling !== 'undefined' && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount) {
     _.each(lineInfo.sibling, (line) => {
       createStructureTC(line, rootPath, firstContentLineIndentAmount);
     });

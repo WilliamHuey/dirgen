@@ -48,8 +48,8 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
 
       //Assume file type unless the inferType is already set
-      if (_.isUndefined(currentLine.inferType) ||
-      _.isNull(currentLine.inferType)) {
+      if (typeof currentLine.inferType == 'undefined' ||
+      currentLine.inferType === null) {
         currentLine.inferType = 'file';
       }
 
@@ -82,11 +82,11 @@ let singleLineInfoFunctions = {
     //as a file type if uncertain of file type
     //Assume that they are files until new
     //information comes out
-    if (_.isUndefined(linesInfo.prevLineInfo.inferType)) {
+    if (typeof linesInfo.prevLineInfo.inferType === 'undefined') {
       linesInfo.prevLineInfo.inferType = 'file';
     }
 
-    if (_.isUndefined(currentLine.inferType)) {
+    if (typeof currentLine.inferType === 'undefined') {
       currentLine.inferType = 'file';
     }
 
@@ -112,7 +112,7 @@ let singleLineInfoFunctions = {
       currentLine.parent.inferType = 'folder';
 
       //Assume currentline to be a file, unless proven later on
-      if (_.isUndefined(currentLine.inferType)) {
+      if (typeof currentLine.inferType === 'undefined') {
         currentLine.inferType = 'file';
       }
 
@@ -144,18 +144,18 @@ let singleLineInfoFunctions = {
             prevLine.parent.sibling.push(currentLine);
 
             //Check against last line having less indent than previous
-            if (!_.isNull(prevLine.parent.parent)) {
+            if (prevLine.parent.parent !== null) {
               prevLine.parent.parent.children.push(currentLine);
             }
           }
 
           //Check against last line having less indent than previous
-          if (!_.isNull(prevLine.parent.parent)) {
+          if (prevLine.parent.parent !== null) {
             currentLine.parent = prevLine.parent.parent;
           }
 
           //Assume currentline to be a file, unless proven later on
-          if (_.isUndefined(currentLine.inferType)) {
+          if (typeof currentLine.inferType === 'undefined') {
             currentLine.inferType = 'file';
           }
 
