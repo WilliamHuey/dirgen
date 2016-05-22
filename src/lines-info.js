@@ -48,7 +48,7 @@ Object.assign(linesInfo.prototype, {
 
     //Execute all other data gathering functions
     //for gathering data for lines
-    _.each(_.keys(_.omit(linesInfoFunctions, 'countLines')),
+    _.each(Object.keys(_.omit(linesInfoFunctions, 'countLines')),
       function(value) {
         linesInfoFunctions[value]();
       });

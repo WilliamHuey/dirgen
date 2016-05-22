@@ -1,4 +1,5 @@
-check against wiping out the original content of the folder
+version timing problem on the tests
+test deeply nested folder structures
 
 Backlog/Optimize
 selective includes lodash dependency?

@@ -7,8 +7,7 @@ var childProcess = require('child_process'),
 //Vendor modules
 var fs = require('fs-extra-promise'),
   lab = exports.lab = require('lab').script(),
-  __ = require('hamjest'),
-  _ = require('lodash');
+  __ = require('hamjest');
 
 //Path definitions
 var cliEntryFile = 'node ' + __dirname +  '/../bin/dirgen-cli-init.js';
@@ -211,7 +210,7 @@ lab.experiment('and with the demo command', function() {
 
       var expectedDemoPaths = require(path.resolve(__dirname +  '/fixtures/demo-structure-output.js'));
 
-      var keyCount = _.keys(expectedDemoPaths).length;
+      var keyCount = Object.keys(expectedDemoPaths).length;
       var structureCheckCount = 0;
       var doneCheck = function(keyCount, structureCheckCount, done, error) {
         if(keyCount === structureCheckCount) {
