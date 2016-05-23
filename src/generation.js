@@ -5,7 +5,6 @@ import fs from 'fs';
 import path from 'path';
 
 //Vendor modules
-import _ from 'lodash';
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
 import {
@@ -49,7 +48,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
         lineInfo.nameDetails.line,
         lineInfo.children);
 
-      _.each(lineInfo.children, (line) => {
+      lineInfo.children.forEach((line) => {
         createStructureTC(line, parentPath, firstContentLineIndentAmount);
       });
     }
@@ -57,7 +56,8 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
 
   //Only the top-most level need the siblings generation
   if (typeof lineInfo.sibling !== 'undefined' && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount) {
-    _.each(lineInfo.sibling, (line) => {
+
+    lineInfo.sibling.forEach((line) => {
       createStructureTC(line, rootPath, firstContentLineIndentAmount);
     });
   }

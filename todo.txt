@@ -1,16 +1,17 @@
-parent folder with the same name child items and repeated child names does trigger error message.
+failure to generate when the last line in the template is not on the same level as the first content line
 
-Nested files and folders not generating?
+  -parent folder with the same name child items and repeated child names does trigger error message?
 
 gsdf
 	adsfadfasdf
 	adsfadfasdf
 
+presence of content already in folder does not regenerate
+
 version timing problem on the tests
 test deeply nested folder structures
 
 Backlog/Optimize
-selective includes lodash dependency?
 -- pluralizing the error messages
 -try catch in the async await is required
 -right and left trim

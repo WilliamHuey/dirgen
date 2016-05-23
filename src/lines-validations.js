@@ -72,7 +72,8 @@ Object.assign(validator.prototype, {
     let childStructureNames = new Map();
     let structureName = null;
 
-    for (let val in children) {
+    children.forEach((val) => {
+
       //Child structure name
       structureName = val.structureName;
       let childLineNum = val.nameDetails.line;
@@ -90,7 +91,7 @@ Object.assign(validator.prototype, {
         //Initialize the array for the first child found
         childStructureNames.set(val.structureName, [childLineNum]);
       }
-    }
+    });
 
   },
   cleanFileName: (lineNum, content) => {
