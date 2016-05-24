@@ -1,12 +1,16 @@
+
+top line repeated validator logic redo
+
 failure to generate when the last line in the template is not on the same level as the first content line
 
   -parent folder with the same name child items and repeated child names does trigger error message?
+
 
 gsdf
 	adsfadfasdf
 	adsfadfasdf
 
-presence of content already in folder does not regenerate
+presence of content already in folder does not cause an overwrite?
 
 version timing problem on the tests
 test deeply nested folder structures

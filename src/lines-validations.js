@@ -80,8 +80,9 @@ Object.assign(validator.prototype, {
 
       //Push to the array of collected repeats
       if (childStructureNames.has(val.structureName)) {
-        childStructureNames.set(val.structureName,
-          childStructureNames.get(val.structureName).push(childLineNum));
+        //Make a copy as to not mutate the original reference of repeats
+        let repeatedArr = childStructureNames.get(val.structureName).concat();
+        childStructureNames.set(repeatedArr.push(childLineNum));
         let repeatedEntries = childStructureNames.get(val.structureName);
         //Send the message after saving the repeated value
         message.warn(`Line #${repeatedEntries[0]}: '${structureName}', has repeated entries on
