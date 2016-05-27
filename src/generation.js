@@ -51,7 +51,6 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
     });
   } else {
 
-
     // console.log("lineInfo", lineInfo);
     if (lineInfo.inferType === 'file') {
 

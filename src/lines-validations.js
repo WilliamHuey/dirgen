@@ -132,12 +132,21 @@ Object.assign(validator.prototype, {
       //will cause the line to be invalid
       if (!(content.charCodeAt(0) === structureMarker.folder &&
         content.slice(1) === cleanedName)) {
-        message.warn(`Line #${lineNum}:
-          '${content.trim()}', has illegal characters
-          which has been replaced, resulting in '${cleanedName}'.`);
-        return cleanedName;
+
+        return {
+          type: 'warning',
+          line: {
+            number: lineNum,
+            message: `Line #${lineNum}:
+              '${content.trim()}', has illegal characters
+              which has been replaced, resulting in '${cleanedName}'.`
+          },
+          output: cleanedName
+        };
+
       }
-    }
+    } else { return { type: 'valid' }; }
+
   },
   sameIndentType: (lineNum, content,
   firstIndentType, currentIndentType) => {
@@ -202,10 +211,17 @@ Object.assign(validator.prototype, {
   },
   charCountUnder255: (count, lineNum, content, inferType) => {
     if (count > 255) {
-      message.error(`Line #${lineNum}: '${content}', has a character
-        count of ${count}, which exceeds 255. ${inferType.charAt(0).toUpperCase() +
-        inferType.slice(1)}. Nothing was generated.`);
-    }
+
+      return {
+        type: 'error',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}: '${content}', has a character
+            count of ${count}, which exceeds 255. ${inferType.charAt(0).toUpperCase() +
+            inferType.slice(1)}. Nothing was generated.`
+        }
+      };
+    } else { return { type: 'valid'}; }
   }
 });
 

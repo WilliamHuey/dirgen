@@ -86,6 +86,9 @@ export default (action, actionParams) => {
       } else if (againstRule.type === 'warning') {
         summaryValidation.warnings.push(againstRule.line);
       }
+      if (againstRule.output) {
+        return againstRule.output;
+      }
     }
   };
 
@@ -141,6 +144,7 @@ export default (action, actionParams) => {
 
       // console.log("\n\ncurrentLine", currentLine);
 
+      //Validate the recently set line data
       logValidations(
         validator.sameIndentType(
         linesInfo.totalLineCount,
@@ -149,23 +153,27 @@ export default (action, actionParams) => {
         currentLine.nameDetails.indentType),
       validationResults);
 
+      logValidations(
+        validator.charCountUnder255(
+          currentLine.nameDetails.contentLength,
+          linesInfo.totalLineCount,
+          currentLine.structureName,
+          currentLine.inferType),
+        validationResults);
 
-      // //Validate the recently set line data
-      // validator.charCountUnder255(
-      //   currentLine.nameDetails.contentLength,
-      //   linesInfo.totalLineCount,
-      //   currentLine.structureName,
-      //   currentLine.inferType);
-      //
-      // //Manipulates the currentLine object
-      // const sanitizedName = validator.cleanFileName(
-      //   linesInfo.totalLineCount,
-      //   currentLine.structureName,
-      //   currentLine);
-      //
-      // if (sanitizedName) {
-      //   currentLine.nameDetails.sanitizedName = sanitizedName;
-      // }
+
+      //Manipulates the currentLine object
+      const sanitizedName =
+      logValidations(
+       validator.cleanFileName(
+        linesInfo.totalLineCount,
+        currentLine.structureName,
+        currentLine),
+      validationResults);
+
+      if (sanitizedName) {
+        currentLine.nameDetails.sanitizedName = sanitizedName;
+      }
 
     })
     .on('close', () => {
