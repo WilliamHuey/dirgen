@@ -144,11 +144,20 @@ Object.assign(validator.prototype, {
     //Protect against null, which signifies no indent level
     if (currentIndentType !== null &&
      currentIndentType !== firstIndentType) {
-      throw (message.error(`Line #${lineNum}:
-         '${content.trim()}',
-         has indent type of '${currentIndentType}'
-         which is inconsistent with the first defined outdent type of '${firstIndentType}'. Nothing was generated.`));
-    }
+       console.log("lineNum", lineNum);
+       return {
+         type: 'error',
+         line: {
+           number: lineNum,
+           message: `Line #${lineNum}:
+             '${content.trim()}',
+             has indent type of '${currentIndentType}'
+             which is inconsistent with the first defined outdent type of '${firstIndentType}'. Nothing was generated.`
+       }
+     };
+   } else {
+     return { type: 'valid' };
+   }
   },
   presenceFirstLine: (firstLine, callback, callbackArgs) => {
 

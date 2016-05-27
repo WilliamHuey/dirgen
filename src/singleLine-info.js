@@ -206,5 +206,4 @@ let singleLineInfoFunctions = {
   }
 };
 
-export
-default singleLineInfoFunctions;
+export default singleLineInfoFunctions;

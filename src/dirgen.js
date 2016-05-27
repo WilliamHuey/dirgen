@@ -66,6 +66,29 @@ export default (action, actionParams) => {
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   }
 
+  //Group the errors and warnings together
+  //to avoid second pass through if errors
+  //and delay warning outputs until the end
+  let validationResults = {
+    errors: [],
+    warnings: []
+  };
+
+  let logValidations = (againstRule, summaryValidation) => {
+
+    //ex againstRule = {
+    // type: 'error',
+      // line: { number: 2, message: 'Line 2 has error on ...'}
+    //}
+    if (typeof againstRule.type !== 'undefined') {
+      if (againstRule.type === 'error') {
+        summaryValidation.errors.push(againstRule.line);
+      } else if (againstRule.type === 'warning') {
+        summaryValidation.warnings.push(againstRule.line);
+      }
+    }
+  };
+
   //Read through all the lines of a supplied file
   readline.createInterface({
     input: fs.createReadStream(creationTemplatePath)
@@ -116,14 +139,17 @@ export default (action, actionParams) => {
       //the siblings, parent, and children key values
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
-      console.log("\n\ncurrentLine", currentLine);
+      // console.log("\n\ncurrentLine", currentLine);
 
-      // validator.sameIndentType(
-      //   linesInfo.totalLineCount,
-      //   currentLine.structureName,
-      //   linesInfo.firstIndentationType,
-      //   currentLine.nameDetails.indentType);
-      //
+      logValidations(
+        validator.sameIndentType(
+        linesInfo.totalLineCount,
+        currentLine.structureName,
+        linesInfo.firstIndentationType,
+        currentLine.nameDetails.indentType),
+      validationResults);
+
+
       // //Validate the recently set line data
       // validator.charCountUnder255(
       //   currentLine.nameDetails.contentLength,
@@ -161,5 +187,7 @@ export default (action, actionParams) => {
 
       // validator.presenceFirstLine(
       //   linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
+
+      console.log("validationResults", validationResults);
     });
 };
