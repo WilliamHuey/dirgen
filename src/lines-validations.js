@@ -11,62 +11,90 @@ import structureMarker from './character-code';
 const tailCall = recursive.recur;
 let validator = () => {};
 
-//Tail recursive utility function for top-level sibling searches
-let searchSiblingsTC = null;
-let searchSiblings = function(searchLine, searchLineNum, lastLineNum, siblingsLines) {
-
-  //Check until to the very last line is reached
-  if (searchLineNum <= lastLineNum) {
-
-    //Log repeats in an array within a map
-    if (siblingsLines.has(searchLine.structureName)) {
-      siblingsLines.set(searchLine.structureName,
-        siblingsLines.get(searchLine.structureName).concat([searchLineNum]));
-    } else {
-      siblingsLines.set(searchLine.structureName, [searchLineNum]);
-    }
-
-    //Only display warning messages for values
-    //of arrays that greater than 1, meaning repeats
-    let repeatChecks = false;
-    if (searchLineNum === lastLineNum) {
-      for (let [key, value] of siblingsLines) {
-        if (value.length >= 2) {
-          message.warn(`Line #${value[0]}: '${key}', has repeated entries on
-          line(s): ${value.slice(1)}.
-          The last repeated value line overwritten all previous entries.`);
-        }
-      }
-      repeatChecks = true;
-    }
-
-    //Stop searching if the all repeats are checked
-    if (repeatChecks) return;
-
-    searchSiblingsTC(searchLine.sibling[0], searchLine.sibling[0].nameDetails.line,
-    lastLineNum, siblingsLines);
-  }
-};
-
-searchSiblingsTC = tailCall(searchSiblings);
-
 Object.assign(validator.prototype, {
   topLevelRepeatedLines: (firstLine, lastLineNum) => {
 
-    //Recursively loop through all the siblings
-    //Any sibling has an immediate first link
-    //to its successive sibling
-    let searchLine = firstLine,
-      searchLineNum = searchLine.nameDetails.line,
-      siblingsLines = new Map();
+    let levelRepeats = {};
+    let currentLine = firstLine;
+    let nextLine = firstLine.sibling;
+    let searchLine = firstLine.nameDetails.line;
 
-    //First top level line is the only top level means search stops early
-    if (firstLine.sibling === null ||
-      firstLine.sibling.length === 0) {
-      return;
+    console.log("first searchLine", searchLine);
+    console.log("lastLineNum", lastLineNum);
+
+    for (; searchLine <= lastLineNum; ) {
+      // console.log("nextLine", nextLine);
+
+
+      let lineName = currentLine.structureName;
+
+      console.log("lineName", lineName);
+
+      if (levelRepeats.hasOwnProperty(lineName)) {
+        console.log("old key", lineName);
+        console.log("currentLine", currentLine);
+        // console.log("levelRepeats.get(lineName).", levelRepeats.get(lineName));
+        let lineNameRepeats = levelRepeats[lineName].concat();
+
+        lineNameRepeats.push(currentLine.nameDetails.line);
+
+        console.log("lineNameRepeats", lineNameRepeats);
+
+        levelRepeats[lineName] = lineNameRepeats;
+
+        console.log("now levelRepeats", levelRepeats);
+
+        // console.log("eeeeeeee currentLine", currentLine);
+        // console.log(")))))))eeee");
+        // console.log("eeee searchLine later", searchLine);
+        // console.log("eeee<<<<");
+        // console.log("eeeenextLine", nextLine);
+      } else {
+        console.log("new key lineName", lineName);
+        console.log("currentLine.nameDetails.line", currentLine.nameDetails.line);
+
+        levelRepeats[lineName] = [currentLine.nameDetails.line];
+
+        console.log("levelRepeats", levelRepeats);
+
+
+        // console.log("(searchLine + 1)", (searchLine + 1));
+        // console.log("lastLineNum", lastLineNum);
+
+        if ((searchLine + 1) > lastLineNum) {
+          //End immediately once no more siblings are found
+          console.log("searchLine", searchLine);
+          console.log("lastLineNum", lastLineNum);
+          console.log("exit immediately");
+          searchLine = lastLineNum;
+          return levelRepeats;
+        }
+      }
+      // console.log("nextLine[0].nameDetails", nextLine[0].nameDetails);
+
+      currentLine = nextLine[0];
+      searchLine = currentLine.nameDetails.line;
+
+      nextLine = currentLine.sibling;
+
+      console.log("currentLine", currentLine);
+      console.log(")))))))");
+      console.log("searchLine later", searchLine);
+      console.log("<<<<");
+      console.log("nextLine", nextLine);
+      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+
     }
+    //
 
-    searchSiblingsTC(searchLine, searchLineNum, lastLineNum, siblingsLines);
+    console.log("---------------------------------------just out levelRepeats", levelRepeats);
+
+
+
+
+    // console.log("levelRepeats", levelRepeats);
+
   },
   repeatedLines: (lineNum, children) => {
     let childStructureNames = new Map();
@@ -125,6 +153,7 @@ Object.assign(validator.prototype, {
   presenceFirstLine: (firstLine, callback, callbackArgs) => {
 
     if (firstLine !== null) {
+      // console.log("has content");
       callback.apply(null, callbackArgs);
     } else {
       message.error('Supplied template file has no content to generate.');

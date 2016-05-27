@@ -116,28 +116,30 @@ export default (action, actionParams) => {
       //the siblings, parent, and children key values
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
 
-      validator.sameIndentType(
-        linesInfo.totalLineCount,
-        currentLine.structureName,
-        linesInfo.firstIndentationType,
-        currentLine.nameDetails.indentType);
+      console.log("\n\ncurrentLine", currentLine);
 
-      //Validate the recently set line data
-      validator.charCountUnder255(
-        currentLine.nameDetails.contentLength,
-        linesInfo.totalLineCount,
-        currentLine.structureName,
-        currentLine.inferType);
-
-      //Manipulates the currentLine object
-      const sanitizedName = validator.cleanFileName(
-        linesInfo.totalLineCount,
-        currentLine.structureName,
-        currentLine);
-
-      if (sanitizedName) {
-        currentLine.nameDetails.sanitizedName = sanitizedName;
-      }
+      // validator.sameIndentType(
+      //   linesInfo.totalLineCount,
+      //   currentLine.structureName,
+      //   linesInfo.firstIndentationType,
+      //   currentLine.nameDetails.indentType);
+      //
+      // //Validate the recently set line data
+      // validator.charCountUnder255(
+      //   currentLine.nameDetails.contentLength,
+      //   linesInfo.totalLineCount,
+      //   currentLine.structureName,
+      //   currentLine.inferType);
+      //
+      // //Manipulates the currentLine object
+      // const sanitizedName = validator.cleanFileName(
+      //   linesInfo.totalLineCount,
+      //   currentLine.structureName,
+      //   currentLine);
+      //
+      // if (sanitizedName) {
+      //   currentLine.nameDetails.sanitizedName = sanitizedName;
+      // }
 
     })
     .on('close', () => {
@@ -155,7 +157,9 @@ export default (action, actionParams) => {
 
       // console.log("linesInfo", linesInfo);
       // console.log("linesInfo.firstLine", linesInfo.firstLine);
-      validator.presenceFirstLine(
-        linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
+
+
+      // validator.presenceFirstLine(
+      //   linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
     });
 };
