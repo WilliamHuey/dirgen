@@ -3,6 +3,7 @@
 //Start timing the whole generation process
 let time = process.hrtime();
 
+//Add support for features such as maps and promises
 import "babel-polyfill";
 
 //Native modules
@@ -140,7 +141,7 @@ export default (action, actionParams) => {
 
       //Get the information from prior lines to determine
       //the siblings, parent, and children key values
-      currentLine = addLinesInfo.setLineData(currentLine, linesInfo);
+      currentLine = addLinesInfo.setLineData(currentLine, linesInfo, validationResults);
 
       // console.log("\n\ncurrentLine", currentLine);
 
@@ -191,7 +192,6 @@ export default (action, actionParams) => {
         console.log("should generate");
       }
 
-
-      console.log("validationResults", validationResults);
+      // console.log("validationResults", validationResults);
     });
 };

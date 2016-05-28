@@ -27,7 +27,7 @@ const linesInfoFunctions = {
 };
 
 Object.assign(linesInfo.prototype, {
-  setGeneralData: (line, lineSetInfo) => {
+  setGeneralData: (line, lineSetInfo, validationResults) => {
 
     //Update current line data with line set info
     data = {
@@ -52,7 +52,7 @@ Object.assign(linesInfo.prototype, {
     }
 
   },
-  setLineData: (currentLine, linesInfo) => {
+  setLineData: (currentLine, linesInfo, validationResults) => {
     let isFirstLine = false;
     if (linesInfo.prevLineInfo === null) {
       isFirstLine = true;
@@ -70,7 +70,7 @@ Object.assign(linesInfo.prototype, {
     singleLineInfoFunctions.countLine(linesInfo, currentLine);
 
     //Determine how current line relates to the previous line
-    singleLineInfoFunctions.relations(linesInfo, currentLine, isFirstLine);
+    singleLineInfoFunctions.relations(linesInfo, currentLine, isFirstLine, validationResults);
 
     //Current line will become the previous line after all
     //the necessary data is gather

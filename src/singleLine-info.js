@@ -94,7 +94,11 @@ let singleLineInfoFunctions = {
       //Previous line indent is less than current
       return prevLineIndent < currentLineIndent;
 
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine, validationResults) => {
+
+      console.log("prevLineIndent < currentLineIndent arg len is 6", arguments.length);
+      console.log("currentLine.structureName", currentLine.structureName);
+      console.log("=====================");
 
       //Validate the indent level of child relative to parent
       validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
@@ -119,7 +123,11 @@ let singleLineInfoFunctions = {
     .when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent > currentLineIndent;
 
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine, validationResults) => {
+
+      console.log("prevLineIndent > currentLineIndent arg len is 6", arguments.length);
+      console.log("currentLine.structureName", currentLine.structureName);
+      console.log("=====================");
 
       //Use the previous line and navigate back up the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
@@ -169,7 +177,7 @@ let singleLineInfoFunctions = {
     .any(() => {
       return;
     }),
-  relations: (linesInfo, currentLine, isFirstLine) => {
+  relations: (linesInfo, currentLine, isFirstLine, validationResults) => {
 
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&
@@ -188,7 +196,7 @@ let singleLineInfoFunctions = {
       singleLineInfoFunctions
         .compareIndent(
           linesInfo.prevLineInfo.nameDetails.indentAmount,
-          currentLine.nameDetails.indentAmount, linesInfo, currentLine);
+          currentLine.nameDetails.indentAmount, linesInfo, currentLine, false, validationResults);
 
     } else if (linesInfo.contentLineCount === 1 &&
       currentLine.structureName.length > 0 && isFirstLine) {
@@ -198,7 +206,7 @@ let singleLineInfoFunctions = {
       singleLineInfoFunctions
         .compareIndent(
           linesInfo.prevLineInfo.nameDetails.indentAmount,
-          currentLine.nameDetails.indentAmount, linesInfo, currentLine, isFirstLine);
+          currentLine.nameDetails.indentAmount, linesInfo, currentLine, isFirstLine, validationResults);
     }
   },
   updatePrevLine: (linesInfo, currentLine) => {

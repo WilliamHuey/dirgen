@@ -1,6 +1,12 @@
 
+log the top level entries in the linesInfo
+and use to keep a ref for consistent generation
+of children when down with current line
+
 top line repeated validator logic redo
-  should only write the latest line
+  should only write the latest line on repeats
+
+
 ensure the ordering of repeats in the nested childs
 
 
