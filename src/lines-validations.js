@@ -169,13 +169,24 @@ Object.assign(validator.prototype, {
      return { type: 'valid' };
    }
   },
-  presenceFirstLine: (firstLine, callback, callbackArgs) => {
+  presenceFirstLine: (firstLine) => {
 
     if (firstLine !== null) {
       // console.log("has content");
-      callback.apply(null, callbackArgs);
+      // callback.apply(null, callbackArgs);
+      return {
+        type: 'valid',
+        output: true
+      };
     } else {
-      message.error('Supplied template file has no content to generate.');
+
+      return {
+        type: 'error',
+        line: {
+          number: 0,
+          message: 'Supplied template file has no content to generate.'
+        }
+      };
     }
   },
   properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,

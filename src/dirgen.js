@@ -161,8 +161,8 @@ export default (action, actionParams) => {
           currentLine.inferType),
         validationResults);
 
-
       //Manipulates the currentLine object
+      //to use for later generation
       const sanitizedName =
       logValidations(
        validator.cleanFileName(
@@ -177,24 +177,20 @@ export default (action, actionParams) => {
 
     })
     .on('close', () => {
-      // console.log('closing the file');
 
-      //Hand off general line information
-      //to create the actual files and folders
-
+      //Determine the output filepath of the generated
       let rootPath = commandTypeAction((actionDemo || action), 'output', actionParams, execPathDemo);
 
-      //But validate the presence of the firstLine
-      //if nothing, skip generation
-      //presenceFirstLine also sets off the generation
-      //validator.<rule>(<data>, <callback>, <callback arguments>)
+      //Should not be generate with no lines in the file
+      const shouldGenerate = logValidations(
+       validator.presenceFirstLine(
+        linesInfo.firstLine),
+      validationResults);
 
-      // console.log("linesInfo", linesInfo);
-      // console.log("linesInfo.firstLine", linesInfo.firstLine);
+      if (shouldGenerate) {
+        console.log("should generate");
+      }
 
-
-      // validator.presenceFirstLine(
-      //   linesInfo.firstLine, generateStructure, [linesInfo, rootPath]);
 
       console.log("validationResults", validationResults);
     });
