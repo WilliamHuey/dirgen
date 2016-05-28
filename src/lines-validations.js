@@ -125,7 +125,8 @@ Object.assign(validator.prototype, {
   },
   cleanFileName: (lineNum, content) => {
     let cleanedName = sanitize(content);
-    if (cleanedName !== content) {
+    if (cleanedName !== content &&
+      content.length < 255) {
 
       //One slash in front of line implied a folder
       //but any invalid character persist after the first slash
