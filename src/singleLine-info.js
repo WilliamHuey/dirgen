@@ -6,6 +6,7 @@ import guard from 'guard-js';
 //Source modules
 import Validations from './lines-validations';
 import structureMarker from './character-code';
+import logValidations from './log-validations';
 
 const validator = new Validations();
 
@@ -101,12 +102,14 @@ let singleLineInfoFunctions = {
       console.log("=====================");
 
       //Validate the indent level of child relative to parent
-      validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
-         linesInfo.firstIndentationAmount,
-         prevLineIndent,
-       currentLineIndent,
-       linesInfo.firstIndentationType,
-       currentLine.nameDetails.indentType, 'indent');
+      logValidations(
+        validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
+           linesInfo.firstIndentationAmount,
+           prevLineIndent,
+         currentLineIndent,
+         linesInfo.firstIndentationType,
+         currentLine.nameDetails.indentType, 'indent'),
+        validationResults);
 
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
@@ -135,13 +138,15 @@ let singleLineInfoFunctions = {
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
 
         //Validate the indent level of child relative to parent
-        validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
-           linesInfo.firstIndentationAmount,
-           prevLine.nameDetails.indentAmount,
-         currentLineIndent,
-         linesInfo.firstIndentationType,
-         currentLine.nameDetails.indentType, 'outdent', prevLine.parent,
-          linesInfo.prevLineInfo.isFirstLine);
+        logValidations(
+          validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
+             linesInfo.firstIndentationAmount,
+             prevLine.nameDetails.indentAmount,
+           currentLineIndent,
+           linesInfo.firstIndentationType,
+           currentLine.nameDetails.indentType, 'outdent', prevLine.parent,
+            linesInfo.prevLineInfo.isFirstLine),
+          validationResults);
 
         if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
 

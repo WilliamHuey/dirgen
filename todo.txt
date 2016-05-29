@@ -15,6 +15,8 @@ failure to generate when the last line in the template is not on the same level 
   -parent folder with the same name child items and repeated child names does trigger error message?
 
 
+mixed and tabs and spaces on the space line passes through validation checks
+
 gsdf
 	adsfadfasdf
 	adsfadfasdf

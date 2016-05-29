@@ -19,6 +19,7 @@ import Timer from './process-timer';
 import generateStructure from './generation';
 import commandTypeAction from './cli-command-type';
 import util from './utilities';
+import logValidations from './log-validations';
 
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
@@ -73,24 +74,6 @@ export default (action, actionParams) => {
   let validationResults = {
     errors: [],
     warnings: []
-  };
-
-  let logValidations = (againstRule, summaryValidation) => {
-
-    //ex againstRule = {
-    // type: 'error',
-      // line: { number: 2, message: 'Line 2 has error on ...'}
-    //}
-    if (typeof againstRule.type !== 'undefined') {
-      if (againstRule.type === 'error') {
-        summaryValidation.errors.push(againstRule.line);
-      } else if (againstRule.type === 'warning') {
-        summaryValidation.warnings.push(againstRule.line);
-      }
-      if (againstRule.output) {
-        return againstRule.output;
-      }
-    }
   };
 
   //Read through all the lines of a supplied file
@@ -192,6 +175,6 @@ export default (action, actionParams) => {
         console.log("should generate");
       }
 
-      // console.log("validationResults", validationResults);
+      console.log("validationResults", validationResults);
     });
 };

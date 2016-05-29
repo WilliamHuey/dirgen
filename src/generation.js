@@ -11,7 +11,8 @@ import {
   existsAsync,
   mkdirAsync,
   writeFileAsync,
-  removeAsync } from 'fs-extra-promise';
+  removeAsync
+} from 'fs-extra-promise';
 
 //Source modules
 import Validations from './lines-validations';
@@ -21,7 +22,7 @@ const tailCall = recursive.recur;
 
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
-const createStructure = async function (lineInfo, rootPath, firstContentLineIndentAmount, topRepeatsCheck, fromCaller) {
+const createStructure = async function(lineInfo, rootPath, firstContentLineIndentAmount, topRepeatsCheck, fromCaller) {
 
   // console.log("createStructure", createStructure);
   //
@@ -34,7 +35,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   //Join the path safely by converting all backward
   //slashes to forward slashes
   let structureName = lineInfo.nameDetails.sanitizedName ||
-   lineInfo.structureName,
+    lineInfo.structureName,
     structureRoughPath = path.join(rootPath, structureName),
     structureCreatePath = normalizePath(structureRoughPath);
 
@@ -42,7 +43,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
   // console.log("lineInfo.inferType", lineInfo.inferType);
 
   if (typeof lineInfo.sibling !== 'undefined' && lineInfo.sibling.length > 0 && firstContentLineIndentAmount === lineInfo.nameDetails.indentAmount &&
-  typeof fromCaller === 'undefined') {
+    typeof fromCaller === 'undefined') {
     console.log("first level");
     console.log("lineInfo.sibling[0]", lineInfo.sibling[0]);
     writeFileAsync(structureCreatePath);
@@ -71,13 +72,13 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
       console.log("folder chec");
       //Folder will be the only other structure type
       let parentPath = path.join(rootPath, (lineInfo.nameDetails.sanitizedName ||
-         lineInfo.structureName));
+        lineInfo.structureName));
 
       await mkdirAsync(parentPath);
 
       //Create children structures if folder has children
       if (lineInfo.children.length > 0) {
-          console.log("-has childrennnnnn");
+        console.log("-has childrennnnnn");
 
         validator.repeatedLines(
           lineInfo.nameDetails.line,
@@ -103,8 +104,7 @@ const createStructure = async function (lineInfo, rootPath, firstContentLineInde
 
 createStructureTC = tailCall(createStructure);
 
-export
-default(linesInfo, rootPath) => {
+export default (linesInfo, rootPath) => {
 
   (async function dirGen() {
 

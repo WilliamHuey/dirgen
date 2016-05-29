@@ -22,7 +22,7 @@ Object.assign(validator.prototype, {
     console.log("first searchLine", searchLine);
     console.log("lastLineNum", lastLineNum);
 
-    for (; searchLine <= lastLineNum; ) {
+    for (; searchLine <= lastLineNum;) {
       // console.log("nextLine", nextLine);
 
 
@@ -132,7 +132,7 @@ Object.assign(validator.prototype, {
       //but any invalid character persist after the first slash
       //will cause the line to be invalid
       if (!(content.charCodeAt(0) === structureMarker.folder &&
-        content.slice(1) === cleanedName)) {
+          content.slice(1) === cleanedName)) {
 
         return {
           type: 'warning',
@@ -146,28 +146,34 @@ Object.assign(validator.prototype, {
         };
 
       }
-    } else { return { type: 'valid' }; }
+    } else {
+      return {
+        type: 'valid'
+      };
+    }
 
   },
   sameIndentType: (lineNum, content,
-  firstIndentType, currentIndentType) => {
+    firstIndentType, currentIndentType) => {
     //Protect against null, which signifies no indent level
     if (currentIndentType !== null &&
-     currentIndentType !== firstIndentType) {
-       console.log("lineNum", lineNum);
-       return {
-         type: 'error',
-         line: {
-           number: lineNum,
-           message: `Line #${lineNum}:
+      currentIndentType !== firstIndentType) {
+      console.log("lineNum", lineNum);
+      return {
+        type: 'error',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}:
              '${content.trim()}',
              has indent type of '${currentIndentType}'
              which is inconsistent with the first defined outdent type of '${firstIndentType}'. Nothing was generated.`
-       }
-     };
-   } else {
-     return { type: 'valid' };
-   }
+        }
+      };
+    } else {
+      return {
+        type: 'valid'
+      };
+    }
   },
   presenceFirstLine: (firstLine) => {
 
@@ -190,35 +196,54 @@ Object.assign(validator.prototype, {
     }
   },
   properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
-  firstIndentType, currentIndentType, indentType,
-  prevLineParent, prevLineFirstLine) => {
+    firstIndentType, currentIndentType, indentType,
+    prevLineParent, prevLineFirstLine) => {
     if (indentType === 'outdent' &&
-    prevLineParent === null &&
-    prevLineFirstLine) {
+      prevLineParent === null &&
+      prevLineFirstLine) {
 
-    throw (message.error(`Line #${lineNum}:
-       '${content.trim()}' , prior line was the first line
-       which was further indented than the current line.
-       Ambigious results might occur. Nothing was generated.`));
-    }
+      return {
+        type: 'error',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}:
+           '${content.trim()}' , prior line was the first line
+           which was further indented than the current line.
+           Ambigious results might occur. Nothing was generated.`
+        }
+      };
+    } else if (indentType === 'outdent' &&
+      !(currentIndentAmt % firstIndentAmt === 0) &&
+      !(currentIndentAmt >= firstIndentAmt)) {
 
-    if (indentType === 'outdent' &&
-    !(currentIndentAmt % firstIndentAmt === 0) &&
-    !(currentIndentAmt >= firstIndentAmt)) {
-      throw (message.error(`Line #${lineNum}:
-         '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the
-         first defined outdent of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`));
-    }
+      return {
+        type: 'error',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}:
+              '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the
+              first defined outdent of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+        }
+      };
+    } else if (indentType !== 'outdent' && !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
+        firstIndentAmt)) {
+      //Scaling indent factor and firstIndent is the same
 
-    //Scaling indent factor and firstIndent is the same
-    if (indentType !== 'outdent' && !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
-       firstIndentAmt)) {
-
-      throw (message.error(`Line #${lineNum}:
-         '${content.trim()}', has an indent
-         amount of ${Math.abs(currentIndentAmt - prevLineIndentAmt)} ${currentIndentType}(s) relative to parent folder,
-         which is different from the
-         first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`));
+      return {
+        type: 'error',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}:
+            '${content.trim()}', has an indent
+            amount of ${Math.abs(currentIndentAmt - prevLineIndentAmt)} ${currentIndentType}(s) relative to parent folder,
+            which is different from the
+            first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+        }
+      };
+    } else {
+      return {
+        type: 'valid'
+      };
     }
   },
   charCountUnder255: (count, lineNum, content, inferType) => {
@@ -233,7 +258,11 @@ Object.assign(validator.prototype, {
             inferType.slice(1)}. Nothing was generated.`
         }
       };
-    } else { return { type: 'valid'}; }
+    } else {
+      return {
+        type: 'valid'
+      };
+    }
   }
 });
 
