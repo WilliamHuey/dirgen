@@ -28,14 +28,14 @@ renderKid.style({
 
 prettyError.appendStyle({
   'pretty-error > header > title > kind': {
-      display: 'none'
-   },
-   'pretty-error > header > colon': {
-      display: 'none'
-   },
-   'pretty-error > header > message': {
-      display: 'none'
-   }
+    display: 'none'
+  },
+  'pretty-error > header > colon': {
+    display: 'none'
+  },
+  'pretty-error > header > message': {
+    display: 'none'
+  }
 });
 
 const messageTemplate = (msg, type) => {
@@ -52,8 +52,8 @@ const displayMessage = (msg, type) => {
 };
 
 const displayStack = (msg) => {
-  console.error(prettyError.render(new Error(msg)));
-  process.exit();
+  return console.log(prettyError.render(new Error(msg)));
+  // process.exit();
 };
 
 const message = {

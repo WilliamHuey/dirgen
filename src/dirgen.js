@@ -3,23 +3,24 @@
 //Start timing the whole generation process
 let time = process.hrtime();
 
-//Add support for features such as maps and promises
+//Add support for features in ES2015 as maps and promises
 import "babel-polyfill";
 
 //Native modules
-import readline from 'readline';
 import fs from 'fs';
 import path from 'path';
+import readline from 'readline';
 
 //Source modules
+import util from './utilities';
+import Timer from './process-timer';
+import commandTypeAction from './cli-command-type';
 import AddLinesInfo from './lines-info';
 import Lexer from './lexer';
 import Validations from './lines-validations';
-import Timer from './process-timer';
-import generateStructure from './generation';
-import commandTypeAction from './cli-command-type';
-import util from './utilities';
+import message from './validations-messages';
 import logValidations from './log-validations';
+import generateStructure from './generation';
 
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
@@ -124,7 +125,8 @@ export default (action, actionParams) => {
 
       //Get the information from prior lines to determine
       //the siblings, parent, and children key values
-      currentLine = addLinesInfo.setLineData(currentLine, linesInfo, validationResults);
+      currentLine = addLinesInfo.setLineData(currentLine, linesInfo,
+         validationResults);
 
       // console.log("\n\ncurrentLine", currentLine);
 
@@ -163,7 +165,8 @@ export default (action, actionParams) => {
     .on('close', () => {
 
       //Determine the output filepath of the generated
-      let rootPath = commandTypeAction((actionDemo || action), 'output', actionParams, execPathDemo);
+      let rootPath = commandTypeAction((actionDemo || action),
+      'output', actionParams, execPathDemo);
 
       //Should not be generate with no lines in the file
       const hasContent = logValidations(
@@ -171,33 +174,40 @@ export default (action, actionParams) => {
         linesInfo.firstLine),
       validationResults);
 
-
+      //Last stage before generation with status check
       if (hasContent) {
-        console.log("has content");
+        let errors = validationResults.errors;
+        if (errors.length > 0) {
 
-        /*
-          if (hasErrors) {
-
-            //print all errors first
-            //process exit
-          } else {
-            if (validContent) {
-
-              //generate content
-
-              if(hasWarnings) {
-
-                //print out all warnings on the end after generation
-              }
-
-
-            }
+          let errorsKeyCount = errors.length;
+          for(let i = 0; i < errorsKeyCount; i++) {
+            // console.log("single error ", errors[i]);
+            message.error(errors[i].message);
           }
-        */
+
+          //Print all errors first and than any warnings
+          // console.log("has at least one error");
+
+
+
+          //Finally exit the process
+        } else {
+          // if (validContent) {
+          //
+          //   //generate content
+          //
+          //   if(hasWarnings) {
+          //
+          //     //print out all warnings on the end after generation
+          //   }
+          //
+          // }
+        }
+
       } else {
         console.log("error out");
       }
 
-      console.log("validationResults", validationResults);
+      // console.log("validationResults", validationResults);
     });
 };

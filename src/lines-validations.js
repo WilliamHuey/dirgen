@@ -5,7 +5,6 @@ import sanitize from 'sanitize-filename';
 import recursive from 'tail-call/core';
 
 //Source modules
-import message from './validations-messages';
 import structureMarker from './character-code';
 
 const tailCall = recursive.recur;
