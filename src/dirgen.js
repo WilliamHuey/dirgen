@@ -166,13 +166,36 @@ export default (action, actionParams) => {
       let rootPath = commandTypeAction((actionDemo || action), 'output', actionParams, execPathDemo);
 
       //Should not be generate with no lines in the file
-      const shouldGenerate = logValidations(
+      const hasContent = logValidations(
        validator.presenceFirstLine(
         linesInfo.firstLine),
       validationResults);
 
-      if (shouldGenerate) {
-        console.log("should generate");
+
+      if (hasContent) {
+        console.log("has content");
+
+        /*
+          if (hasErrors) {
+
+            //print all errors first
+            //process exit
+          } else {
+            if (validContent) {
+
+              //generate content
+
+              if(hasWarnings) {
+
+                //print out all warnings on the end after generation
+              }
+
+
+            }
+          }
+        */
+      } else {
+        console.log("error out");
       }
 
       console.log("validationResults", validationResults);

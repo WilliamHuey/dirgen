@@ -24,10 +24,11 @@ let singleLineInfoFunctions = {
 
     //If the line has a slash in front than it is a folder,
     //regardless of whether or not it has periods in its name
-
-    if (currentLine.nameDetails.specialCharacters.hasOwnProperty(structureMarker.folder)) {
+    if (currentLine.nameDetails.specialCharacters
+      .hasOwnProperty(structureMarker.folder)) {
       currentLine.inferType = 'folder';
-    } else if (currentLine.nameDetails.specialCharacters.hasOwnProperty(structureMarker.file)) {
+    } else if (currentLine.nameDetails.specialCharacters
+      .hasOwnProperty(structureMarker.file)) {
 
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
@@ -37,25 +38,29 @@ let singleLineInfoFunctions = {
     currentLine.nameDetails.line = linesInfo.totalLineCount;
   },
   indentation: (linesInfo, currentLine) => {
-    if (linesInfo.firstIndentationType === null && currentLine.nameDetails.indentType !== null) {
+    if (linesInfo.firstIndentationType === null &&
+      currentLine.nameDetails.indentType !== null) {
       linesInfo.firstIndentationType = currentLine.nameDetails.indentType;
       linesInfo.firstIndentationAmount = currentLine.nameDetails.indentAmount;
     }
   },
   compareIndent: guard()
-    .when((prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
+    .when((prevLineIndent, currentLineIndent, linesInfo,
+      currentLine, isFirstLine) => {
       return isFirstLine;
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine) => {
+    }, (prevLineIndent, currentLineIndent, linesInfo,
+      currentLine, isFirstLine) => {
 
       //Assume file type unless the inferType is already set
       if (typeof currentLine.inferType === 'undefined' ||
-      currentLine.inferType === null) {
+        currentLine.inferType === null) {
         currentLine.inferType = 'file';
       }
 
-      //Need to know the first content line indent amount to note the sibling check
-      //read marker
-      linesInfo.firstContentLineIndentAmount = currentLine.nameDetails.indentAmount;
+      //Need to know the first content line indent amount
+      //to note the sibling check read marker
+      linesInfo.firstContentLineIndentAmount = currentLine.nameDetails
+        .indentAmount;
 
       //See if the indentation needs to be increased
       //for a consistent relative spacing per line
@@ -65,50 +70,48 @@ let singleLineInfoFunctions = {
     })
 
   //Previous line indent is equal to the current line
-  .when((prevLineIndent, currentLineIndent) => {
-    return prevLineIndent === currentLineIndent;
-
-  }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
-    if (linesInfo.prevLineInfo.sibling.length === 0) {
-
-      linesInfo.prevLineInfo.sibling.push(currentLine);
-    }
-    currentLine.parent = linesInfo.prevLineInfo.parent;
-    if (currentLine.parent !== null) {
-      currentLine.parent.children.push(currentLine);
-    }
-
-    //Set previous line and current line
-    //as a file type if uncertain of file type
-    //Assume that they are files until new
-    //information comes out
-    if (typeof linesInfo.prevLineInfo.inferType === 'undefined') {
-      linesInfo.prevLineInfo.inferType = 'file';
-    }
-
-    if (typeof currentLine.inferType === 'undefined') {
-      currentLine.inferType = 'file';
-    }
-
-  })
     .when((prevLineIndent, currentLineIndent) => {
+      return prevLineIndent === currentLineIndent;
+
+    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+      if (linesInfo.prevLineInfo.sibling.length === 0) {
+
+        linesInfo.prevLineInfo.sibling.push(currentLine);
+      }
+      currentLine.parent = linesInfo.prevLineInfo.parent;
+      if (currentLine.parent !== null) {
+        currentLine.parent.children.push(currentLine);
+      }
+
+      //Set previous line and current line
+      //as a file type if uncertain of file type
+      //Assume that they are files until new
+      //information comes out
+      if (typeof linesInfo.prevLineInfo.inferType === 'undefined') {
+        linesInfo.prevLineInfo.inferType = 'file';
+      }
+
+      if (typeof currentLine.inferType === 'undefined') {
+        currentLine.inferType = 'file';
+      }
+
+    })
+    .when((prevLineIndent, currentLineIndent) => {
+
       //Previous line indent is less than current
       return prevLineIndent < currentLineIndent;
-
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine, validationResults) => {
-
-      console.log("prevLineIndent < currentLineIndent arg len is 6", arguments.length);
-      console.log("currentLine.structureName", currentLine.structureName);
-      console.log("=====================");
+    }, (prevLineIndent, currentLineIndent, linesInfo,
+      currentLine, isFirstLine, validationResults) => {
 
       //Validate the indent level of child relative to parent
       logValidations(
-        validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
-           linesInfo.firstIndentationAmount,
-           prevLineIndent,
-         currentLineIndent,
-         linesInfo.firstIndentationType,
-         currentLine.nameDetails.indentType, 'indent'),
+        validator.properIndentLevel(linesInfo.totalLineCount,
+          currentLine.structureName,
+          linesInfo.firstIndentationAmount,
+          prevLineIndent,
+          currentLineIndent,
+          linesInfo.firstIndentationType,
+          currentLine.nameDetails.indentType, 'indent'),
         validationResults);
 
       //Previous line is now known as a parent of the current line
@@ -126,29 +129,28 @@ let singleLineInfoFunctions = {
     .when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent > currentLineIndent;
 
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine, isFirstLine, validationResults) => {
+    }, (prevLineIndent, currentLineIndent, linesInfo,
+      currentLine, isFirstLine, validationResults) => {
 
-      console.log("prevLineIndent > currentLineIndent arg len is 6", arguments.length);
-      console.log("currentLine.structureName", currentLine.structureName);
-      console.log("=====================");
-
-      //Use the previous line and navigate back up the levels until the indent level is the same as the current line
+      //Use the previous line and navigate back up
+      //the levels until the indent level is the same as the current line
       let prevLine = linesInfo.prevLineInfo;
 
       for (let i = 0; i < linesInfo.contentLineCount; i++) {
 
         //Validate the indent level of child relative to parent
         logValidations(
-          validator.properIndentLevel(linesInfo.totalLineCount, currentLine.structureName,
-             linesInfo.firstIndentationAmount,
-             prevLine.nameDetails.indentAmount,
-           currentLineIndent,
-           linesInfo.firstIndentationType,
-           currentLine.nameDetails.indentType, 'outdent', prevLine.parent,
+          validator.properIndentLevel(linesInfo.totalLineCount,
+            currentLine.structureName, linesInfo.firstIndentationAmount,
+            prevLine.nameDetails.indentAmount, currentLineIndent,
+            linesInfo.firstIndentationType,
+            currentLine.nameDetails.indentType, 'outdent',
+            prevLine.parent,
             linesInfo.prevLineInfo.isFirstLine),
           validationResults);
 
-        if (prevLine.parent.nameDetails.indentAmount === currentLineIndent) {
+        if (prevLine.parent.nameDetails.indentAmount ===
+          currentLineIndent) {
 
           //Same prior level of indent means the prior is
           //a sibling to the current line
@@ -170,7 +172,6 @@ let singleLineInfoFunctions = {
           if (typeof currentLine.inferType === 'undefined') {
             currentLine.inferType = 'file';
           }
-
           break;
         } else {
 
@@ -201,7 +202,8 @@ let singleLineInfoFunctions = {
       singleLineInfoFunctions
         .compareIndent(
           linesInfo.prevLineInfo.nameDetails.indentAmount,
-          currentLine.nameDetails.indentAmount, linesInfo, currentLine, false, validationResults);
+          currentLine.nameDetails.indentAmount, linesInfo,
+          currentLine, false, validationResults);
 
     } else if (linesInfo.contentLineCount === 1 &&
       currentLine.structureName.length > 0 && isFirstLine) {
@@ -211,7 +213,8 @@ let singleLineInfoFunctions = {
       singleLineInfoFunctions
         .compareIndent(
           linesInfo.prevLineInfo.nameDetails.indentAmount,
-          currentLine.nameDetails.indentAmount, linesInfo, currentLine, isFirstLine, validationResults);
+          currentLine.nameDetails.indentAmount, linesInfo,
+          currentLine, isFirstLine, validationResults);
     }
   },
   updatePrevLine: (linesInfo, currentLine) => {

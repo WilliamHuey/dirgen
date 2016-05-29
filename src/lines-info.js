@@ -37,7 +37,8 @@ Object.assign(linesInfo.prototype, {
 
     let lineInfo = {
       length: line.length,
-      trimLength: line.trim().length
+      trimLength: line.trim()
+        .length
     };
 
     //Only set the line count info for empty lines
@@ -70,7 +71,8 @@ Object.assign(linesInfo.prototype, {
     singleLineInfoFunctions.countLine(linesInfo, currentLine);
 
     //Determine how current line relates to the previous line
-    singleLineInfoFunctions.relations(linesInfo, currentLine, isFirstLine, validationResults);
+    singleLineInfoFunctions.relations(linesInfo, currentLine,
+      isFirstLine, validationResults);
 
     //Current line will become the previous line after all
     //the necessary data is gather
@@ -80,5 +82,4 @@ Object.assign(linesInfo.prototype, {
   }
 });
 
-export
-default linesInfo;
+export default linesInfo;
