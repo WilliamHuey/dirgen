@@ -14,6 +14,9 @@ let singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo === null) {
       currentLine.isFirstLine = true;
+
+      //Record for all the top level lines to assist in a quicker generation
+      linesInfo.topLevel.push(currentLine);
       linesInfo.prevLineInfo = currentLine;
 
       //Also set the first actual content line encounter
@@ -74,6 +77,13 @@ let singleLineInfoFunctions = {
       return prevLineIndent === currentLineIndent;
 
     }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+
+      //Line is the sibling of top level sibling
+      //Obvious check case, but need further checks below
+      if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
+        linesInfo.topLevel.push(currentLine);
+      }
+
       if (linesInfo.prevLineInfo.sibling.length === 0) {
 
         linesInfo.prevLineInfo.sibling.push(currentLine);
@@ -103,6 +113,12 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo,
       currentLine, isFirstLine, validationResults) => {
 
+      //Line is the sibling of top level sibling
+      //Obvious check case, but need further checks below
+      if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
+        linesInfo.topLevel.push(currentLine);
+      }
+
       //Validate the indent level of child relative to parent
       logValidations(
         validator.properIndentLevel(linesInfo.totalLineCount,
@@ -131,6 +147,12 @@ let singleLineInfoFunctions = {
 
     }, (prevLineIndent, currentLineIndent, linesInfo,
       currentLine, isFirstLine, validationResults) => {
+
+      //Line is the sibling of top level sibling
+      //Obvious check case, but need further checks below
+      if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
+        linesInfo.topLevel.push(currentLine);
+      }
 
       //Use the previous line and navigate back up
       //the levels until the indent level is the same as the current line

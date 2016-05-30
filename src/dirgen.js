@@ -20,6 +20,7 @@ import Lexer from './lexer';
 import Validations from './lines-validations';
 import message from './validations-messages';
 import logValidations from './log-validations';
+import printValidations from './print-validations';
 import generateStructure from './generation';
 
 const addLinesInfo = new AddLinesInfo();
@@ -44,7 +45,8 @@ let linesInfo = {
   //indent scaling factor when the first
   //content line does not have an indentation level
   firstContentLineIndentAmount: null,
-  requireIndentFactor: false
+  requireIndentFactor: false,
+  topLevel: []
 };
 
 export default (action, actionParams) => {
@@ -128,8 +130,6 @@ export default (action, actionParams) => {
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo,
          validationResults);
 
-      // console.log("\n\ncurrentLine", currentLine);
-
       //Validate the recently set line data
       logValidations(
         validator.sameIndentType(
@@ -179,35 +179,31 @@ export default (action, actionParams) => {
         let errors = validationResults.errors;
         if (errors.length > 0) {
 
-          let errorsKeyCount = errors.length;
-          for(let i = 0; i < errorsKeyCount; i++) {
-            // console.log("single error ", errors[i]);
-            message.error(errors[i].message);
-          }
+          printValidations(message, 'error', errors, errors.length);
 
           //Print all errors first and than any warnings
-          // console.log("has at least one error");
-
-
-
-          //Finally exit the process
+          printValidations(message, 'warn',
+          validationResults.warnings, validationResults.warnings.length);
         } else {
-          // if (validContent) {
-          //
-          //   //generate content
-          //
-          //   if(hasWarnings) {
-          //
-          //     //print out all warnings on the end after generation
-          //   }
-          //
-          // }
-        }
 
+            //Generate the content
+            //Async nature will need the later logging to be delay
+            // console.log("linesInfo", linesInfo);
+            generateStructure(linesInfo, rootPath);
+
+
+            //Print out warning message
+            printValidations(message, 'warn',
+            validationResults.warnings, validationResults.warnings.length);
+        }
       } else {
-        console.log("error out");
+
+        //No content in the template file produces only one error
+        message.error(validationResults.errors[0].message);
       }
 
+      console.log(`Encountered ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
       // console.log("validationResults", validationResults);
     });
+
 };

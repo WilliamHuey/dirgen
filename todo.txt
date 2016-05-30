@@ -1,3 +1,4 @@
+async behavior of the generate, need to delay the output of the final generation log
 
 log the top level entries in the linesInfo
 and use to keep a ref for consistent generation
