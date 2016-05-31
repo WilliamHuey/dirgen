@@ -191,7 +191,6 @@ export default (action, actionParams) => {
             // console.log("linesInfo", linesInfo);
             generateStructure(linesInfo, rootPath);
 
-
             //Print out warning message
             printValidations(message, 'warn',
             validationResults.warnings, validationResults.warnings.length);
@@ -203,6 +202,8 @@ export default (action, actionParams) => {
       }
 
       console.log(`Encountered ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
+
+      console.log("linesInfo.topLevel", linesInfo.topLevel);
       // console.log("validationResults", validationResults);
     });
 

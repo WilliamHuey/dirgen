@@ -10,6 +10,12 @@ import logValidations from './log-validations';
 
 const validator = new Validations();
 
+let logTopLevel = (linesInfo, currentLine) => {
+  if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
+    linesInfo.topLevel.push(currentLine);
+  }
+};
+
 let singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo === null) {
@@ -80,9 +86,7 @@ let singleLineInfoFunctions = {
 
       //Line is the sibling of top level sibling
       //Obvious check case, but need further checks below
-      if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
-        linesInfo.topLevel.push(currentLine);
-      }
+      logTopLevel(linesInfo, currentLine);
 
       if (linesInfo.prevLineInfo.sibling.length === 0) {
 
@@ -115,9 +119,7 @@ let singleLineInfoFunctions = {
 
       //Line is the sibling of top level sibling
       //Obvious check case, but need further checks below
-      if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
-        linesInfo.topLevel.push(currentLine);
-      }
+      logTopLevel(linesInfo, currentLine);
 
       //Validate the indent level of child relative to parent
       logValidations(
@@ -145,14 +147,13 @@ let singleLineInfoFunctions = {
     .when((prevLineIndent, currentLineIndent) => {
       return prevLineIndent > currentLineIndent;
 
-    }, (prevLineIndent, currentLineIndent, linesInfo,
-      currentLine, isFirstLine, validationResults) => {
+    }, (prevLineIndent, currentLineIndent,
+       linesInfo, currentLine,
+       isFirstLine, validationResults) => {
 
       //Line is the sibling of top level sibling
       //Obvious check case, but need further checks below
-      if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
-        linesInfo.topLevel.push(currentLine);
-      }
+      logTopLevel(linesInfo, currentLine);
 
       //Use the previous line and navigate back up
       //the levels until the indent level is the same as the current line
