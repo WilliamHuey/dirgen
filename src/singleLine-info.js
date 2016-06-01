@@ -14,15 +14,40 @@ let topLineNonRepeats = new Map();
 
 let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
   if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount || isFirstLine) {
+    currentLine.isTopLine = true;
     linesInfo.topLevel.push(currentLine);
     if (!topLineNonRepeats.get(currentLine.structureName)) {
-      console.log("not logged yet", currentLine.structureName);
+      // console.log("not logged yet", currentLine.structureName);
       topLineNonRepeats.set(currentLine.structureName, currentLine);
     } else {
-      console.log("repeated entry ", currentLine.structureName);
+      // console.log("repeated entry ", currentLine.structureName);
       currentLine.repeatedLine = true;
-      console.log("currentLine repeated", currentLine);
+      // console.log("currentLine repeated", currentLine);
     }
+  }
+};
+
+let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
+  // console.log("logChildrenLevel currentLine", currentLine);
+  if (firstChild) {
+    let repeatedChildren  = currentLine.parent.repeatedChildren = {};
+    repeatedChildren[currentLine.structureName] = repeatedChildren;
+    // console.log("first child map value", repeatedChildren[currentLine.structureName]);
+  } else if (!currentLine.isTopLine) {
+
+    if (currentLine.parent.repeatedChildren
+      [currentLine.structureName]) {
+
+      //Repeated appearance of the line in a parent
+      currentLine.childRepeatedLine = true;
+    } else {
+
+      //Log the first appearance of the child structure
+      currentLine.parent.repeatedChildren[currentLine.structureName] = currentLine;
+    }
+
+    console.log("currentLine", currentLine);
+
   }
 };
 
@@ -33,6 +58,8 @@ let singleLineInfoFunctions = {
 
       //Record for all the top level lines to assist in a quicker generation
       linesInfo.prevLineInfo = currentLine;
+      currentLine.isTopLine = true;
+      // console.log("currentLine", currentLine);
 
       //True siginifies that it is the first line
       logTopLevel(linesInfo, currentLine, true);
@@ -98,7 +125,7 @@ let singleLineInfoFunctions = {
 
       //Line is the sibling of top level sibling
       //Obvious check case, but need further checks below
-      console.log("same indent ", currentLine.structureName);
+      // console.log("same indent ", currentLine.structureName);
       logTopLevel(linesInfo, currentLine);
 
       if (linesInfo.prevLineInfo.sibling.length === 0) {
@@ -109,6 +136,9 @@ let singleLineInfoFunctions = {
       if (currentLine.parent !== null) {
         currentLine.parent.children.push(currentLine);
       }
+
+      // console.log("equal ident currentLine", currentLine);
+      logChildrenLevel(linesInfo, currentLine);
 
       //Set previous line and current line
       //as a file type if uncertain of file type
@@ -148,6 +178,11 @@ let singleLineInfoFunctions = {
       //Previous line is now known as a parent of the current line
       currentLine.parent = linesInfo.prevLineInfo;
       linesInfo.prevLineInfo.children.push(currentLine);
+
+      //Pass in true to signify that this line
+      //is the first child of its parent
+      // console.log("indented more ", currentLine.parent );
+      logChildrenLevel(linesInfo, currentLine, true);
 
       currentLine.parent.inferType = 'folder';
 
@@ -208,6 +243,9 @@ let singleLineInfoFunctions = {
           if (typeof currentLine.inferType === 'undefined') {
             currentLine.inferType = 'file';
           }
+
+          logChildrenLevel(linesInfo, currentLine);
+
           break;
         } else {
 
@@ -221,7 +259,7 @@ let singleLineInfoFunctions = {
     }),
   relations: (linesInfo, currentLine, isFirstLine, validationResults) => {
 
-    console.log("isFirstLine", isFirstLine);
+    // console.log("isFirstLine", isFirstLine);
 
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&
