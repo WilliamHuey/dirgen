@@ -10,9 +10,19 @@ import logValidations from './log-validations';
 
 const validator = new Validations();
 
-let logTopLevel = (linesInfo, currentLine) => {
-  if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount) {
+let topLineNonRepeats = new Map();
+
+let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
+  if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount || isFirstLine) {
     linesInfo.topLevel.push(currentLine);
+    if (!topLineNonRepeats.get(currentLine.structureName)) {
+      console.log("not logged yet", currentLine.structureName);
+      topLineNonRepeats.set(currentLine.structureName, currentLine);
+    } else {
+      console.log("repeated entry ", currentLine.structureName);
+      currentLine.repeatedLine = true;
+      console.log("currentLine repeated", currentLine);
+    }
   }
 };
 
@@ -22,8 +32,10 @@ let singleLineInfoFunctions = {
       currentLine.isFirstLine = true;
 
       //Record for all the top level lines to assist in a quicker generation
-      linesInfo.topLevel.push(currentLine);
       linesInfo.prevLineInfo = currentLine;
+
+      //True siginifies that it is the first line
+      logTopLevel(linesInfo, currentLine, true);
 
       //Also set the first actual content line encounter
       linesInfo.firstLine = currentLine;
@@ -86,6 +98,7 @@ let singleLineInfoFunctions = {
 
       //Line is the sibling of top level sibling
       //Obvious check case, but need further checks below
+      console.log("same indent ", currentLine.structureName);
       logTopLevel(linesInfo, currentLine);
 
       if (linesInfo.prevLineInfo.sibling.length === 0) {
@@ -207,6 +220,8 @@ let singleLineInfoFunctions = {
       return;
     }),
   relations: (linesInfo, currentLine, isFirstLine, validationResults) => {
+
+    console.log("isFirstLine", isFirstLine);
 
     //Determine the indentation level
     if (linesInfo.prevLineInfo &&

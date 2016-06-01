@@ -203,7 +203,7 @@ export default (action, actionParams) => {
 
       console.log(`Encountered ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
-      console.log("linesInfo.topLevel", linesInfo.topLevel);
+      // console.log("linesInfo.topLevel", linesInfo.topLevel);
       // console.log("validationResults", validationResults);
     });
 

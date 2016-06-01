@@ -1,6 +1,6 @@
-async behavior of the generate, need to delay the output of the final generation log
+async behavior of the generate, use async await
 
-log the top level entries in the linesInfo
+log the top level entries that are not repeats in the linesInfo
 and use to keep a ref for consistent generation
 of children when down with current line
 
