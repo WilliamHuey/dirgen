@@ -164,6 +164,8 @@ export default (action, actionParams) => {
     })
     .on('close', () => {
 
+      // console.log("linesInfo", linesInfo);
+
       //Determine the output filepath of the generated
       let rootPath = commandTypeAction((actionDemo || action),
       'output', actionParams, execPathDemo);

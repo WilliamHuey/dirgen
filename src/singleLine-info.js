@@ -13,8 +13,19 @@ const validator = new Validations();
 let topLineNonRepeats = new Map();
 
 let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
-  if (linesInfo.firstIndentationAmount === currentLine.nameDetails.indentAmount || isFirstLine) {
+
+  //Actual first line will encounter an null firstLine
+  //because nothing was set yet
+  //Indent amount of the first top level will equate to its top level siblings
+  //Explicit detailing of top line will also suffice
+  if (linesInfo.firstLine === null ||
+    linesInfo.firstLine.nameDetails.indentAmount === currentLine.nameDetails.indentAmount || isFirstLine) {
     currentLine.isTopLine = true;
+    currentLine.repeatedChildren = {};
+    // console.log("isTopLine currentLine.structureName", currentLine.structureName);
+    // console.log("currentLine.nameDetails.indentAmount", currentLine.nameDetails.indentAmount);
+    // console.log("linesInfo.firstIndentationAmount", linesInfo.firstIndentationAmount);
+
     linesInfo.topLevel.push(currentLine);
     if (!topLineNonRepeats.get(currentLine.structureName)) {
       // console.log("not logged yet", currentLine.structureName);
@@ -24,16 +35,36 @@ let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
       currentLine.repeatedLine = true;
       // console.log("currentLine repeated", currentLine);
     }
+    // currentLine.repeatedChildren = {};
+    // console.log("currentLine first level ", currentLine);
   }
 };
 
 let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
   // console.log("logChildrenLevel currentLine", currentLine);
   if (firstChild) {
-    let repeatedChildren  = currentLine.parent.repeatedChildren = {};
-    repeatedChildren[currentLine.structureName] = repeatedChildren;
+    // console.log("first child and name", currentLine.structureName);
+
+    if (typeof currentLine.parent.repeatedChildren !== 'undefined') {
+      let repeatedChildren = currentLine.parent.repeatedChildren;
+      repeatedChildren[currentLine.structureName] = repeatedChildren;
+    } else {
+      // console.log("?????????????? Time to set the tracking of children through parent");
+
+      //First child of any folder will create empty object if it does not
+      //exist to track any possible children for the current line
+      let repeatedChildren = currentLine.parent.repeatedChildren = {};
+      repeatedChildren[currentLine.structureName] = repeatedChildren;
+    }
+
+
+
+
     // console.log("first child map value", repeatedChildren[currentLine.structureName]);
   } else if (!currentLine.isTopLine) {
+
+    //Not the first child of siblings lines
+    // console.log("!currentLine.isTopLine currentLine.structureName", currentLine.structureName);
 
     if (currentLine.parent.repeatedChildren
       [currentLine.structureName]) {
@@ -46,9 +77,10 @@ let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
       currentLine.parent.repeatedChildren[currentLine.structureName] = currentLine;
     }
 
-    console.log("currentLine", currentLine);
+    // console.log("currentLine", currentLine);
 
   }
+  // console.log("---------------------------------------------");
 };
 
 let singleLineInfoFunctions = {
