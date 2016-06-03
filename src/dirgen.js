@@ -29,7 +29,8 @@ const validator = new Validations();
 
 //Time the whole process after erroring out
 //or by the finishing of generation
-(new Timer()).onExit(time);
+(new Timer())
+.onExit(time);
 
 //Track the status of the lines
 let linesInfo = {
@@ -81,7 +82,7 @@ export default (action, actionParams) => {
 
   //Read through all the lines of a supplied file
   readline.createInterface({
-    input: fs.createReadStream(creationTemplatePath)
+      input: fs.createReadStream(creationTemplatePath)
     })
     .on('line', (line) => {
 
@@ -128,16 +129,16 @@ export default (action, actionParams) => {
       //Get the information from prior lines to determine
       //the siblings, parent, and children key values
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo,
-         validationResults);
+        validationResults);
 
       //Validate the recently set line data
       logValidations(
         validator.sameIndentType(
-        linesInfo.totalLineCount,
-        currentLine.structureName,
-        linesInfo.firstIndentationType,
-        currentLine.nameDetails.indentType),
-      validationResults);
+          linesInfo.totalLineCount,
+          currentLine.structureName,
+          linesInfo.firstIndentationType,
+          currentLine.nameDetails.indentType),
+        validationResults);
 
       logValidations(
         validator.charCountUnder255(
@@ -150,12 +151,12 @@ export default (action, actionParams) => {
       //Manipulates the currentLine object
       //to use for later generation
       const sanitizedName =
-      logValidations(
-       validator.cleanFileName(
-        linesInfo.totalLineCount,
-        currentLine.structureName,
-        currentLine),
-      validationResults);
+        logValidations(
+          validator.cleanFileName(
+            linesInfo.totalLineCount,
+            currentLine.structureName,
+            currentLine),
+          validationResults);
 
       if (sanitizedName) {
         currentLine.nameDetails.sanitizedName = sanitizedName;
@@ -164,49 +165,54 @@ export default (action, actionParams) => {
     })
     .on('close', () => {
 
-      // console.log("linesInfo", linesInfo);
+      (async function () {
 
-      //Determine the output filepath of the generated
-      let rootPath = commandTypeAction((actionDemo || action),
-      'output', actionParams, execPathDemo);
+        // console.log("linesInfo", linesInfo);
 
-      //Should not be generate with no lines in the file
-      const hasContent = logValidations(
-       validator.presenceFirstLine(
-        linesInfo.firstLine),
-      validationResults);
+        //Determine the output filepath of the generated
+        let rootPath = commandTypeAction((actionDemo || action),
+          'output', actionParams, execPathDemo);
 
-      //Last stage before generation with status check
-      if (hasContent) {
-        let errors = validationResults.errors;
-        if (errors.length > 0) {
+        //Should not be generate with no lines in the file
+        const hasContent = logValidations(
+          validator.presenceFirstLine(
+            linesInfo.firstLine),
+          validationResults);
 
-          printValidations(message, 'error', errors, errors.length);
+        //Last stage before generation with status check
+        if (hasContent) {
+          let errors = validationResults.errors;
+          if (errors.length > 0) {
 
-          //Print all errors first and than any warnings
-          printValidations(message, 'warn',
-          validationResults.warnings, validationResults.warnings.length);
-        } else {
+            printValidations(message, 'error', errors, errors.length);
+
+            //Print all errors first and than any warnings
+            printValidations(message, 'warn',
+              validationResults.warnings, validationResults.warnings.length);
+          } else {
 
             //Generate the content
             //Async nature will need the later logging to be delay
             // console.log("linesInfo", linesInfo);
-            generateStructure(linesInfo, rootPath);
+            await generateStructure(linesInfo, rootPath);
 
             //Print out warning message
             printValidations(message, 'warn',
-            validationResults.warnings, validationResults.warnings.length);
+              validationResults.warnings, validationResults.warnings.length);
+            console.log("printed validations");
+          }
+        } else {
+
+          //No content in the template file produces only one error
+          message.error(validationResults.errors[0].message);
         }
-      } else {
 
-        //No content in the template file produces only one error
-        message.error(validationResults.errors[0].message);
-      }
+        console.log(`Encountered ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
-      console.log(`Encountered ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
+        // console.log("linesInfo.topLevel", linesInfo.topLevel);
+        // console.log("validationResults", validationResults);
 
-      // console.log("linesInfo.topLevel", linesInfo.topLevel);
-      // console.log("validationResults", validationResults);
+      })();
     });
 
 };

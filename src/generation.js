@@ -22,30 +22,44 @@ const tailCall = recursive.recur;
 
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
-const createStructure = async function(lineInfo, rootPath, firstContentLineIndentAmount, topRepeatsCheck, fromCaller) {
+const createStructure = (lineInfo, rootPath,
+  contentLineCount, resolve) => {
+
+  let { structureName, inferType, nameDetails } = lineInfo;
+
+  let name = nameDetails.sanitizedName ||
+    structureName,
+    structureRoughPath = path.join(rootPath, name),
+    structureCreatePath = normalizePath(structureRoughPath);
+  // console.log("nameDetails", nameDetails);
+  console.log("structureCreatePath", structureCreatePath);
+
 };
 
 createStructureTC = tailCall(createStructure);
 
 export default (linesInfo, rootPath) => {
 
-  (async function dirGen() {
+  // console.log("linesInfo", linesInfo);
 
+  //The total number of lines that are possible to generate
+  let contentLineCount = linesInfo.contentLineCount;
 
+  return new Promise((resolve, reject) => {
 
-    /*
-      //Take the outer-most level of elements which
-      //serves as the levelElements
-      generateCurrentLevel(levelElements)
+    //TODO: contentLineCount is not that reliable as
+    //some lines will be skipped
+    //Need readlines = genned lines + skipped lines
 
-    */
+    //Take the outer-most level of elements which
+    //serves as the initial generation set
+    for (let i = 0; i < contentLineCount; i++) {
+      if (typeof linesInfo.topLevel[i].repeatedLine === 'undefined') {
+        let topLevelLine = linesInfo.topLevel[i];
+        createStructureTC(topLevelLine, rootPath,
+          contentLineCount, resolve);
+      }
+    }
+  });
 
-    // let topRepeatsCheck = validator.topLevelRepeatedLines(
-    //   linesInfo.firstLine,
-    //   linesInfo.prevLineInfo.nameDetails.line);
-    //
-    // console.log("results topRepeatsCheck", topRepeatsCheck);
-    //
-    // createStructureTC(linesInfo.firstLine, rootPath, linesInfo.firstContentLineIndentAmount, topRepeatsCheck);
-  })();
 };
