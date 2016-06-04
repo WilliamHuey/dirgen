@@ -196,6 +196,8 @@ export default (action, actionParams) => {
             // console.log("linesInfo", linesInfo);
             await generateStructure(linesInfo, rootPath);
 
+            console.log("after generation");
+
             //Print out warning message
             printValidations(message, 'warn',
               validationResults.warnings, validationResults.warnings.length);

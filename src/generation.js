@@ -20,19 +20,62 @@ import Validations from './lines-validations';
 const validator = new Validations();
 const tailCall = recursive.recur;
 
+let structuresGenerated = 0;
+
+let finishedGenerating = null;
+
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
-const createStructure = (lineInfo, rootPath,
-  contentLineCount, resolve) => {
+const createStructure = async(lineInfo, rootPath,
+  contentLineCount) => {
 
-  let { structureName, inferType, nameDetails } = lineInfo;
+    // resolve();
+
+  let {
+    structureName,
+    inferType,
+    nameDetails
+  } = lineInfo;
 
   let name = nameDetails.sanitizedName ||
     structureName,
     structureRoughPath = path.join(rootPath, name),
     structureCreatePath = normalizePath(structureRoughPath);
   // console.log("nameDetails", nameDetails);
-  console.log("structureCreatePath", structureCreatePath);
+  // console.log("structureCreatePath", structureCreatePath);
+  console.log("inferType", inferType, structureCreatePath);
+
+  if (lineInfo.inferType === 'file') {
+    console.log("-------------------------");
+    console.log("is a file structureCreatePath", structureCreatePath);
+    console.log("========================");
+    await writeFileAsync(structureCreatePath);
+    structuresGenerated++;
+  } else {
+    let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
+
+    console.log("folder parentPath", parentPath);
+    await mkdirAsync(parentPath);
+
+    structuresGenerated++;
+
+    if (lineInfo.children.length > 0) {
+      lineInfo.children.forEach((line) => {
+        createStructureTC(line, parentPath,
+          contentLineCount);
+          structuresGenerated++;
+      });
+    }
+
+  }
+
+  console.log("structuresGenerated", structuresGenerated);
+
+  if (structuresGenerated === 11) {
+    console.log("resolved");
+    finishedGenerating();
+    // return resolve();
+  }
 
 };
 
@@ -45,11 +88,7 @@ export default (linesInfo, rootPath) => {
   //The total number of lines that are possible to generate
   let contentLineCount = linesInfo.contentLineCount;
 
-  return new Promise((resolve, reject) => {
-
-    //TODO: contentLineCount is not that reliable as
-    //some lines will be skipped
-    //Need readlines = genned lines + skipped lines
+  finishedGenerating = new Promise((resolve, reject) => {
 
     //Take the outer-most level of elements which
     //serves as the initial generation set
@@ -57,9 +96,11 @@ export default (linesInfo, rootPath) => {
       if (typeof linesInfo.topLevel[i].repeatedLine === 'undefined') {
         let topLevelLine = linesInfo.topLevel[i];
         createStructureTC(topLevelLine, rootPath,
-          contentLineCount, resolve);
+          contentLineCount);
       }
     }
   });
+
+  return finishedGenerating;
 
 };
