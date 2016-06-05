@@ -1,14 +1,6 @@
-async behavior of the generate, use async await
-
-log the top level entries that are not repeats in the linesInfo
-and use to keep a ref for consistent generation
-of children when down with current line
 
 top line repeated validator logic redo
   should only write the latest line on repeats
-
-
-ensure the ordering of repeats in the nested childs
 
 
 failure to generate when the last line in the template is not on the same level as the first content line
@@ -18,9 +10,6 @@ failure to generate when the last line in the template is not on the same level 
 
 mixed and tabs and spaces on the space line passes through validation checks
 
-gsdf
-	adsfadfasdf
-	adsfadfasdf
 
 gsdf
 afsd

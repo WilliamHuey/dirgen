@@ -26,8 +26,9 @@ let structureCreation = {
 };
 
 const logNonGenerated = tailCall((lineInfo, structureCreation) => {
-  console.log("structureCreation", structureCreation);
+
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
+  console.log("structureCreation", structureCreation);
   console.log(">>>>>>>>>>>in logNonGenerated");
   //
   // if (lineInfo.children.length > 0) {
@@ -89,13 +90,20 @@ const createStructure = (lineInfo, rootPath,
 
     console.log("folder parentPath", parentPath);
 
+    let genFolder = false;
+
     //Only generate folder if it is not a repeat
-    if (!childRepeatedLine) {
+    if ((typeof childRepeatedLine ===
+      'undefined' && lineInfo.repeatedLine !== true) ||
+       (typeof lineInfo.repeatedLine === 'undefined' && childRepeatedLine !== true)) {
+      genFolder = true;
       (async function () {
         await mkdirAsync(parentPath);
       })();
 
       structureCreation.generated = structureCreation.generated + 1;
+      // console.log("lineInfo", lineInfo);
+      console.log("created folder");
     } else {
       logNonGenerated(lineInfo, structureCreation);
     }
@@ -105,8 +113,13 @@ const createStructure = (lineInfo, rootPath,
     console.log("structureCreation after wait folder gen", structureCreation);
     console.log("--------------------------\n\n");
 
+    if (!genFolder) {
 
-    if (lineInfo.children.length > 0) {
+      lineInfo.children.forEach((line) => {
+        logNonGenerated(line, structureCreation);
+      });
+
+    } else if (lineInfo.children.length > 0) {
       lineInfo.children.forEach((line) => {
 
         console.log("line name", line.structureName);
@@ -153,15 +166,17 @@ export default (linesInfo, rootPath) => {
     console.log("``````````````contentLineCount", contentLineCount);
     for (let i = 0; i < contentLineCount; i++) {
       console.log("linesInfo.topLevel[i].structureName", linesInfo.topLevel[i].structureName);
-      if (typeof linesInfo.topLevel[i].repeatedLine === 'undefined') {
+      // if (typeof linesInfo.topLevel[i].repeatedLine === 'undefined') {
         let topLevelLine = linesInfo.topLevel[i];
         createStructureTC(topLevelLine, rootPath,
           contentLineCount, resolve);
-      } else {
+      // }
 
-        console.log("last non-gen structureCreation", structureCreation);
-        logNonGenerated(line, structureCreation);
-      }
+      // else {
+      //
+      //   console.log("last non-gen structureCreation", structureCreation);
+      //   logNonGenerated(line, structureCreation);
+      // }
 
     }
   });
