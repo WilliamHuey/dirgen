@@ -25,6 +25,21 @@ let structureCreation = {
   notGenerated: 0
 };
 
+const logNonGenerated = tailCall((lineInfo) => {
+
+  if (lineInfo.children.length > 0) {
+    lineInfo.children.forEach((line) => {
+      if (line.inferType === 'file') {
+        structureCreation.notGenerated = structureCreation.notGenerated + 1;
+      } else {
+        logNonGenerated(line);
+      }
+    });
+  }
+
+  structureCreation.notGenerated = structureCreation.notGenerated + 1;
+});
+
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = (lineInfo, rootPath,
@@ -51,7 +66,7 @@ const createStructure = (lineInfo, rootPath,
     })();
 
     structureCreation.generated = structureCreation.generated + 1;
-    console.log("structureCreation", structureCreation);
+    console.log("file structureCreation", structureCreation);
     console.log("<><><><>>><><><><>");
 
   } else {
@@ -68,25 +83,22 @@ const createStructure = (lineInfo, rootPath,
     if (lineInfo.children.length > 0) {
       lineInfo.children.forEach((line) => {
 
-        // console.log("line", line);
-
         if (typeof line.childRepeatedLine === 'undefined') {
           createStructureTC(line, parentPath,
             contentLineCount, resolve);
+        } else {
+          structureCreation.notGenerated = structureCreation.notGenerated + 1;
+          logNonGenerated(line);
         }
 
-        console.log("folder  structureCreation", structureCreation);
+        console.log("folder structureCreation", structureCreation);
 
       });
     }
-
   }
-
-  console.log("outside log structureCreation", structureCreation);
 
   if (structureCreation.generated === 11) {
     console.log("resolved");
-
     resolve();
   }
 
@@ -96,8 +108,6 @@ createStructureTC = tailCall(createStructure);
 
 export default (linesInfo, rootPath) => {
 
-  // console.log("linesInfo", linesInfo);
-
   //The total number of lines that are possible to generate
   let contentLineCount = linesInfo.contentLineCount;
 
@@ -105,7 +115,6 @@ export default (linesInfo, rootPath) => {
 
     //Take the outer-most level of elements which
     //serves as the initial generation set
-    // console.log("////////////////////////////final structureCreation", structureCreation);
     console.log("``````````````contentLineCount", contentLineCount);
     for (let i = 0; i < contentLineCount; i++) {
       if (typeof linesInfo.topLevel[i].repeatedLine === 'undefined') {
@@ -113,18 +122,14 @@ export default (linesInfo, rootPath) => {
         createStructureTC(topLevelLine, rootPath,
           contentLineCount, resolve);
       } else {
-        console.log(")))           ))) )))", 'not created');
-        structureCreation.notGenerated = structureCreation.notGenerated + 1;
+        logNonGenerated(line);
+        console.log("last non-gen structureCreation", structureCreation);
       }
 
     }
-
-
-
   });
 
   console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
   return structureGenerating;
-
 };
