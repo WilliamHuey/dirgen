@@ -35,20 +35,25 @@ const logNonGenerated = tailCall((lineInfo) => {
         logNonGenerated(line);
       }
     });
+  } else {
+    structureCreation.notGenerated = structureCreation.notGenerated + 1;
   }
-
-  structureCreation.notGenerated = structureCreation.notGenerated + 1;
 });
 
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = (lineInfo, rootPath,
   contentLineCount, resolve) => {
+  console.log("\n\n----");
+  console.log("lineInfo.structureName", lineInfo.structureName);
+  console.log("lineInfo.isTopLine", lineInfo.isTopLine);
 
   let {
     structureName,
     inferType,
-    nameDetails
+    nameDetails,
+    isTopLine,
+    childRepeatedLine
   } = lineInfo;
 
   let name = nameDetails.sanitizedName ||
@@ -56,23 +61,25 @@ const createStructure = (lineInfo, rootPath,
     structureRoughPath = path.join(rootPath, name),
     structureCreatePath = normalizePath(structureRoughPath);
 
-  if (lineInfo.inferType === 'file') {
+  if (inferType === 'file') {
 
-    console.log("\n\n+++++++++++++++++++++++++++++++++ inferType", inferType, structureCreatePath);
+    console.log("inferType", inferType);
+    console.log("childRepeatedLine", childRepeatedLine);
 
-    //Create the file type
-    (async function () {
-      await writeFileAsync(structureCreatePath);
-    })();
+    if (!childRepeatedLine) {
+      structureCreation.generated = structureCreation.generated + 1;
+      console.log("file structureCreation", structureCreation);
+      //Create the file type
+      (async function () {
+        await writeFileAsync(structureCreatePath);
+      })();
 
-    structureCreation.generated = structureCreation.generated + 1;
-    console.log("file structureCreation", structureCreation);
-    console.log("<><><><>>><><><><>");
+    }
 
   } else {
     let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
 
-    console.log("\n\n--------------------folder parentPath", parentPath);
+    console.log("folder parentPath", parentPath);
 
     (async function () {
       await mkdirAsync(parentPath);
@@ -80,24 +87,36 @@ const createStructure = (lineInfo, rootPath,
 
     structureCreation.generated = structureCreation.generated + 1;
 
+    console.log("structureCreation after wait folder gen", structureCreation);
+    console.log("--------------------------\n\n");
+
+
     if (lineInfo.children.length > 0) {
       lineInfo.children.forEach((line) => {
 
-        if (typeof line.childRepeatedLine === 'undefined') {
+        console.log("line name", line.structureName);
+        console.log("right after structureCreation.notGenerated", structureCreation.notGenerated);
+        // console.log("line", line);
+        console.log("line.isTopLine", line.isTopLine);
+
+        //&&  !isTopLine
+        if (typeof childRepeatedLine === 'undefined') {
           createStructureTC(line, parentPath,
             contentLineCount, resolve);
         } else {
-          structureCreation.notGenerated = structureCreation.notGenerated + 1;
+          // structureCreation.notGenerated = structureCreation.notGenerated + 1;
+          console.log("folder structureCreation", structureCreation);
           logNonGenerated(line);
         }
 
-        console.log("folder structureCreation", structureCreation);
+
 
       });
     }
   }
 
-  if (structureCreation.generated === 11) {
+  if (structureCreation.generated + structureCreation.notGenerated
+=== contentLineCount) {
     console.log("resolved");
     resolve();
   }
@@ -128,8 +147,6 @@ export default (linesInfo, rootPath) => {
 
     }
   });
-
-  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
   return structureGenerating;
 };
