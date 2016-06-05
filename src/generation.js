@@ -30,8 +30,6 @@ let createStructureTC = null;
 const createStructure = (lineInfo, rootPath,
   contentLineCount, resolve) => {
 
-  // resolve();
-
   let {
     structureName,
     inferType,
@@ -43,29 +41,20 @@ const createStructure = (lineInfo, rootPath,
     structureRoughPath = path.join(rootPath, name),
     structureCreatePath = normalizePath(structureRoughPath);
 
-  // console.log("nameDetails", nameDetails);
-  // console.log("structureCreatePath", structureCreatePath);
-  console.log("\n\n+++++++++++++++++++++++++++++++++ inferType", inferType, structureCreatePath);
-
   if (lineInfo.inferType === 'file') {
 
-    console.log("is a file structureCreatePath", structureCreatePath);
+    console.log("\n\n+++++++++++++++++++++++++++++++++ inferType", inferType, structureCreatePath);
 
+    //Create the file type
     (async function () {
       await writeFileAsync(structureCreatePath);
     })();
+
     structureCreation.generated = structureCreation.generated + 1;
     console.log("structureCreation", structureCreation);
     console.log("<><><><>>><><><><>");
-    // console.log(">>>><<<<><>< resolve", resolve);
-    // resolve();
-    // structuresGenerated++;
-    //
-    // console.log("structuresGenerated after file", structuresGenerated);
-    console.log("========================");
-    // resolve()
+
   } else {
-    // resolve();
     let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
 
     console.log("\n\n--------------------folder parentPath", parentPath);
@@ -78,18 +67,27 @@ const createStructure = (lineInfo, rootPath,
 
     if (lineInfo.children.length > 0) {
       lineInfo.children.forEach((line) => {
-        createStructureTC(line, parentPath,
-          contentLineCount, resolve);
-          structureCreation.generated = structureCreation.generated++;
+
+        // console.log("line", line);
+
+        if (typeof line.childRepeatedLine === 'undefined') {
+          createStructureTC(line, parentPath,
+            contentLineCount, resolve);
+        }
+
+        console.log("folder  structureCreation", structureCreation);
+
       });
     }
 
   }
 
+  console.log("outside log structureCreation", structureCreation);
+
   if (structureCreation.generated === 11) {
     console.log("resolved");
+
     resolve();
-    // return resolve();
   }
 
 };
@@ -107,18 +105,25 @@ export default (linesInfo, rootPath) => {
 
     //Take the outer-most level of elements which
     //serves as the initial generation set
+    // console.log("////////////////////////////final structureCreation", structureCreation);
+    console.log("``````````````contentLineCount", contentLineCount);
     for (let i = 0; i < contentLineCount; i++) {
       if (typeof linesInfo.topLevel[i].repeatedLine === 'undefined') {
         let topLevelLine = linesInfo.topLevel[i];
         createStructureTC(topLevelLine, rootPath,
           contentLineCount, resolve);
       } else {
+        console.log(")))           ))) )))", 'not created');
         structureCreation.notGenerated = structureCreation.notGenerated + 1;
       }
 
     }
-    console.log("////////////////////////////final structureCreation", structureCreation);
+
+
+
   });
+
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
   return structureGenerating;
 
