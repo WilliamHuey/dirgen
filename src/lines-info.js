@@ -15,6 +15,7 @@ const linesInfoFunctions = {
   },
   countLines: (lineInfo) => {
     let processFurther = false;
+
     //The actual line number involves counting all lines,
     //but the lines with content matters more so count them differently
     data.lineSetInfo.totalLineCount++;
@@ -63,8 +64,8 @@ Object.assign(linesInfo.prototype, {
     linesInfo.prevLineInfo ||
       singleLineInfoFunctions.setFirstPrev(linesInfo, currentLine);
 
-    // Set the indentation information of the
-    // first encounter of a non - empty line
+    //Set the indentation information of the
+    //first encounter of a non - empty line
     singleLineInfoFunctions.indentation(linesInfo, currentLine);
 
     //Set the overall current line in file for the line

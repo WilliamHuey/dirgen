@@ -158,6 +158,7 @@ export default (action, actionParams) => {
             currentLine),
           validationResults);
 
+      //TODO: Sanitized name lines are not logged?
       if (sanitizedName) {
         currentLine.nameDetails.sanitizedName = sanitizedName;
       }
@@ -173,7 +174,7 @@ export default (action, actionParams) => {
         let rootPath = commandTypeAction((actionDemo || action),
           'output', actionParams, execPathDemo);
 
-        //Should not be generate with no lines in the file
+        //Should not be generated with no lines in the file
         const hasContent = logValidations(
           validator.presenceFirstLine(
             linesInfo.firstLine),
@@ -193,7 +194,10 @@ export default (action, actionParams) => {
 
             //Generate the content
             //Async nature will need the later logging to be delay
+
             // console.log("linesInfo", linesInfo);
+
+            //TODO: log the repeated lines warning messages inside generate
             await generateStructure(linesInfo, rootPath);
 
             console.log("after generation");

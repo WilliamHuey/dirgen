@@ -1,6 +1,6 @@
 
 top line repeated validator logic redo
-  should only write the latest line on repeats
+  log the repeated line validation messages
 
 
 failure to generate when the last line in the template is not on the same level as the first content line

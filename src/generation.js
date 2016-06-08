@@ -112,6 +112,7 @@ const createStructure = (lineInfo, rootPath,
   //an end
   if (structureCreation.generated + structureCreation.notGenerated
 === contentLineCount) {
+    console.log("resolved");
     resolve();
   }
 };
