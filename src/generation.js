@@ -57,7 +57,6 @@ const createStructure = (lineInfo, rootPath,
       (async function () {
         await writeFileAsync(structureCreatePath);
       })();
-
     } else {
       logNonGenerated(structureCreation);
     }
@@ -90,7 +89,7 @@ const createStructure = (lineInfo, rootPath,
     //to record the nested child of the repeated line
     if (!genFolder) {
       lineInfo.children.forEach((line) => {
-        logNonGenerated(line, structureCreation);
+        logNonGenerated(structureCreation);
       });
     } else if (lineInfo.children.length > 0) {
       lineInfo.children.forEach((line) => {
@@ -101,7 +100,7 @@ const createStructure = (lineInfo, rootPath,
           createStructureTC(line, parentPath,
             contentLineCount, resolve);
         } else {
-          logNonGenerated(line, structureCreation);
+          logNonGenerated(structureCreation);
         }
       });
     }
@@ -112,7 +111,6 @@ const createStructure = (lineInfo, rootPath,
   //an end
   if (structureCreation.generated + structureCreation.notGenerated
 === contentLineCount) {
-    console.log("resolved");
     resolve();
   }
 };

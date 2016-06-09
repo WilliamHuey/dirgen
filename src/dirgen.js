@@ -158,7 +158,6 @@ export default (action, actionParams) => {
             currentLine),
           validationResults);
 
-      //TODO: Sanitized name lines are not logged?
       if (sanitizedName) {
         currentLine.nameDetails.sanitizedName = sanitizedName;
       }
@@ -200,7 +199,9 @@ export default (action, actionParams) => {
             //TODO: log the repeated lines warning messages inside generate
             await generateStructure(linesInfo, rootPath);
 
-            console.log("after generation");
+            // console.log("after generation");
+
+            // console.log("validationResults.warnings", validationResults.warnings);
 
             //Print out warning message
             printValidations(message, 'warn',
