@@ -7,6 +7,7 @@ import recursive from 'tail-call/core';
 //Source modules
 import structureMarker from './character-code';
 
+const slashChar = String.fromCharCode(structureMarker.folder);
 const tailCall = recursive.recur;
 let validator = () => {};
 
@@ -20,8 +21,7 @@ Object.assign(validator.prototype, {
       //One slash in front of line implied a folder
       //but any invalid character persist after the first slash
       //will cause the line to be invalid
-      if (content.indexOf(structureMarker.folder) !==
-        content.lastIndexOf(structureMarker.folder)) {
+      if (content.indexOf(slashChar) !== content.lastIndexOf(slashChar)) {
 
         return {
           type: 'warning',
@@ -89,7 +89,8 @@ Object.assign(validator.prototype, {
       };
     }
   },
-  properIndentLevel: (lineNum, content, firstIndentAmt, prevLineIndentAmt, currentIndentAmt,
+  properIndentLevel: (lineNum, content, firstIndentAmt,
+    prevLineIndentAmt, currentIndentAmt,
     firstIndentType, currentIndentType, indentType,
     prevLineParent, prevLineFirstLine) => {
     if (indentType === 'outdent' &&
@@ -119,7 +120,8 @@ Object.assign(validator.prototype, {
               first defined outdent of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
         }
       };
-    } else if (indentType !== 'outdent' && !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
+    } else if (indentType !== 'outdent' &&
+    !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
         firstIndentAmt)) {
       //Scaling indent factor and firstIndent is the same
 
