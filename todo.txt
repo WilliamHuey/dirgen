@@ -1,24 +1,8 @@
-
 top line repeated validator logic redo
-  log the repeated line validation messages
-
-
-failure to generate when the last line in the template is not on the same level as the first content line
-
-  -parent folder with the same name child items and repeated child names does trigger error message?
+  log the repeated line validation messages but only the top level folders that have children elements.
 
 
 mixed and tabs and spaces on the space line passes through validation checks
-
-
-gsdf
-afsd
-afsd
-	adsfadfasdf
-	adsfadfasdf
-twnsbxh
-
-does not gen twnsbxh
 
 presence of content already in folder does not cause an overwrite?
 
