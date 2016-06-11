@@ -13,14 +13,15 @@ let validator = () => {};
 Object.assign(validator.prototype, {
   cleanFileName: (lineNum, content) => {
     let cleanedName = sanitize(content);
+
     if (cleanedName !== content &&
       content.length < 255) {
 
       //One slash in front of line implied a folder
       //but any invalid character persist after the first slash
       //will cause the line to be invalid
-      if (!(content.charCodeAt(0) === structureMarker.folder &&
-          content.slice(1) === cleanedName)) {
+      if (content.indexOf(structureMarker.folder) !==
+        content.lastIndexOf(structureMarker.folder)) {
 
         return {
           type: 'warning',
@@ -32,21 +33,26 @@ Object.assign(validator.prototype, {
           },
           output: cleanedName
         };
+      } else {
 
+        return {
+          type: 'valid'
+        };
       }
     } else {
+
       return {
         type: 'valid'
       };
     }
-
   },
   sameIndentType: (lineNum, content,
     firstIndentType, currentIndentType) => {
+
     //Protect against null, which signifies no indent level
     if (currentIndentType !== null &&
       currentIndentType !== firstIndentType) {
-      console.log("lineNum", lineNum);
+
       return {
         type: 'error',
         line: {
@@ -58,6 +64,7 @@ Object.assign(validator.prototype, {
         }
       };
     } else {
+
       return {
         type: 'valid'
       };
@@ -66,8 +73,7 @@ Object.assign(validator.prototype, {
   presenceFirstLine: (firstLine) => {
 
     if (firstLine !== null) {
-      // console.log("has content");
-      // callback.apply(null, callbackArgs);
+
       return {
         type: 'valid',
         output: true
@@ -129,6 +135,7 @@ Object.assign(validator.prototype, {
         }
       };
     } else {
+
       return {
         type: 'valid'
       };
