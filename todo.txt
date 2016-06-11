@@ -1,6 +1,13 @@
+
+outer most line has a forward slash in the front causes an error output
+/agdf
+rf/
+
+/agdf errors out with : if (typeof againstRule.type !== 'undefined') {
+
+
 top line repeated validator logic redo
   log the repeated line validation messages but only the top level folders that have children elements.
-
 
 mixed and tabs and spaces on the space line passes through validation checks
 

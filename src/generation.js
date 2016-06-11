@@ -16,6 +16,7 @@ import {
 
 //Source modules
 import Validations from './lines-validations';
+import logValidations from './log-validations';
 
 const validator = new Validations();
 const tailCall = recursive.recur;
@@ -26,7 +27,8 @@ let structureCreation = {
   notGenerated: 0
 };
 
-const logNonGenerated = tailCall((structureCreation) => {
+const logNonGenerated = tailCall((structureCreation, line) => {
+  console.log("children non-generated line is ", line);
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 });
 
@@ -58,7 +60,8 @@ const createStructure = (lineInfo, rootPath,
         await writeFileAsync(structureCreatePath);
       })();
     } else {
-      logNonGenerated(structureCreation);
+      console.log(">>");
+      logNonGenerated(structureCreation, lineInfo.structureName);
     }
   } else {
     let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
@@ -82,7 +85,8 @@ const createStructure = (lineInfo, rootPath,
     } else {
 
       //folder will be logged as one that is not generated
-      logNonGenerated(structureCreation);
+      console.log("VV");
+      logNonGenerated(structureCreation, lineInfo.structureName);
     }
 
     //Ungenerated folder means a repeated line, but still attempt
@@ -92,16 +96,22 @@ const createStructure = (lineInfo, rootPath,
         logNonGenerated(structureCreation);
       });
     } else if (lineInfo.children.length > 0) {
+
+      //Checks for non-repeated folder
       lineInfo.children.forEach((line) => {
 
         //Again check for repeated lines in the child level lines
-        //for the parent folder that is not repeated
+        console.log("------");
+        console.log("line.structureName", line.structureName);
+        console.log("lineInfo.childRepeatedLine", lineInfo.childRepeatedLine);
         if (typeof lineInfo.childRepeatedLine === 'undefined') {
           createStructureTC(line, parentPath,
             contentLineCount, resolve);
         } else {
-          logNonGenerated(structureCreation);
+          console.log("<<");
+          logNonGenerated(structureCreation, line.structureName);
         }
+        console.log("=======");
       });
     }
   }
