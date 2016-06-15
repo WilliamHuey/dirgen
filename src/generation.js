@@ -29,29 +29,17 @@ let structureCreation = {
 };
 
 const logNonGenerated = tailCall((structureCreation, line) => {
-
-
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
   structureCreation.repeats.push({name: line.structureName, line: line.nameDetails.line});
 
   //Repeated lines with further nesting also gets recorded
-
-  console.log("++++++++++++++++++++++++++++children non-generated line is ", line.structureName);
   if (line.children.length > 0) {
     let nonGeneratedChildren = line.children;
     nonGeneratedChildren.forEach((line) => {
       logNonGenerated(structureCreation, line);
     });
-  } else if (line.inferType === 'file'){
-    console.log("file type repeat line name", line.structureName, ' and line ', line.nameDetails.line);
-    // console.log("structureCreation", structureCreation);
-    // structureCreation.notGenerated = structureCreation.notGenerated + 1;
   }
-
-  console.log("structureCreation", structureCreation, "\n");
-
-
 });
 
 //Convert createStructure into a tail recursive function
@@ -74,8 +62,6 @@ const createStructure = (lineInfo, rootPath,
     structureCreatePath = normalizePath(structureRoughPath);
 
   if (inferType === 'file') {
-    console.log("file line num", lineInfo.nameDetails.line);
-    console.log("!childRepeatedLine", !childRepeatedLine);
     if (!childRepeatedLine && !repeatedLine) {
       structureCreation.generated = structureCreation.generated + 1;
 
@@ -84,17 +70,12 @@ const createStructure = (lineInfo, rootPath,
         await writeFileAsync(structureCreatePath);
       })();
     } else {
-      console.log(">> ");
-      console.log("lineInfo.structureName", lineInfo.structureName);
       logNonGenerated(structureCreation, lineInfo);
-      console.log("<><><><>>><><><>structureCreation", structureCreation, '\n\n');
     }
   } else {
     let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
 
     let genFolder = false;
-
-    // console.log("lineInfo", lineInfo);
 
     //Only generate folder if it is not a repeat
     //Top level lines record repeats with only 'repeatedLine' while
@@ -111,45 +92,23 @@ const createStructure = (lineInfo, rootPath,
 
     let nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
 
-    // console.log("!genFolder", !genFolder);
-    // console.log("repeatedLine", repeatedLine);
-    // console.log("childRepeatedLine", childRepeatedLine);
-
     //Ungenerated folder means a repeated line, but still attempt
     //to record the nested child of the repeated line
-
     if (nonGenFolder) {
-      console.log("||||||||||||||||lineInfo", lineInfo.structureName);
-
-      // console.log("lineInfo.repeatedLine", lineInfo.repeatedLine);
-      // console.log("lineInfo name", lineInfo.structureName);
-      // lineInfo.children.forEach((line) => {
-      //   console.log("~~~~~line.structureName", line.structureName);
-      //   logNonGenerated(structureCreation, line);
-      // });
       logNonGenerated(structureCreation, lineInfo);
-
     } else {
-      console.log("folder line num ", lineInfo.nameDetails.line);
-
       if (lineInfo.children.length > 0) {
+
         //Checks for non-repeated folder
         lineInfo.children.forEach((line) => {
 
           //Again check for repeated lines in the child level lines
-          // console.log("------");
-          // console.log("line.structureName", line.structureName);
           if (typeof lineInfo.childRepeatedLine === 'undefined') {
             createStructureTC(line, parentPath,
               contentLineCount, resolve);
           }
-          // console.log("=======");
         });
       }
-
-
-
-
     }
   }
 
@@ -158,7 +117,6 @@ const createStructure = (lineInfo, rootPath,
   //an end
   if (structureCreation.generated + structureCreation.notGenerated
 === contentLineCount) {
-    console.log("structureCreation", structureCreation);
     resolve();
   }
 };
