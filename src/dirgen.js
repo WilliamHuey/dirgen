@@ -199,7 +199,7 @@ export default (action, actionParams) => {
             //TODO: log the repeated lines warning messages inside generate
             await generateStructure(linesInfo, rootPath);
 
-            // console.log("after generation");
+            console.log("after generation");
 
             // console.log("validationResults.warnings", validationResults.warnings);
 

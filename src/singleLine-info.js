@@ -37,10 +37,14 @@ let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
 let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
 
   if (firstChild) {
+    // console.log("firstChild", firstChild);
+    // console.log("currentLine", currentLine);
     //The first occurrence of child structure will need
     //create an object on parent to log repeats on current level
 
+    // console.log("Object.keys(currentLine.parent.repeatedChildren)", Object.keys(currentLine.parent.repeatedChildren));
     if (typeof currentLine.parent.repeatedChildren !== 'undefined') {
+      console.log("currentLine.parent.structureName", currentLine.parent.structureName);
       let repeatedChildren = currentLine.parent.repeatedChildren;
       repeatedChildren[currentLine.structureName] = repeatedChildren;
     } else {
