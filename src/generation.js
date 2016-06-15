@@ -74,8 +74,9 @@ const createStructure = (lineInfo, rootPath,
     structureCreatePath = normalizePath(structureRoughPath);
 
   if (inferType === 'file') {
-
-    if (!childRepeatedLine) {
+    console.log("file line num", lineInfo.nameDetails.line);
+    console.log("!childRepeatedLine", !childRepeatedLine);
+    if (!childRepeatedLine && !repeatedLine) {
       structureCreation.generated = structureCreation.generated + 1;
 
       //Create the file type
@@ -129,6 +130,7 @@ const createStructure = (lineInfo, rootPath,
       logNonGenerated(structureCreation, lineInfo);
 
     } else {
+      console.log("folder line num ", lineInfo.nameDetails.line);
 
       if (lineInfo.children.length > 0) {
         //Checks for non-repeated folder
