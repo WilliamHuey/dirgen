@@ -16,6 +16,7 @@ import {
 
 //Source modules
 import Validations from './lines-validations';
+import message from './validations-messages';
 import logValidations from './log-validations';
 
 const validator = new Validations();
@@ -31,7 +32,10 @@ let structureCreation = {
 const logNonGenerated = tailCall((structureCreation, line) => {
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
-  structureCreation.repeats.push({name: line.structureName, line: line.nameDetails.line});
+  structureCreation.repeats.push({
+    name: line.structureName,
+    line: line.nameDetails.line
+  });
 
   //Repeated lines with further nesting also gets recorded
   if (line.children.length > 0) {
@@ -67,7 +71,11 @@ const createStructure = (lineInfo, rootPath,
 
       //Create the file type
       (async function () {
-        await writeFileAsync(structureCreatePath);
+        try {
+          await writeFileAsync(structureCreatePath, '');
+        } catch (err) {
+          message.error(`Generation error has occurred with generating file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+        }
       })();
     } else {
       logNonGenerated(structureCreation, lineInfo);
@@ -85,7 +93,11 @@ const createStructure = (lineInfo, rootPath,
 
       //Create the folder
       (async function () {
-        await mkdirAsync(parentPath);
+        try {
+          await mkdirAsync(parentPath);
+        } catch (err) {
+          message.error(`Generation error has occurred with generating folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+        }
       })();
       structureCreation.generated = structureCreation.generated + 1;
     }
@@ -115,8 +127,8 @@ const createStructure = (lineInfo, rootPath,
   //When all generated structures are created with the non-generated
   //structures ignored, signifies that the generation process comes to
   //an end
-  if (structureCreation.generated + structureCreation.notGenerated
-=== contentLineCount) {
+  if (structureCreation.generated + structureCreation.notGenerated ===
+    contentLineCount) {
     resolve();
   }
 };
@@ -133,9 +145,9 @@ export default (linesInfo, rootPath) => {
     //Take the outer-most level of elements which
     //serves as the initial generation set
     for (let i = 0; i < contentLineCount; i++) {
-        let topLevelLine = linesInfo.topLevel[i];
-        createStructureTC(topLevelLine, rootPath,
-          contentLineCount, resolve);
+      let topLevelLine = linesInfo.topLevel[i];
+      createStructureTC(topLevelLine, rootPath,
+        contentLineCount, resolve);
     }
   });
 
