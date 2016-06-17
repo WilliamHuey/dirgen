@@ -1,4 +1,3 @@
-remove/prevent the content is written into text file
 
 top line repeated validator logic redo
   log the repeated line validation messages but only the top level folders that have children elements.
@@ -14,7 +13,6 @@ test deeply nested folder structures
 
 Backlog/Optimize
 -- pluralizing the error messages
--try catch in the async await is required
 -right and left trim
 npm start more compatible with windows
 -combinations of warnings

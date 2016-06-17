@@ -29,7 +29,6 @@
     "is-text-path": "^1.0.1",
     "nash": "^2.0.4",
     "normalize-path": "^2.0.1",
-    "pretty-error": "^2.0.0",
     "renderkid": "^2.0.0",
     "sanitize-filename": "^1.6.0",
     "strscanner": "0.0.8",
