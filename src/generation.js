@@ -32,15 +32,29 @@ let structureCreation = {
 const logNonGenerated = tailCall((structureCreation, line) => {
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
-  structureCreation.repeats.push({
-    name: line.structureName,
-    line: line.nameDetails.line
-  });
+  const isTopLine = line.isTopLine;
+
+  //Log what is the originating first folder that was
+  //not generated
+  if (isTopLine) {
+    line.firstNonGen = true;
+    structureCreation.repeats.push({
+      name: line.structureName,
+      line: line.nameDetails.line
+    });
+  } else if ((line.childOfNonGen !== true &&
+  line.parent.firstNonGen !== true)) {
+    structureCreation.repeats.push({
+      name: line.structureName,
+      line: line.nameDetails.line
+    });
+  }
 
   //Repeated lines with further nesting also gets recorded
   if (line.children.length > 0) {
     let nonGeneratedChildren = line.children;
     nonGeneratedChildren.forEach((line) => {
+      line.childOfNonGen = true;
       logNonGenerated(structureCreation, line);
     });
   }

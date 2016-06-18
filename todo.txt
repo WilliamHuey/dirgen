@@ -2,8 +2,6 @@
 top line repeated validator logic redo
   log the repeated line validation messages but only the top level folders that have children elements.
 
-top line scaling
-
 mixed and tabs and spaces on the space line passes through validation checks
 
 presence of content already in folder does not cause an overwrite?
