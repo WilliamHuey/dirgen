@@ -37,9 +37,9 @@ let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
 let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
 
   if (firstChild) {
+
     //The first occurrence of child structure will need
     //create an object on parent to log repeats on current level
-
     if (typeof currentLine.parent.repeatedChildren !== 'undefined') {
       let repeatedChildren = currentLine.parent.repeatedChildren;
       repeatedChildren[currentLine.structureName] = repeatedChildren;
@@ -51,7 +51,7 @@ let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
       repeatedChildren[currentLine.structureName] = repeatedChildren;
     }
 
-  } else if (!currentLine.isTopLine) {
+  } else if (!currentLine.isTopLine && currentLine.parent !== null) {
 
     //Not the first child of siblings lines
     if (currentLine.parent.repeatedChildren
@@ -232,6 +232,13 @@ let singleLineInfoFunctions = {
             prevLine.parent,
             linesInfo.prevLineInfo.isFirstLine),
           validationResults);
+
+
+        //Stop checks early when the parent line is the first line
+        if (prevLine.parent === null) {
+          i = linesInfo.contentLineCount;
+          return;
+        }
 
         if (prevLine.parent.nameDetails.indentAmount ===
           currentLineIndent) {

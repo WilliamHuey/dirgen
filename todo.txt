@@ -15,7 +15,6 @@ Backlog/Optimize
 -- pluralizing the error messages
 -right and left trim
 npm start more compatible with windows
--combinations of warnings
 --programatic use should have object pass in
 --remove existsAsync when used programmatically
 

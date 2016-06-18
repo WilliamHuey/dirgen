@@ -31,19 +31,18 @@ const messageTemplate = (msg, type) => {
         ${type}
       </message-header-warning>
       ${msg}
-    </message>`;
+    </message><br>`;
   } else {
     return `<message>
       <message-header-error>
         ${type}
       </message-header-error>
       ${msg}
-    </message>`;
+    </message><br>`;
   }
 };
 
 const displayMessage = (msg, type) => {
-  console.log("type", type);
   console.log(renderKid.render(messageTemplate(msg, type)));
 };
 

@@ -214,7 +214,7 @@ export default (action, actionParams) => {
           message.error(validationResults.errors[0].message);
         }
 
-        console.log(`Encountered ${validationResults.errors.length} errors and ${validationResults.warnings.length} line warnings while reading template file.`);
+        console.log(`Template read status: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings.`);
 
         // console.log("linesInfo.topLevel", linesInfo.topLevel);
         // console.log("validationResults", validationResults);
