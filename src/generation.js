@@ -18,9 +18,13 @@ import {
 import Validations from './lines-validations';
 import message from './validations-messages';
 import logValidations from './log-validations';
+import Timer from './process-timer';
 
 const validator = new Validations();
 const tailCall = recursive.recur;
+
+//Start timing the write process
+let time = process.hrtime();
 
 //Log the lines that are not generated due to repeats
 let structureCreation = {
@@ -29,7 +33,7 @@ let structureCreation = {
   repeats: []
 };
 
-const logNonGenerated = tailCall((structureCreation, line) => {
+const logNonGenerated = tailCall((structureCreation, line, validationResults) => {
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
   const isTopLine = line.isTopLine;
@@ -38,16 +42,10 @@ const logNonGenerated = tailCall((structureCreation, line) => {
   //not generated
   if (isTopLine) {
     line.firstNonGen = true;
-    structureCreation.repeats.push({
-      name: line.structureName,
-      line: line.nameDetails.line
-    });
+    logValidations(validator.repeatedLines(structureCreation, line), validationResults);
   } else if ((line.childOfNonGen !== true &&
   line.parent.firstNonGen !== true)) {
-    structureCreation.repeats.push({
-      name: line.structureName,
-      line: line.nameDetails.line
-    });
+    logValidations(validator.repeatedLines(structureCreation, line), validationResults);
   }
 
   //Repeated lines with further nesting also gets recorded
@@ -55,7 +53,7 @@ const logNonGenerated = tailCall((structureCreation, line) => {
     let nonGeneratedChildren = line.children;
     nonGeneratedChildren.forEach((line) => {
       line.childOfNonGen = true;
-      logNonGenerated(structureCreation, line);
+      logNonGenerated(structureCreation, line, validationResults);
     });
   }
 });
@@ -63,7 +61,7 @@ const logNonGenerated = tailCall((structureCreation, line) => {
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = (lineInfo, rootPath,
-  contentLineCount, resolve) => {
+  contentLineCount, validationResults, resolve) => {
 
   let {
     structureName,
@@ -92,7 +90,7 @@ const createStructure = (lineInfo, rootPath,
         }
       })();
     } else {
-      logNonGenerated(structureCreation, lineInfo);
+      logNonGenerated(structureCreation, lineInfo, validationResults);
     }
   } else {
     let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
@@ -121,7 +119,7 @@ const createStructure = (lineInfo, rootPath,
     //Ungenerated folder means a repeated line, but still attempt
     //to record the nested child of the repeated line
     if (nonGenFolder) {
-      logNonGenerated(structureCreation, lineInfo);
+      logNonGenerated(structureCreation, lineInfo, validationResults);
     } else {
       if (lineInfo.children.length > 0) {
 
@@ -131,7 +129,7 @@ const createStructure = (lineInfo, rootPath,
           //Again check for repeated lines in the child level lines
           if (typeof lineInfo.childRepeatedLine === 'undefined') {
             createStructureTC(line, parentPath,
-              contentLineCount, resolve);
+              contentLineCount, validationResults, resolve);
           }
         });
       }
@@ -143,6 +141,8 @@ const createStructure = (lineInfo, rootPath,
   //an end
   if (structureCreation.generated + structureCreation.notGenerated ===
     contentLineCount) {
+    (new Timer())
+    .onExit(time);
     resolve();
   }
 };
@@ -150,7 +150,7 @@ const createStructure = (lineInfo, rootPath,
 //Tail call wrapper
 createStructureTC = tailCall(createStructure);
 
-export default (linesInfo, rootPath) => {
+export default (linesInfo, rootPath, validationResults) => {
 
   //The total number of lines that are possible to generate
   let contentLineCount = linesInfo.contentLineCount;
@@ -161,7 +161,7 @@ export default (linesInfo, rootPath) => {
     for (let i = 0; i < contentLineCount; i++) {
       let topLevelLine = linesInfo.topLevel[i];
       createStructureTC(topLevelLine, rootPath,
-        contentLineCount, resolve);
+        contentLineCount, validationResults, resolve);
     }
   });
 

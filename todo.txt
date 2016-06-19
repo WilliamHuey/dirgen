@@ -1,6 +1,8 @@
+break the line length
 
-top line repeated validator logic redo
-  log the repeated line validation messages but only the top level folders that have children elements.
+first appearance reference in the repeated warning message line
+
+update test cases to only check for repeated lines but do not show the repeated children lines
 
 mixed and tabs and spaces on the space line passes through validation checks
 

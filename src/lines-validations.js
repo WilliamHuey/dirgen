@@ -160,6 +160,42 @@ Object.assign(validator.prototype, {
         type: 'valid'
       };
     }
+  },
+  repeatedLines: (structureCreation, line) => {
+    const lineNum = line.nameDetails.line;
+
+    structureCreation.repeats.push({
+      name: line.structureName,
+      line: line.nameDetails.line
+    });
+
+    if (line.inferType === 'folder') {
+      let childrenNote = '';
+
+      //Has children for extra note
+      if (line.children.length > 0) {
+        childrenNote = 'along with its child files and/or folders';
+      }
+
+      return {
+        type: 'warning',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}: '${line.structureName}',
+           of folder type is a repeated line and
+           was not generated ${childrenNote}.`
+        }
+      };
+    } else {
+      return {
+        type: 'warning',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}: '${line.structureName}',
+           of file type is a repeated line and was not generated.`
+        }
+      };
+    }
   }
 });
 

@@ -1,8 +1,5 @@
 'use strict';
 
-//Start timing the whole generation process
-let time = process.hrtime();
-
 //Add support for features in ES2015 as maps and promises
 import "babel-polyfill";
 
@@ -13,7 +10,7 @@ import readline from 'readline';
 
 //Source modules
 import util from './utilities';
-import Timer from './process-timer';
+
 import commandTypeAction from './cli-command-type';
 import AddLinesInfo from './lines-info';
 import Lexer from './lexer';
@@ -26,11 +23,6 @@ import generateStructure from './generation';
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
 const validator = new Validations();
-
-//Time the whole process after erroring out
-//or by the finishing of generation
-(new Timer())
-.onExit(time);
 
 //Track the status of the lines
 let linesInfo = {
@@ -197,16 +189,13 @@ export default (action, actionParams) => {
             // console.log("linesInfo", linesInfo);
 
             //TODO: log the repeated lines warning messages inside generate
-            await generateStructure(linesInfo, rootPath);
-
-            console.log("after generation");
+            await generateStructure(linesInfo, rootPath, validationResults);
 
             // console.log("validationResults.warnings", validationResults.warnings);
 
             //Print out warning message
             printValidations(message, 'warn',
               validationResults.warnings, validationResults.warnings.length);
-            console.log("printed validations");
           }
         } else {
 
@@ -214,10 +203,7 @@ export default (action, actionParams) => {
           message.error(validationResults.errors[0].message);
         }
 
-        console.log(`Template read status: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings.`);
-
-        // console.log("linesInfo.topLevel", linesInfo.topLevel);
-        // console.log("validationResults", validationResults);
+        console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
       })();
     });
