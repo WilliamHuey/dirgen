@@ -6,11 +6,11 @@ import RenderKid from 'renderkid';
 const renderKid = new RenderKid();
 
 renderKid.style({
-  "message": {
+  "message-text": {
     display: "inline",
     background: "white",
     color: "black",
-    paddingTop: 1
+    paddingLeft: 1
   },
   "message-header-error": {
     background: "red",
@@ -26,19 +26,23 @@ renderKid.style({
 
 const messageTemplate = (msg, type) => {
   if (type === 'Warning:') {
-    return `<message>
+    return `
       <message-header-warning>
         ${type}
       </message-header-warning>
-      ${msg}
-    </message><br>`;
+      <message-text>
+        ${msg}
+      <message-text>
+      <br>`;
   } else {
-    return `<message>
+    return `
       <message-header-error>
         ${type}
       </message-header-error>
-      ${msg}
-    </message><br>`;
+      <message-text>
+        ${msg}
+      <message-text>
+    <br>`;
   }
 };
 

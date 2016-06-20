@@ -191,7 +191,7 @@ export default (action, actionParams) => {
             //TODO: log the repeated lines warning messages inside generate
             await generateStructure(linesInfo, rootPath, validationResults);
 
-            // console.log("validationResults.warnings", validationResults.warnings);
+            // console.log("validationResults", validationResults);
 
             //Print out warning message
             printValidations(message, 'warn',

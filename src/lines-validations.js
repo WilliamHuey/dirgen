@@ -182,8 +182,8 @@ Object.assign(validator.prototype, {
         line: {
           number: lineNum,
           message: `Line #${lineNum}: '${line.structureName}',
-           of folder type is a repeated line and
-           was not generated ${childrenNote}.`
+            of folder type is a repeated line
+            and was not generated ${childrenNote}.`
         }
       };
     } else {
@@ -192,7 +192,8 @@ Object.assign(validator.prototype, {
         line: {
           number: lineNum,
           message: `Line #${lineNum}: '${line.structureName}',
-           of file type is a repeated line and was not generated.`
+           of file type is a repeated line
+           and was not generated.`
         }
       };
     }

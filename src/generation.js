@@ -86,7 +86,7 @@ const createStructure = (lineInfo, rootPath,
         try {
           await writeFileAsync(structureCreatePath, '');
         } catch (err) {
-          message.error(`Generation error has occurred with generating file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+          message.error(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
     } else {
@@ -108,7 +108,7 @@ const createStructure = (lineInfo, rootPath,
         try {
           await mkdirAsync(parentPath);
         } catch (err) {
-          message.error(`Generation error has occurred with generating folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+          message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
       structureCreation.generated = structureCreation.generated + 1;
