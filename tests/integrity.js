@@ -195,8 +195,9 @@ lab.experiment('and with the demo command', function() {
   });
 
   lab.test('with "demo" command after successfully created files and folders, will log out the generation time', function(done) {
+
     exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
-      __.assertThat(stdout, __.containsString('Generation Time'));
+      __.assertThat(stdout, __.containsString('Write time'));
       done(error);
     });
   });
@@ -269,7 +270,7 @@ lab.experiment('and with the demo command', function() {
       .then(function() {
         exec(cliEntryFile + ' g ' + 'tests/fixtures/one-slash.txt' + ' tests/case-outputs/one-slash', function(error, stdout, stderr) {
           __.assertThat(stdout,
-            __.containsString('Generation Time'));
+            __.containsString('Write time'));
           done(error);
         });
       }, function(error) {
@@ -349,7 +350,7 @@ lab.experiment('and with the demo command', function() {
         exec(cliEntryFile + ' g ' + 'tests/fixtures/repeated-lines-same-level.txt ' +
         ' tests/case-outputs/repeated-lines-same-level', function(error, stdout, stderr) {
           __.assertThat(stdout,
-            __.containsString('repeated entries'));
+            __.containsString('repeated line'));
 
           fs.statAsync(__dirname + '/case-outputs/repeated-lines-same-level/afadsfsf', function(error, stat) {
             if (error == null) {

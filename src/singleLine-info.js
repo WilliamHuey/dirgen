@@ -42,13 +42,17 @@ let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
     //create an object on parent to log repeats on current level
     if (typeof currentLine.parent.repeatedChildren !== 'undefined') {
       let repeatedChildren = currentLine.parent.repeatedChildren;
-      repeatedChildren[currentLine.structureName] = repeatedChildren;
+      repeatedChildren[currentLine.structureName] = currentLine.nameDetails.line;
     } else {
 
       //First child of any folder will create empty object if it does not
       //exist to track any possible children for the current line
       let repeatedChildren = currentLine.parent.repeatedChildren = {};
-      repeatedChildren[currentLine.structureName] = repeatedChildren;
+      repeatedChildren[currentLine.structureName] = currentLine.nameDetails.line;
+
+      //May or might not have siblings, prepare for the case
+      //where the line do have siblings further down the lines
+      currentLine.earliestSiblingLine = true;
     }
 
   } else if (!currentLine.isTopLine && currentLine.parent !== null) {
@@ -62,7 +66,7 @@ let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
     } else {
 
       //Log the first appearance of the child structure
-      currentLine.parent.repeatedChildren[currentLine.structureName] = currentLine;
+      currentLine.parent.repeatedChildren[currentLine.structureName] = currentLine.nameDetails.line;
     }
   }
 };

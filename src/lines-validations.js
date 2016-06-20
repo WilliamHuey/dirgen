@@ -164,6 +164,16 @@ Object.assign(validator.prototype, {
   repeatedLines: (structureCreation, line) => {
     const lineNum = line.nameDetails.line;
 
+    //Additional note for siblings that are later repeats
+    let repeatedFirstSiblingLine = '';
+    if (line.parent &&
+       !line.earliestSiblingLine) {
+
+     let repeatedSiblings = line.parent.repeatedChildren;
+
+     repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings[line.structureName]}.`;
+    }
+
     structureCreation.repeats.push({
       name: line.structureName,
       line: line.nameDetails.line
@@ -183,7 +193,7 @@ Object.assign(validator.prototype, {
           number: lineNum,
           message: `Line #${lineNum}: '${line.structureName}',
             of folder type is a repeated line
-            and was not generated ${childrenNote}.`
+            and was not generated ${childrenNote}. ${repeatedFirstSiblingLine}`
         }
       };
     } else {
@@ -193,7 +203,7 @@ Object.assign(validator.prototype, {
           number: lineNum,
           message: `Line #${lineNum}: '${line.structureName}',
            of file type is a repeated line
-           and was not generated.`
+           and was not generated. ${repeatedFirstSiblingLine}`
         }
       };
     }
