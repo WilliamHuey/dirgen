@@ -1,5 +1,7 @@
 update test cases to only check for repeated lines but do not show the repeated children lines
 
+remove all .skip in the test
+
 mixed and tabs and spaces on the space line passes through validation checks
 
 presence of content already in folder does not cause an overwrite?

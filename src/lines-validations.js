@@ -161,18 +161,23 @@ Object.assign(validator.prototype, {
       };
     }
   },
-  repeatedLines: (structureCreation, line) => {
+  repeatedLines: (linesInfo, structureCreation, line) => {
     const lineNum = line.nameDetails.line;
 
     //Additional note for siblings that are later repeats
     let repeatedFirstSiblingLine = '';
-    if (line.parent &&
-       !line.earliestSiblingLine) {
+    if ((line.parent && !line.earliestSiblingLine)) {
 
      let repeatedSiblings = line.parent.repeatedChildren;
 
      repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings[line.structureName]}.`;
-    }
+   } else if (line.parent === null ) {
+
+     //For top level line repeats
+     let repeatedSiblings = linesInfo.topLevelIndex[line.structureName];
+
+     repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings}.`;
+   }
 
     structureCreation.repeats.push({
       name: line.structureName,
@@ -203,7 +208,8 @@ Object.assign(validator.prototype, {
           number: lineNum,
           message: `Line #${lineNum}: '${line.structureName}',
            of file type is a repeated line
-           and was not generated. ${repeatedFirstSiblingLine}`
+           and was
+           not generated. ${repeatedFirstSiblingLine}`
         }
       };
     }

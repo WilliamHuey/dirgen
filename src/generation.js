@@ -33,7 +33,7 @@ let structureCreation = {
   repeats: []
 };
 
-const logNonGenerated = tailCall((structureCreation, line, validationResults) => {
+const logNonGenerated = tailCall((linesInfo, structureCreation, line, validationResults) => {
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
   const isTopLine = line.isTopLine;
@@ -42,10 +42,10 @@ const logNonGenerated = tailCall((structureCreation, line, validationResults) =>
   //not generated
   if (isTopLine) {
     line.firstNonGen = true;
-    logValidations(validator.repeatedLines(structureCreation, line), validationResults);
+    logValidations(validator.repeatedLines(linesInfo, structureCreation, line), validationResults);
   } else if ((line.childOfNonGen !== true &&
   line.parent.firstNonGen !== true)) {
-    logValidations(validator.repeatedLines(structureCreation, line), validationResults);
+    logValidations(validator.repeatedLines(linesInfo, structureCreation, line), validationResults);
   }
 
   //Repeated lines with further nesting also gets recorded
@@ -53,14 +53,14 @@ const logNonGenerated = tailCall((structureCreation, line, validationResults) =>
     let nonGeneratedChildren = line.children;
     nonGeneratedChildren.forEach((line) => {
       line.childOfNonGen = true;
-      logNonGenerated(structureCreation, line, validationResults);
+      logNonGenerated(linesInfo, structureCreation, line, validationResults);
     });
   }
 });
 
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
-const createStructure = (lineInfo, rootPath,
+const createStructure = (linesInfo, lineInfo, rootPath,
   contentLineCount, validationResults, resolve) => {
 
   let {
@@ -81,6 +81,11 @@ const createStructure = (lineInfo, rootPath,
     if (!childRepeatedLine && !repeatedLine) {
       structureCreation.generated = structureCreation.generated + 1;
 
+      //Track the first of the line's repeats
+      if (isTopLine) {
+        linesInfo.topLevelIndex[structureName] = lineInfo.nameDetails.line;
+      }
+
       //Create the file type
       (async function () {
         try {
@@ -90,12 +95,17 @@ const createStructure = (lineInfo, rootPath,
         }
       })();
     } else {
-      logNonGenerated(structureCreation, lineInfo, validationResults);
+      logNonGenerated(linesInfo, structureCreation, lineInfo, validationResults);
     }
   } else {
     let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
 
     let genFolder = false;
+
+    //Track the first of the line's repeats
+    if (!repeatedLine && isTopLine) {
+      linesInfo.topLevelIndex[structureName] = lineInfo.nameDetails.line;
+    }
 
     //Only generate folder if it is not a repeat
     //Top level lines record repeats with only 'repeatedLine' while
@@ -119,7 +129,7 @@ const createStructure = (lineInfo, rootPath,
     //Ungenerated folder means a repeated line, but still attempt
     //to record the nested child of the repeated line
     if (nonGenFolder) {
-      logNonGenerated(structureCreation, lineInfo, validationResults);
+      logNonGenerated(linesInfo, structureCreation, lineInfo, validationResults);
     } else {
       if (lineInfo.children.length > 0) {
 
@@ -128,7 +138,7 @@ const createStructure = (lineInfo, rootPath,
 
           //Again check for repeated lines in the child level lines
           if (typeof lineInfo.childRepeatedLine === 'undefined') {
-            createStructureTC(line, parentPath,
+            createStructureTC(linesInfo, line, parentPath,
               contentLineCount, validationResults, resolve);
           }
         });
@@ -160,7 +170,7 @@ export default (linesInfo, rootPath, validationResults) => {
     //serves as the initial generation set
     for (let i = 0; i < contentLineCount; i++) {
       let topLevelLine = linesInfo.topLevel[i];
-      createStructureTC(topLevelLine, rootPath,
+      createStructureTC(linesInfo, topLevelLine, rootPath,
         contentLineCount, validationResults, resolve);
     }
   });

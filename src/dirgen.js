@@ -39,7 +39,8 @@ let linesInfo = {
   //content line does not have an indentation level
   firstContentLineIndentAmount: null,
   requireIndentFactor: false,
-  topLevel: []
+  topLevel: [],
+  topLevelIndex: {}
 };
 
 export default (action, actionParams) => {
