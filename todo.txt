@@ -1,8 +1,8 @@
-update test cases to only check for repeated lines but do not show the repeated children lines
-
-remove all .skip in the test
+os names test case get to pass
 
 mixed and tabs and spaces on the space line passes through validation checks
+
+remove all .skip in the test
 
 presence of content already in folder does not cause an overwrite?
 

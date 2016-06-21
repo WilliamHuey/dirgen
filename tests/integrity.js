@@ -369,7 +369,7 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-    lab.test('and with a child line of a parent folder which was repeated  will display a warning message', function(done) {
+    lab.test('and with a repeated top level line will display a warning message noting the first of the repeats', function(done) {
 
       fs.mkdirAsync(__dirname + '/case-outputs/child-of-repeated-parent')
       .then(function() {
