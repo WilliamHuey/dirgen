@@ -146,6 +146,7 @@ export default (action, actionParams) => {
       const sanitizedName =
         logValidations(
           validator.cleanFileName(
+            currentLine.nameDetails.specialCharactersTypeCount,
             linesInfo.totalLineCount,
             currentLine.structureName,
             currentLine),

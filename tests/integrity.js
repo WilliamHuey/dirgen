@@ -299,8 +299,7 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-    //TODO: Make it pass later
-    lab.test.skip('and file sanitizing with problematic names for oses will display a warning message', function(done) {
+    lab.test('and file sanitizing with problematic names for oses will display a warning message', function(done) {
 
       var problematicCases = 0;
 

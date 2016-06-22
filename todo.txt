@@ -1,10 +1,8 @@
-os names test case get to pass
-
 mixed and tabs and spaces on the space line passes through validation checks
 
-remove all .skip in the test
-
 presence of content already in folder does not cause an overwrite?
+
+remove all .skip in the test
 
 version timing problem on the tests
 test deeply nested folder structures

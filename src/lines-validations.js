@@ -12,7 +12,7 @@ const tailCall = recursive.recur;
 let validator = () => {};
 
 Object.assign(validator.prototype, {
-  cleanFileName: (lineNum, content) => {
+  cleanFileName: (specialCharactersTypeCount, lineNum, content) => {
     let cleanedName = sanitize(content);
 
     if (cleanedName !== content &&
@@ -21,8 +21,11 @@ Object.assign(validator.prototype, {
       //One slash in front of line implied a folder
       //but any invalid character persist after the first slash
       //will cause the line to be invalid
-      if (content.indexOf(slashChar) !== content.lastIndexOf(slashChar)) {
-
+      //OR
+      //Other specials characters were found
+      if ((content.indexOf(slashChar) !== content.lastIndexOf(slashChar)) ||
+        (specialCharactersTypeCount &&
+          specialCharactersTypeCount > 0)) {
         return {
           type: 'warning',
           line: {
@@ -121,7 +124,7 @@ Object.assign(validator.prototype, {
         }
       };
     } else if (indentType !== 'outdent' &&
-    !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
+      !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
         firstIndentAmt)) {
       //Scaling indent factor and firstIndent is the same
 
@@ -168,16 +171,16 @@ Object.assign(validator.prototype, {
     let repeatedFirstSiblingLine = '';
     if ((line.parent && !line.earliestSiblingLine)) {
 
-     let repeatedSiblings = line.parent.repeatedChildren;
+      let repeatedSiblings = line.parent.repeatedChildren;
 
-     repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings[line.structureName]}.`;
-   } else if (line.parent === null ) {
+      repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings[line.structureName]}.`;
+    } else if (line.parent === null) {
 
-     //For top level line repeats
-     let repeatedSiblings = linesInfo.topLevelIndex[line.structureName];
+      //For top level line repeats
+      let repeatedSiblings = linesInfo.topLevelIndex[line.structureName];
 
-     repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings}.`;
-   }
+      repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings}.`;
+    }
 
     structureCreation.repeats.push({
       name: line.structureName,
