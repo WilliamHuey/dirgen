@@ -371,10 +371,10 @@ lab.experiment.skip('and with the demo command', function() {
 
     lab.test('and with a repeated top level line will display a warning message noting the first of the repeats', function(done) {
 
-      fs.mkdirAsync(__dirname + '/case-outputs/child-of-repeated-parent')
+      fs.mkdirAsync(__dirname + '/case-outputs/top-level-repeated-line')
       .then(function() {
-        exec(cliEntryFile + ' g ' + 'tests/fixtures/child-of-repeated-parent.txt ' +
-        ' tests/case-outputs/child-of-repeated-parent', function(error, stdout, stderr) {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/top-level-repeated-line.txt ' +
+        ' tests/case-outputs/top-level-repeated-line', function(error, stdout, stderr) {
 
           __.assertThat(stdout,
             __.containsString("Line #5: 'gsdf', of folder type is a repeated line and"));
@@ -386,6 +386,46 @@ lab.experiment.skip('and with the demo command', function() {
         });
       });
     });
+
+    lab.test('and with a repeated non-top child line of a parent folder will display a warning message noting the first of the repeats', function(done) {
+
+      fs.mkdirAsync(__dirname + '/case-outputs/child-of-repeated-parent')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/child-of-repeated-parent.txt ' +
+        ' tests/case-outputs/child-of-repeated-parent', function(error, stdout, stderr) {
+
+          __.assertThat(stdout,
+            __.containsString("Line #4: 'adsfadfasdf', of folder type is a repeated line and"));
+
+          __.assertThat(stdout,
+            __.containsString("First appearance of"));
+
+          __.assertThat(stdout,
+            __.containsString("is on line #2"));
+
+          done();
+        });
+      });
+    });
+
+    lab.test('and with a repeated non-top child line of a repeated parent folder will not display a warning message for the repeated children', function(done) {
+
+      fs.mkdirAsync(__dirname + '/case-outputs/repeated-child-of-repeated-parent')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/repeated-child-of-repeated-parent.txt ' +
+        ' tests/case-outputs/repeated-child-of-repeated-parent', function(error, stdout, stderr) {
+
+          __.assertThat(stdout,
+            __.not(__.containsString("Line #5: 'adsfadfasdf', of folder type is a repeated line and")));
+
+          __.assertThat(stdout,
+            __.not(__.containsString("Line #6: 'adsfadfasdf', of folder type is a repeated line and")));
+
+          done();
+        });
+      });
+    });
+
 
     lab.test('and with mixing indent type of spaces and tabs will display an error message', function(done) {
       fs.mkdirAsync(__dirname + '/case-outputs/mix-tabs-and-spaces-indent')
