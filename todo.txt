@@ -1,6 +1,6 @@
 mixed and tabs and spaces on the space line passes through validation checks
 
-presence of content already in folder does not cause an overwrite?
+presence of content already in folder does not cause an overwriteby default, but there should be a forced option to perform the overwriting
 
 remove all .skip in the test
 
