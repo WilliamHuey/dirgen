@@ -216,6 +216,22 @@ Object.assign(validator.prototype, {
         }
       };
     }
+  },
+  sameLineMixedTabsAndSpaces: (mixedTabsSpaces, lineNum, structureName) => {
+    if (mixedTabsSpaces) {
+      return {
+        type: 'error',
+        line: {
+          number: lineNum,
+          message: `Line #${lineNum}: '${structureName}',
+           has mixed tabs and spaces on the left of first non-blank character. Nothing was generated.`
+        }
+      };
+    } else {
+      return {
+        type: 'valid'
+      };
+    }
   }
 });
 

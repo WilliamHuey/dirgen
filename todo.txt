@@ -1,8 +1,10 @@
 mixed and tabs and spaces on the space line passes through validation checks
 
-presence of content already in folder does not cause an overwriteby default, but there should be a forced option to perform the overwriting
+presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
 
 remove all .skip in the test
+
+show timestamp on error too
 
 version timing problem on the tests
 test deeply nested folder structures

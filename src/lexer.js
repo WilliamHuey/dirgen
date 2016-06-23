@@ -21,7 +21,6 @@ Object.assign(lexer.prototype, {
         specialCharacters: {}
       };
 
-    //TODO: Take in option to trim right or not
     //Get indentation information
     let indentInfo = detectIndent(line);
     lineTokenStats.indentAmount = indentInfo.amount;
@@ -32,11 +31,18 @@ Object.assign(lexer.prototype, {
       indentInfo.amount;
     lineTokenStats.currentTrimmedValue = line.trim();
 
+    //Recomputed indent amount and trimmed length
+    //not equally to the original means a mixture of spaces and tabs
+    if (lineTokenStats.indentAmount + lineTokenStats.contentLength !==
+       (indentInfo.amount + lineTokenStats.currentTrimmedValue.length)) {
+         lineTokenStats.mixedTabsSpaces = true;
+    }
+
     //Scan the current line to get stats
     while (!scanner.eof()) {
 
-      //Check and track non-alphabetical characters
-      if (!scanner.isAZ()) {
+      //Check and track non-alphabetical  and non-numeric characters
+      if (!(scanner.isAZ() || scanner.is09())) {
         lineTokenStats.charPos = scanner.pos();
         lineTokenStats.currentCharCode = line.charCodeAt(lineTokenStats.charPos);
 
@@ -64,6 +70,8 @@ Object.assign(lexer.prototype, {
       }
       scanner.nextChar();
     }
+
+
     return lineTokenStats;
   }
 });

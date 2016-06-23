@@ -426,7 +426,7 @@ lab.experiment.skip('and with the demo command', function() {
     });
 
 
-    lab.test('and with mixing indent type of spaces and tabs will display an error message', function(done) {
+    lab.test('and with mixing indent type of spaces and tabs on different lines will display an error message', function(done) {
       fs.mkdirAsync(__dirname + '/case-outputs/mix-tabs-and-spaces-indent')
       .then(function() {
         exec(cliEntryFile + ' g ' + 'tests/fixtures/mix-tabs-and-spaces-indent.txt ' +

@@ -156,6 +156,10 @@ export default (action, actionParams) => {
         currentLine.nameDetails.sanitizedName = sanitizedName;
       }
 
+      logValidations(
+        validator.sameLineMixedTabsAndSpaces(currentLine.nameDetails.mixedTabsSpaces, currentLine.nameDetails.line, currentLine.structureName),
+      validationResults);
+
     })
     .on('close', () => {
 
