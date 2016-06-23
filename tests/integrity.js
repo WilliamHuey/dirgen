@@ -425,7 +425,6 @@ lab.experiment.skip('and with the demo command', function() {
       });
     });
 
-
     lab.test('and with mixing indent type of spaces and tabs on different lines will display an error message', function(done) {
       fs.mkdirAsync(__dirname + '/case-outputs/mix-tabs-and-spaces-indent')
       .then(function() {
@@ -433,6 +432,18 @@ lab.experiment.skip('and with the demo command', function() {
         ' tests/case-outputs/mix-tabs-and-spaces-indent', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('with the first defined outdent'));
+          done(error);
+        });
+      });
+    });
+
+    lab.test('and with mixing indent type of spaces and tabs on the same line will display an error message', function(done) {
+      fs.mkdirAsync(__dirname + '/case-outputs/same-line-mix-tabs-and-spaces-indent')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/same-line-mix-tabs-and-spaces-indent.txt ' +
+        ' tests/case-outputs/same-line-mix-tabs-and-spaces-indent', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('has mixed tabs and spaces on the left of first'));
           done(error);
         });
       });
