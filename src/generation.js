@@ -116,7 +116,15 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       //Create the folder
       (async function () {
         try {
-          await mkdirAsync(parentPath);
+
+          await mkdirAsync(parentPath, (res, err) => {
+            if (res !== null) {
+
+              //Error in writing folder
+              //Check if force overwrite option is enabled for overwriting
+            }
+          });
+
         } catch (err) {
           message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
