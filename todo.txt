@@ -1,8 +1,4 @@
-correct one slash is interpreted as line with invalid chars
-
 redo the overwrite test case
-
-suppress the error messages
 
 presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
 

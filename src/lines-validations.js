@@ -15,17 +15,29 @@ Object.assign(validator.prototype, {
   cleanFileName: (specialCharactersTypeCount, lineNum, content) => {
     let cleanedName = sanitize(content);
 
-    if (cleanedName !== content &&
-      content.length < 255) {
+    let isUnCleanName = cleanedName !== content;
+
+    if (isUnCleanName && content.length < 255) {
 
       //One slash in front of line implied a folder
       //but any invalid character persist after the first slash
       //will cause the line to be invalid
       //OR
       //Other specials characters were found
-      if ((content.indexOf(slashChar) !== content.lastIndexOf(slashChar)) ||
-        (specialCharactersTypeCount &&
-          specialCharactersTypeCount > 0)) {
+
+      //Excessive slash characters case
+      //specialCharactersTypeCount only really refers to the slash characters for now
+      const hasSlashChar = content.indexOf(slashChar) > -1;
+      const slashNotAsFirstChar = content.lastIndexOf(slashChar) > 1;
+      const moreThanOneSpecialChar = specialCharactersTypeCount > 1;
+
+      const excessiveSlashes = hasSlashChar &&
+        slashNotAsFirstChar && moreThanOneSpecialChar;
+
+      const hasOnlyRemovedFirstSlash = content.slice(1) === cleanedName;
+
+      if (excessiveSlashes || (!excessiveSlashes && isUnCleanName &&
+         !hasOnlyRemovedFirstSlash)) {
         return {
           type: 'warning',
           line: {
