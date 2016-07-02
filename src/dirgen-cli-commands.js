@@ -67,10 +67,13 @@ const asyncCommands = ['version', 'v', '--version', '-v'];
 const cliCommand = cliArgs[2];
 
 //Non-matching commands will trigger the help doc
+let isValidCommand = false;
 if (!commands.includes(cliCommand) && cliArgs.length > 2 &&
   !asyncCommands.includes(cliCommand)) {
   console.log(`Dirgen: '${cliCommand}'
   is not a recognized command. Type 'dirgen --help' for a list of commands.`);
+} else {
+  isValidCommand = true;
 }
 
 module.exports = function (execPath) {
@@ -191,16 +194,13 @@ module.exports = function (execPath) {
       let packageJson = await readJsonAsync(
         path.resolve(execPath, '../package.json'));
 
-
       cli.run(['', '', 'version'], function () {});
-
-
-
 
     })(cli);
 
-  } else {
-    //Need this line for the commands to work
+  } else if (isValidCommand) {
+
+    //Run the supplied command if it one of the existing commands
     cli.run(cliArgs, function () {});
   }
 
