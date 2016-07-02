@@ -9,6 +9,9 @@ import fs from 'fs';
 import nash from 'nash';
 import path from 'path';
 import isTextPath from 'is-text-path';
+import {
+  readJsonAsync
+} from 'fs-extra-promise';
 
 //Execution directory gives the proper path for the demo example
 const cli = nash();
@@ -54,56 +57,37 @@ const helpText = `
     (v)                   Display what is the edition of this module.
                         `;
 
-//Get assistance on the command use of this module
-cli
-  .command('help')
-  .name('h')
-  .handler(function(data, flags, done) {
-    console.log(helpText);
-  });
-
-//Option --help is an alias for command 'help'
-if (cliArgs[2] === '--help' ||
-cliArgs[2] === '-h' ||
-cliArgs.length === 2) {
-  cli.run(['', '', 'help'], function() {});
-}
-
-//Get the version from the package.json file
-let packageJson = null;
-cli
-  .command('version')
-  .name('v')
-  .handler(function(data, flags, done) {
-    console.log(`Dirgen v${packageJson.version}`);
-  });
-
 const commands = ['generate', 'g', 'gen',
-                  'demo', 'version', 'v', '--version', '-v', 'help', 'h', '--help', '-h' ];
+                  'demo', 'help', 'h', '--help', '-h'];
+
+//Commands that depends on reading outside resources
+const asyncCommands = ['version', 'v', '--version', '-v'];
 
 //Non-matching commands will trigger the help doc
-if (commands.indexOf(cliArgs[2]) < 0 && cliArgs.length > 2) {
+if (commands.indexOf(cliArgs[2]) < 0 && cliArgs.length > 2 &&
+  asyncCommands.indexOf(cliArgs[2]) < 0) {
   console.log(`Dirgen: '${cliArgs[2]}'
   is not a recognized command. Type 'dirgen --help' for a list of commands.`);
 }
 
-//Need this line for the commands to work
-cli.run(cliArgs, function() {});
-
-module.exports = function(execPath) {
+module.exports = function (execPath) {
 
   //Show an example of how the module is used
   cli
     .command('demo')
-    .handler(function(data, flags, done) {
-      require('./dirgen').default({action: 'demo', 'execPath': execPath});
+    .handler(function (data, flags, done) {
+      require('./dirgen')
+        .default({
+          action: 'demo',
+          'execPath': execPath
+        });
     });
 
   //Create files or folders
   cli
     .command('generate')
     .name(['gen', 'g'])
-    .handler(function(data, flags, done) {
+    .handler(function (data, flags, done) {
 
       //Quit early when not enough arguments are provided
       const commandArgsLen = data.length;
@@ -118,57 +102,98 @@ module.exports = function(execPath) {
       Promise.all([
 
         //Check for file template
-        new Promise(function(resolve, reject) {
-          fs.stat(data[0], function(error) {
-            if (error) {
-              message('Not a valid file. Need a plain text file format in the first command input.');
-              return reject({ file: false });
-            } else {
-
-              //Check for text file
-              if (!isTextPath(data[0])) {
-                message('Not a valid template file. Please provide a plain text file format in the first command input.');
-                return resolve({ file: false });
+        new Promise(function (resolve, reject) {
+            fs.stat(data[0], function (error) {
+              if (error) {
+                message('Not a valid file. Need a plain text file format in the first command input.');
+                return reject({
+                  file: false
+                });
               } else {
-                return resolve({ file: true });
+
+                //Check for text file
+                if (!isTextPath(data[0])) {
+                  message('Not a valid template file. Please provide a plain text file format in the first command input.');
+                  return resolve({
+                    file: false
+                  });
+                } else {
+                  return resolve({
+                    file: true
+                  });
+                }
               }
-            }
-          });
-        }),
+            });
+          }),
 
         //Check for folder
-        new Promise(function(resolve, reject) {
-          fs.stat(data[1], function(error) {
+        new Promise(function (resolve, reject) {
+          fs.stat(data[1], function (error) {
             if (error) {
               message('Not a valid folder. Please provide a valid folder in the second command input.');
-              return reject({ folder: false });
+              return reject({
+                folder: false
+              });
             } else {
-              return resolve({ folder: true });
+              return resolve({
+                folder: true
+              });
             }
           });
         })
-      ]).then(function(values) {
+      ])
+        .then(function (values) {
 
-        //Only generate on valid file and folder input
-        if (values[0].file && values[1].folder) {
-          require('./dirgen').default('generate',
-          { template: data[0], output: data[1] });
-        }
-      }, function() {});
+          //Only generate on valid file and folder input
+          if (values[0].file && values[1].folder) {
+            require('./dirgen')
+              .default('generate', {
+                template: data[0],
+                output: data[1]
+              });
+          }
+        }, function () {});
     });
 
-  //Read the version from package.json
-  //In the exports function because needs access to the read path
-  fs.readFile(path.resolve(execPath, '../package.json'),
-  "utf-8", function(err, data) {
-    try {
-      packageJson = JSON.parse(data);
-      if (cliArgs[2] === '--version' ||
-        cliArgs[2] === '-v') {
-        cli.run(['', '', 'version'], function() {});
-      }
-    } catch (e) {
-      message('Read error on JSON file:', e);
+  //Get assistance on the command use of this module
+  cli
+    .command('help')
+    .name('h')
+    .handler(function (data, flags, done) {
+      console.log(helpText);
+    });
+
+  //Option --help is an alias for command 'help'
+  if (cliArgs[2] === '--help' ||
+    cliArgs[2] === '-h' ||
+    cliArgs.length === 2) {
+
+
+    cli.run(['', '', 'help'], function () {});
+  }
+
+  (async function (cli) {
+
+    //Get the version from the package.json file
+    cli
+      .command('version')
+      .name('v')
+      .handler(function (data, flags, done) {
+        console.log(`Dirgen v${packageJson.version}`);
+      });
+
+    //Read the version from package.json
+    //In the exports function because needs access to the read path
+    let packageJson = await readJsonAsync(
+      path.resolve(execPath, '../package.json'));
+
+    if (asyncCommands.indexOf(cliArgs[2]) > -1) {
+      cli.run(['', '', 'version'], function () {});
     }
-  });
+
+    //Need this line for the commands to work
+    cli.run(cliArgs, function () {});
+
+  })(cli);
+
 };
