@@ -27,7 +27,7 @@ Object.assign(validator.prototype, {
 
       //Excessive slash characters case
       //specialCharactersTypeCount only really refers to the slash characters for now
-      const hasSlashChar = content.indexOf(slashChar) > -1;
+      const hasSlashChar = content.includes(slashChar);
       const slashNotAsFirstChar = content.lastIndexOf(slashChar) > 1;
       const moreThanOneSpecialChar = specialCharactersTypeCount > 1;
 

@@ -1,18 +1,11 @@
-swap out indexof checks with includes
-
-version timing problem on the tests
+for loop switch out
 
 more robust handling of the command lines commands such as plain numbers and other
 
-ensure that the fs read and writes are using async await
+presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
+-f
 
 redo the overwrite test case
-
-presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
-
-remove all .skip in the test
-
-show timestamp on error too
 
 test deeply nested folder structures
 

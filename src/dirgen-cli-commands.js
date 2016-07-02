@@ -63,10 +63,13 @@ const commands = ['generate', 'g', 'gen',
 //Commands that depends on reading outside resources
 const asyncCommands = ['version', 'v', '--version', '-v'];
 
+//Command from console
+const cliCommand = cliArgs[2];
+
 //Non-matching commands will trigger the help doc
-if (commands.indexOf(cliArgs[2]) < 0 && cliArgs.length > 2 &&
-  asyncCommands.indexOf(cliArgs[2]) < 0) {
-  console.log(`Dirgen: '${cliArgs[2]}'
+if (!commands.includes(cliCommand) && cliArgs.length > 2 &&
+  !asyncCommands.includes(cliCommand)) {
+  console.log(`Dirgen: '${cliCommand}'
   is not a recognized command. Type 'dirgen --help' for a list of commands.`);
 }
 
@@ -164,36 +167,41 @@ module.exports = function (execPath) {
     });
 
   //Option --help is an alias for command 'help'
-  if (cliArgs[2] === '--help' ||
-    cliArgs[2] === '-h' ||
+  if (cliCommand === '--help' ||
+    cliCommand === '-h' ||
     cliArgs.length === 2) {
-
 
     cli.run(['', '', 'help'], function () {});
   }
 
-  (async function (cli) {
+  if (asyncCommands.includes(cliCommand)) {
 
-    //Get the version from the package.json file
-    cli
-      .command('version')
-      .name('v')
-      .handler(function (data, flags, done) {
-        console.log(`Dirgen v${packageJson.version}`);
-      });
+    (async function (cli) {
 
-    //Read the version from package.json
-    //In the exports function because needs access to the read path
-    let packageJson = await readJsonAsync(
-      path.resolve(execPath, '../package.json'));
+      //Get the version from the package.json file
+      cli
+        .command('version')
+        .name('v')
+        .handler(function (data, flags, done) {
+          console.log(`Dirgen v${packageJson.version}`);
+        });
 
-    if (asyncCommands.indexOf(cliArgs[2]) > -1) {
+      //Read the version from package.json
+      //In the exports function because needs access to the read path
+      let packageJson = await readJsonAsync(
+        path.resolve(execPath, '../package.json'));
+
+
       cli.run(['', '', 'version'], function () {});
-    }
 
+
+
+
+    })(cli);
+
+  } else {
     //Need this line for the commands to work
     cli.run(cliArgs, function () {});
-
-  })(cli);
+  }
 
 };
