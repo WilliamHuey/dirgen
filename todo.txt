@@ -1,11 +1,11 @@
-for loop switch out
-
 more robust handling of the command lines commands such as plain numbers and other
 
 presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
 -f
 
 redo the overwrite test case
+
+new options in help for the force
 
 test deeply nested folder structures
 
