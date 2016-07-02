@@ -13,11 +13,16 @@ import {
   readJsonAsync
 } from 'fs-extra-promise';
 
+//Source modules
+import messenger from './validations-messages';
+import validCliCommands from './cli-command-valid';
+
+//Array of cli commands for sync and async operations
+const { commands, asyncCommands} =  validCliCommands;
+
 //Execution directory gives the proper path for the demo example
 const cli = nash();
 const cliArgs = process.argv;
-
-import messenger from './validations-messages';
 
 const message = (msg) => {
 
@@ -57,12 +62,6 @@ const helpText = `
     (v)                   Display what is the edition of this module.
                         `;
 
-const commands = ['generate', 'g', 'gen',
-                  'demo', 'help', 'h', '--help', '-h'];
-
-//Commands that depends on reading outside resources
-const asyncCommands = ['version', 'v', '--version', '-v'];
-
 //Command from console
 const cliCommand = cliArgs[2];
 
@@ -76,12 +75,12 @@ if (!commands.includes(cliCommand) && cliArgs.length > 2 &&
   isValidCommand = true;
 }
 
-module.exports = function (execPath) {
+module.exports = function(execPath) {
 
   //Show an example of how the module is used
   cli
     .command('demo')
-    .handler(function (data, flags, done) {
+    .handler(function(data, flags, done) {
       require('./dirgen')
         .default({
           action: 'demo',
@@ -93,7 +92,7 @@ module.exports = function (execPath) {
   cli
     .command('generate')
     .name(['gen', 'g'])
-    .handler(function (data, flags, done) {
+    .handler(function(data, flags, done) {
 
       //Quit early when not enough arguments are provided
       const commandArgsLen = data.length;
@@ -108,8 +107,8 @@ module.exports = function (execPath) {
       Promise.all([
 
         //Check for file template
-        new Promise(function (resolve, reject) {
-            fs.stat(data[0], function (error) {
+        new Promise(function(resolve, reject) {
+            fs.stat(data[0], function(error) {
               if (error) {
                 message('Not a valid file. Need a plain text file format in the first command input.');
                 return reject({
@@ -133,8 +132,8 @@ module.exports = function (execPath) {
           }),
 
         //Check for folder
-        new Promise(function (resolve, reject) {
-          fs.stat(data[1], function (error) {
+        new Promise(function(resolve, reject) {
+          fs.stat(data[1], function(error) {
             if (error) {
               message('Not a valid folder. Please provide a valid folder in the second command input.');
               return reject({
@@ -148,7 +147,7 @@ module.exports = function (execPath) {
           });
         })
       ])
-        .then(function (values) {
+        .then(function(values) {
 
           //Only generate on valid file and folder input
           if (values[0].file && values[1].folder) {
@@ -158,14 +157,14 @@ module.exports = function (execPath) {
                 output: data[1]
               });
           }
-        }, function () {});
+        }, function() {});
     });
 
   //Get assistance on the command use of this module
   cli
     .command('help')
     .name('h')
-    .handler(function (data, flags, done) {
+    .handler(function(data, flags, done) {
       console.log(helpText);
     });
 
@@ -174,34 +173,35 @@ module.exports = function (execPath) {
     cliCommand === '-h' ||
     cliArgs.length === 2) {
 
-    cli.run(['', '', 'help'], function () {});
+    cli.run(['', '', 'help'], function() {});
   }
 
   if (asyncCommands.includes(cliCommand)) {
 
-    (async function (cli) {
+    (async function(cli) {
+      let packageJson = {};
 
       //Get the version from the package.json file
       cli
         .command('version')
         .name('v')
-        .handler(function (data, flags, done) {
+        .handler(function(data, flags, done) {
           console.log(`Dirgen v${packageJson.version}`);
         });
 
       //Read the version from package.json
       //In the exports function because needs access to the read path
-      let packageJson = await readJsonAsync(
+       packageJson = await readJsonAsync(
         path.resolve(execPath, '../package.json'));
 
-      cli.run(['', '', 'version'], function () {});
+      cli.run(['', '', 'version'], function() {});
 
     })(cli);
 
   } else if (isValidCommand) {
 
     //Run the supplied command if it one of the existing commands
-    cli.run(cliArgs, function () {});
+    cli.run(cliArgs, function() {});
   }
 
 };
