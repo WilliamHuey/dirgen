@@ -203,5 +203,4 @@ module.exports = function(execPath) {
     //Run the supplied command if it one of the existing commands
     cli.run(cliArgs, function() {});
   }
-
 };

@@ -1,4 +1,3 @@
-test case for invalid commands
 
 presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
 -f

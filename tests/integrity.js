@@ -9,6 +9,9 @@ var fs = require('fs-extra-promise'),
   lab = exports.lab = require('lab').script(),
   __ = require('hamjest');
 
+//Source modules
+var validCliCommands = require('../src/cli-command-valid');
+
 //Path definitions
 var cliEntryFile = 'node ' + __dirname +  '/../bin/dirgen-cli-init.js';
 
@@ -174,6 +177,18 @@ lab.experiment('Cli commands when input is "dirgen"', function() {
     lab.test('with version alias option , "-v" will display the module information message', function(done) {
       exec(cliEntryFile + ' -v', function(error, stdout, stderr) {
         __.assertThat(stdout, __.containsString('Dirgen v'));
+        done(error);
+      });
+    });
+
+    lab.test('with an invalid command, will produce a warning message', function(done) {
+      exec(cliEntryFile + ' afsdjkafgls', function(error, stdout, stderr) {
+
+        __.assertThat(validCliCommands.commands, __.not(__.hasItem('afsdjkafgls')));
+
+        __.assertThat(validCliCommands.asyncCommands, __.not(__.hasItem('afsdjkafgls')));
+
+        __.assertThat(stdout, __.containsString("is not a recognized command. Type 'dirgen --help' for a list of commands."));
         done(error);
       });
     });
