@@ -34,7 +34,7 @@ let structureCreation = {
 };
 
 const logNonGenerated = tailCall((linesInfo, structureCreation, line, validationResults) => {
-  structureCreation.notGenerated = structureCreation.notGenerated + 1;
+  structureCreation.notGenerated += 1;
 
   const isTopLine = line.isTopLine;
 
@@ -44,7 +44,7 @@ const logNonGenerated = tailCall((linesInfo, structureCreation, line, validation
     line.firstNonGen = true;
     logValidations(validator.repeatedLines(linesInfo, structureCreation, line), validationResults);
   } else if ((line.childOfNonGen !== true &&
-  line.parent.firstNonGen !== true)) {
+      line.parent.firstNonGen !== true)) {
     logValidations(validator.repeatedLines(linesInfo, structureCreation, line), validationResults);
   }
 
@@ -79,7 +79,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
   if (inferType === 'file') {
     if (!childRepeatedLine && !repeatedLine) {
-      structureCreation.generated += 1;
 
       //Track the first of the line's repeats
       if (isTopLine) {
@@ -89,7 +88,19 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       //Create the file type
       (async function () {
         try {
+
           await writeFileAsync(structureCreatePath, '');
+          structureCreation.generated += 1;
+
+          //When all generated structures are created with the non-generated
+          //structures ignored, signifies that the generation process comes to
+          //an end
+          if (structureCreation.generated + structureCreation.notGenerated ===
+            contentLineCount) {
+            (new Timer())
+            .onExit(time);
+            resolve(structureCreation);
+          }
         } catch (err) {
           message.error(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
           structureCreation.generated -= 1;
@@ -126,6 +137,18 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             }
           });
 
+          structureCreation.generated += 1;
+
+          //When all generated structures are created with the non-generated
+          //structures ignored, signifies that the generation process comes to
+          //an end
+          if (structureCreation.generated + structureCreation.notGenerated ===
+            contentLineCount) {
+            (new Timer())
+            .onExit(time);
+            resolve(structureCreation);
+          }
+
         } catch (err) {
           message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
@@ -146,7 +169,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         lineInfo.children.forEach((line) => {
 
           //Again check for repeated lines in the child level lines
-          if (typeof lineInfo.childRepeatedLine === 'undefined') {
+          if (typeof lineInfo.childRepeatedLine === 'undefined' && typeof line !== 'undefined') {
             createStructureTC(linesInfo, line, parentPath,
               contentLineCount, validationResults, options, resolve);
           }
@@ -155,15 +178,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
     }
   }
 
-  //When all generated structures are created with the non-generated
-  //structures ignored, signifies that the generation process comes to
-  //an end
-  if (structureCreation.generated + structureCreation.notGenerated ===
-    contentLineCount) {
-    (new Timer())
-    .onExit(time);
-    resolve(structureCreation);
-  }
+
 };
 
 //Tail call wrapper
@@ -172,20 +187,22 @@ createStructureTC = tailCall(createStructure);
 export default (linesInfo, rootPath, validationResults, actionParams) => {
 
   //Flag definition to allow for changing the defaults values such as allowing for overwriting existing files or folders
-  const { options } = actionParams;
+  const {
+    options
+  } = actionParams;
 
   //The total number of lines that are possible to generate
   let contentLineCount = linesInfo.contentLineCount;
-  let structureGenerating = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
 
     //Take the outer-most level of elements which
     //serves as the initial generation set
     for (let i = 0; i < contentLineCount; i++) {
       let topLevelLine = linesInfo.topLevel[i];
-      createStructureTC(linesInfo, topLevelLine, rootPath,
-        contentLineCount, validationResults, options, resolve);
+      if (typeof topLevelLine !== 'undefined') {
+        createStructureTC(linesInfo, topLevelLine, rootPath,
+          contentLineCount, validationResults, options, resolve);
+      }
     }
   });
-
-  return structureGenerating;
 };

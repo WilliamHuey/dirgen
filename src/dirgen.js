@@ -144,7 +144,7 @@ export default (action, actionParams) => {
 
       logValidations(
         validator.sameLineMixedTabsAndSpaces(currentLine.nameDetails.mixedTabsSpaces, currentLine.nameDetails.line, currentLine.structureName),
-      validationResults);
+        validationResults);
     })
     .on('close', () => {
 
@@ -183,8 +183,6 @@ export default (action, actionParams) => {
             // console.log("linesInfo", linesInfo);
 
             genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams);
-
-            // console.log("validationResults", validationResults);
 
             //Print out warning message
             printValidations(message, 'warn',
