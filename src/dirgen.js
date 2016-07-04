@@ -148,6 +148,9 @@ export default (action, actionParams) => {
     })
     .on('close', () => {
 
+      //For displaying the count of the generated and the non-generated
+      let genResult = null;
+
       (async function () {
 
         // console.log("linesInfo", linesInfo);
@@ -179,7 +182,7 @@ export default (action, actionParams) => {
 
             // console.log("linesInfo", linesInfo);
 
-            await generateStructure(linesInfo, rootPath, validationResults, actionParams);
+            genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams);
 
             // console.log("validationResults", validationResults);
 
@@ -195,6 +198,7 @@ export default (action, actionParams) => {
 
         console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
+        console.log(`Creation count: ${genResult.generated} generated and ${genResult.notGenerated} not generated`);
       })();
     });
 };

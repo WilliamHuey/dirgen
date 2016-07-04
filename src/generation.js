@@ -33,8 +33,6 @@ let structureCreation = {
   repeats: []
 };
 
-let forceOverwrite = false;
-
 const logNonGenerated = tailCall((linesInfo, structureCreation, line, validationResults) => {
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
@@ -81,7 +79,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
   if (inferType === 'file') {
     if (!childRepeatedLine && !repeatedLine) {
-      structureCreation.generated = structureCreation.generated + 1;
+      structureCreation.generated += 1;
 
       //Track the first of the line's repeats
       if (isTopLine) {
@@ -94,6 +92,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           await writeFileAsync(structureCreatePath, '');
         } catch (err) {
           message.error(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+          structureCreation.generated -= 1;
         }
       })();
     } else {
@@ -131,7 +130,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
-      structureCreation.generated = structureCreation.generated + 1;
+      structureCreation.generated += 1;
     }
 
     let nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
@@ -163,7 +162,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
     contentLineCount) {
     (new Timer())
     .onExit(time);
-    resolve();
+    resolve(structureCreation);
   }
 };
 

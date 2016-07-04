@@ -6,6 +6,8 @@ redo the overwrite test case
 
 new options in help for the force
 
+better timing of the generation time
+
 test deeply nested folder structures
 
 Module
