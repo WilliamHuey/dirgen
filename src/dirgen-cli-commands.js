@@ -15,7 +15,7 @@ import {
 
 //Source modules
 import messenger from './validations-messages';
-import validCliCommands from './cli-command-valid';
+import validCliCommands from './cli-command-valid.json';
 
 //Array of cli commands for sync and async operations
 const { commands, asyncCommands} =  validCliCommands;
