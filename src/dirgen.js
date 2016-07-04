@@ -103,22 +103,6 @@ export default (action, actionParams) => {
         nameDetails: lexResults
       };
 
-      /*
-      Sample nameDetails output
-      { totalLength: 7,
-         charPos: 5,
-         currentCharCode: 58,
-         structureType: null,
-         specialCharacters: { '58': [Object] },
-         indentAmount: 0,
-         indentType: null,
-         contentLength: 7,
-         currentTrimmedValue: 'thing:s',
-         specialCharactersTypeCount: 1,
-         line: 1,
-         sanitizedName: 'things' } }
-      */
-
       //Get the information from prior lines to determine
       //the siblings, parent, and children key values
       currentLine = addLinesInfo.setLineData(currentLine, linesInfo,
@@ -152,6 +136,8 @@ export default (action, actionParams) => {
             currentLine),
           validationResults);
 
+      //Sanitized name will be logged and used
+      //over the original name
       if (sanitizedName) {
         currentLine.nameDetails.sanitizedName = sanitizedName;
       }
@@ -159,7 +145,6 @@ export default (action, actionParams) => {
       logValidations(
         validator.sameLineMixedTabsAndSpaces(currentLine.nameDetails.mixedTabsSpaces, currentLine.nameDetails.line, currentLine.structureName),
       validationResults);
-
     })
     .on('close', () => {
 
@@ -194,7 +179,7 @@ export default (action, actionParams) => {
 
             // console.log("linesInfo", linesInfo);
 
-            await generateStructure(linesInfo, rootPath, validationResults);
+            await generateStructure(linesInfo, rootPath, validationResults, actionParams);
 
             // console.log("validationResults", validationResults);
 

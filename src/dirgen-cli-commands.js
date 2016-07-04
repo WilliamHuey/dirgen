@@ -94,6 +94,9 @@ module.exports = function(execPath) {
     .name(['gen', 'g'])
     .handler(function(data, flags, done) {
 
+      //Check for overwrite flag to write over existing files or folders
+      const forceOverwrite = flags.f;
+
       //Quit early when not enough arguments are provided
       const commandArgsLen = data.length;
       if (commandArgsLen === 0) {
@@ -154,7 +157,10 @@ module.exports = function(execPath) {
             require('./dirgen')
               .default('generate', {
                 template: data[0],
-                output: data[1]
+                output: data[1],
+                options: {
+                  forceOverwrite
+                }
               });
           }
         }, function() {});

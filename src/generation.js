@@ -33,6 +33,8 @@ let structureCreation = {
   repeats: []
 };
 
+let forceOverwrite = false;
+
 const logNonGenerated = tailCall((linesInfo, structureCreation, line, validationResults) => {
   structureCreation.notGenerated = structureCreation.notGenerated + 1;
 
@@ -61,7 +63,7 @@ const logNonGenerated = tailCall((linesInfo, structureCreation, line, validation
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = (linesInfo, lineInfo, rootPath,
-  contentLineCount, validationResults, resolve) => {
+  contentLineCount, validationResults, options, resolve) => {
 
   let {
     structureName,
@@ -147,7 +149,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //Again check for repeated lines in the child level lines
           if (typeof lineInfo.childRepeatedLine === 'undefined') {
             createStructureTC(linesInfo, line, parentPath,
-              contentLineCount, validationResults, resolve);
+              contentLineCount, validationResults, options, resolve);
           }
         });
       }
@@ -168,7 +170,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 //Tail call wrapper
 createStructureTC = tailCall(createStructure);
 
-export default (linesInfo, rootPath, validationResults) => {
+export default (linesInfo, rootPath, validationResults, actionParams) => {
+
+  //Flag definition to allow for changing the defaults values such as allowing for overwriting existing files or folders
+  const { options } = actionParams;
 
   //The total number of lines that are possible to generate
   let contentLineCount = linesInfo.contentLineCount;
@@ -179,7 +184,7 @@ export default (linesInfo, rootPath, validationResults) => {
     for (let i = 0; i < contentLineCount; i++) {
       let topLevelLine = linesInfo.topLevel[i];
       createStructureTC(linesInfo, topLevelLine, rootPath,
-        contentLineCount, validationResults, resolve);
+        contentLineCount, validationResults, options, resolve);
     }
   });
 
