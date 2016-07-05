@@ -1,17 +1,18 @@
 'use strict';
 
 //Native modules
-import fs from 'fs';
 import path from 'path';
 
 //Vendor modules
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
+
 import {
   existsAsync,
   mkdirAsync,
   writeFileAsync,
-  removeAsync
+  removeAsync,
+  statAsync
 } from 'fs-extra-promise';
 
 //Source modules
@@ -87,8 +88,28 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
       //Create the file type
       (async function () {
+
         try {
 
+          //File already exist situation mean it does not error out
+          await statAsync(structureCreatePath);
+
+          //Overwrite existing files when the flag is provided
+          if (options.forceOverwrite) {
+            await writeFileAsync(structureCreatePath, '');
+          }
+
+          structureCreation.generated += 1;
+
+          if (structureCreation.generated + structureCreation.notGenerated ===
+            contentLineCount) {
+            (new Timer())
+            .onExit(time);
+            resolve(structureCreation);
+          }
+        } catch (e) {
+
+          //Create the file when it does not exists
           await writeFileAsync(structureCreatePath, '');
           structureCreation.generated += 1;
 
@@ -101,10 +122,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             .onExit(time);
             resolve(structureCreation);
           }
-        } catch (err) {
-          message.error(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
-          structureCreation.generated -= 1;
         }
+
       })();
     } else {
       logNonGenerated(linesInfo, structureCreation, lineInfo, validationResults);

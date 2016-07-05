@@ -1,6 +1,9 @@
 
-presence of content already in folder does not cause an overwrite by default, but there should be a forced option to perform the overwriting
--f
+overwrite existing folders
+
+resolve block refactor into function
+
+have new information for generation, skipped
 
 redo the overwrite test case
 
