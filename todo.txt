@@ -1,6 +1,4 @@
-generation count greater by 2 with forced?
-
-overwrite existing folders
+check if there is a need to overwrite on force
 
 resolve block refactor into function
 

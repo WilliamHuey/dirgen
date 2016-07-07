@@ -232,10 +232,12 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
   return new Promise((resolve, reject) => {
 
     (async function () {
+
       //Remove all folders and files in the top level
       //of the template file
       //This will ensure that all generated files are new leading to "overwriting"
       if (options.forceOverwrite) {
+        let stat;
         try {
           for (let i = 0; i < contentLineCount; i++) {
             let topLevelLine = linesInfo.topLevel[i];
@@ -248,13 +250,23 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
 
               let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
 
-              await removeAsync(parentPath);
+              stat = await statAsync(parentPath);
+
+              if (stat.isDirectory() || stat.isFile()) {
+                await removeAsync(parentPath);
+              }
             }
           }
 
           startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
         } catch (e) {
-          console.log("Failed to remove file or folder for overwriting.", e);
+
+          //when stat is "undefined", create the structure, because it does not exists
+          if (typeof stat === "undefined") {
+            startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
+          } else {
+            console.log("Failed to remove file or folder for overwriting.", e);
+          }
         }
       } else {
 
