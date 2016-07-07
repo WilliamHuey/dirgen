@@ -7,6 +7,7 @@ import path from 'path';
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
 
+import fs from 'fs-extra-promise';
 import {
   existsAsync,
   mkdirAsync,
@@ -148,13 +149,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       (async function () {
         try {
 
-          await mkdirAsync(parentPath, (res, err) => {
-            if (res !== null) {
-
-              //Error in writing folder
-              //Check if force overwrite option is enabled for overwriting
-            }
-          });
+          await mkdirAsync(parentPath);
 
           structureCreation.generated += 1;
 
@@ -169,6 +164,25 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           }
 
         } catch (err) {
+          // console.log("folder err", err);
+
+          // console.log("parentPath", parentPath);
+          // await mkdirAsync(parentPath);
+
+          // console.log("after no folder mkdir");
+
+          // structureCreation.generated += 1;
+
+          //When all generated structures are created with the non-generated
+          //structures ignored, signifies that the generation process comes to
+          //an end
+          // if (structureCreation.generated + structureCreation.notGenerated ===
+          //   contentLineCount) {
+          //   (new Timer())
+          //   .onExit(time);
+          //   resolve(structureCreation);
+          // }
+
           message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
@@ -203,6 +217,19 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 //Tail call wrapper
 createStructureTC = tailCall(createStructure);
 
+//Top level lines kick off and for later child structure creation
+let startCreatingAtTopLevel = function(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve) {
+  //Take the outer-most level of elements which
+  //serves as the initial generation set
+  for (let i = 0; i < contentLineCount; i++) {
+    let topLevelLine = linesInfo.topLevel[i];
+    if (typeof topLevelLine !== 'undefined') {
+      createStructureTC(linesInfo, topLevelLine, rootPath,
+        contentLineCount, validationResults, options, resolve);
+    }
+  }
+};
+
 export default (linesInfo, rootPath, validationResults, actionParams) => {
 
   //Flag definition to allow for changing the defaults values such as allowing for overwriting existing files or folders
@@ -214,14 +241,41 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
   let contentLineCount = linesInfo.contentLineCount;
   return new Promise((resolve, reject) => {
 
-    //Take the outer-most level of elements which
-    //serves as the initial generation set
-    for (let i = 0; i < contentLineCount; i++) {
-      let topLevelLine = linesInfo.topLevel[i];
-      if (typeof topLevelLine !== 'undefined') {
-        createStructureTC(linesInfo, topLevelLine, rootPath,
-          contentLineCount, validationResults, options, resolve);
+    (async function () {
+      //Remove all folders and files in the top level
+      //of the template file
+      //This will ensure that all generated files are new leading to "overwriting"
+      if (options.forceOverwrite) {
+        try {
+          for (let i = 0; i < contentLineCount; i++) {
+            let topLevelLine = linesInfo.topLevel[i];
+
+            if (typeof topLevelLine !== 'undefined') {
+              let {
+                nameDetails,
+                structureName
+              } = topLevelLine;
+
+              let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
+
+              await removeAsync(parentPath);
+            }
+          }
+
+          startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
+        } catch (e) {
+          console.log("Failed to remove file or folder for overwriting.", e);
+        }
+      } else {
+
+        //Go ahead with the writing of files and folders
+
+        //Take the outer-most level of elements which
+        //serves as the initial generation set
+        startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
       }
-    }
+
+    })();
+
   });
 };

@@ -1,9 +1,13 @@
+generation count greater by 2 with forced?
 
 overwrite existing folders
 
 resolve block refactor into function
 
-have new information for generation, skipped
+have new information for generation, skipped.
+suppress the error messages on existing structures write attempts
+
+message formatting for errors in writing or deleting
 
 redo the overwrite test case
 
