@@ -171,7 +171,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
           // console.log("after no folder mkdir");
 
-          // structureCreation.generated += 1;
+          // Todo: Remove this counter line
+          // when the skip functionality is in place, this is here to allow
+          //generation to occur without force write
+          structureCreation.generated += 1;
 
           //When all generated structures are created with the non-generated
           //structures ignored, signifies that the generation process comes to
@@ -186,7 +189,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
-      structureCreation.generated += 1;
     }
 
     let nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
