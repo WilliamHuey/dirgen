@@ -20,6 +20,10 @@ import logValidations from './log-validations';
 import printValidations from './print-validations';
 import generateStructure from './generation';
 
+//Start timing the write process
+let time = process.hrtime();
+let timeDiff;
+
 const addLinesInfo = new AddLinesInfo();
 const lexer = new Lexer();
 const validator = new Validations();
@@ -184,6 +188,9 @@ export default (action, actionParams) => {
 
             genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams);
 
+            //Time the generation only
+            timeDiff = process.hrtime(time);
+
             //Print out warning message
             printValidations(message, 'warn',
               validationResults.warnings, validationResults.warnings.length);
@@ -197,6 +204,8 @@ export default (action, actionParams) => {
         console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
         console.log(`Creation count: ${genResult.generated} generated and ${genResult.notGenerated} not generated`);
+
+        console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
       })();
     });
 };

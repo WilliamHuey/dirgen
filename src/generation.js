@@ -20,13 +20,9 @@ import {
 import Validations from './lines-validations';
 import message from './validations-messages';
 import logValidations from './log-validations';
-import Timer from './process-timer';
 
 const validator = new Validations();
 const tailCall = recursive.recur;
-
-//Start timing the write process
-let time = process.hrtime();
 
 //Log the lines that are not generated due to repeats
 let structureCreation = {
@@ -104,8 +100,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
           if (structureCreation.generated + structureCreation.notGenerated ===
             contentLineCount) {
-            (new Timer())
-            .onExit(time);
             resolve(structureCreation);
           }
         } catch (e) {
@@ -119,8 +113,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //an end
           if (structureCreation.generated + structureCreation.notGenerated ===
             contentLineCount) {
-            (new Timer())
-            .onExit(time);
             resolve(structureCreation);
           }
         }
@@ -158,8 +150,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //an end
           if (structureCreation.generated + structureCreation.notGenerated ===
             contentLineCount) {
-            (new Timer())
-            .onExit(time);
             resolve(structureCreation);
           }
 
@@ -181,8 +171,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //an end
           // if (structureCreation.generated + structureCreation.notGenerated ===
           //   contentLineCount) {
-          //   (new Timer())
-          //   .onExit(time);
           //   resolve(structureCreation);
           // }
 
