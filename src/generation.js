@@ -266,16 +266,18 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
           startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
              actionParams, contentLineCount, options, resolve);
         } catch (e) {
-
-          console.log("stat", stat);
+          let statUndefined = typeof stat === "undefined";
 
           //when stat is "undefined", create the structure,
           //because it does not exists
-          if (typeof stat === "undefined") {
-            startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
-          } else {
-            console.log("Failed to remove file or folder for overwriting.", e);
+          if (statUndefined || !statUndefined){
+
+            //When stat is undefined means it does not exist so create it
+            //When it is not undefined, stat is reading the first copy
+            startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
+               actionParams, contentLineCount, options, resolve);
           }
+
         }
       } else {
 
