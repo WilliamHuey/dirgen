@@ -146,7 +146,12 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       (async function () {
         try {
 
-          await mkdirAsync(parentPath);
+          await statAsync(parentPath);
+
+          //Overwrite existing folder when the flag is provided
+          if (options.forceOverwrite) {
+            await mkdirAsync(parentPath);
+          }
 
           structureCreation.generated += 1;
 
@@ -159,27 +164,20 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           }
 
         } catch (err) {
-          // console.log("folder err", err);
 
-          // console.log("parentPath", parentPath);
-          // await mkdirAsync(parentPath);
-
-          // console.log("after no folder mkdir");
-
-          // Todo: Remove this counter line
-          // when the skip functionality is in place, this is here to allow
-          //generation to occur without force write
+          //Create the file when it does not exists
+          await mkdirAsync(parentPath);
           structureCreation.generated += 1;
 
           //When all generated structures are created with the non-generated
           //structures ignored, signifies that the generation process comes to
           //an end
-          // if (structureCreation.generated + structureCreation.notGenerated ===
-          //   contentLineCount) {
-          //   resolve(structureCreation);
-          // }
+          if (structureCreation.generated + structureCreation.notGenerated ===
+            contentLineCount) {
+            resolve(structureCreation);
+          }
 
-          message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+          // message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
     }

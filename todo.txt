@@ -1,4 +1,4 @@
-
+refinement checks for catch error structure creation
 
 resolve block refactor into function
 
