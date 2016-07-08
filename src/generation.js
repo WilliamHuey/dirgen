@@ -31,7 +31,8 @@ let structureCreation = {
   repeats: []
 };
 
-const logNonGenerated = tailCall((linesInfo, structureCreation, line, validationResults) => {
+const logNonGenerated = tailCall((linesInfo, structureCreation,
+  line, validationResults) => {
   structureCreation.notGenerated += 1;
 
   const isTopLine = line.isTopLine;
@@ -40,10 +41,12 @@ const logNonGenerated = tailCall((linesInfo, structureCreation, line, validation
   //not generated
   if (isTopLine) {
     line.firstNonGen = true;
-    logValidations(validator.repeatedLines(linesInfo, structureCreation, line), validationResults);
+    logValidations(validator.repeatedLines(linesInfo,
+      structureCreation, line), validationResults);
   } else if ((line.childOfNonGen !== true &&
       line.parent.firstNonGen !== true)) {
-    logValidations(validator.repeatedLines(linesInfo, structureCreation, line), validationResults);
+    logValidations(validator.repeatedLines(linesInfo,
+      structureCreation, line), validationResults);
   }
 
   //Repeated lines with further nesting also gets recorded
@@ -51,7 +54,8 @@ const logNonGenerated = tailCall((linesInfo, structureCreation, line, validation
     let nonGeneratedChildren = line.children;
     nonGeneratedChildren.forEach((line) => {
       line.childOfNonGen = true;
-      logNonGenerated(linesInfo, structureCreation, line, validationResults);
+      logNonGenerated(linesInfo, structureCreation,
+        line, validationResults);
     });
   }
 });
@@ -122,7 +126,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       logNonGenerated(linesInfo, structureCreation, lineInfo, validationResults);
     }
   } else {
-    let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
+    let parentPath = path.join(rootPath, (nameDetails.sanitizedName ||
+       structureName));
 
     let genFolder = false;
 
@@ -201,7 +206,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
     }
   }
 
-
 };
 
 //Tail call wrapper
@@ -248,7 +252,8 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
                 structureName
               } = topLevelLine;
 
-              let parentPath = path.join(rootPath, (nameDetails.sanitizedName || structureName));
+              let parentPath = path.join(rootPath,
+                (nameDetails.sanitizedName || structureName));
 
               stat = await statAsync(parentPath);
 
@@ -258,10 +263,14 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
             }
           }
 
-          startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
+          startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
+             actionParams, contentLineCount, options, resolve);
         } catch (e) {
 
-          //when stat is "undefined", create the structure, because it does not exists
+          console.log("stat", stat);
+
+          //when stat is "undefined", create the structure,
+          //because it does not exists
           if (typeof stat === "undefined") {
             startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
           } else {
@@ -274,7 +283,8 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
 
         //Take the outer-most level of elements which
         //serves as the initial generation set
-        startCreatingAtTopLevel(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve);
+        startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
+           actionParams, contentLineCount, options, resolve);
       }
 
     })();
