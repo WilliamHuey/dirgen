@@ -1,8 +1,9 @@
-refinement checks for catch error structure creation
-
 resolve block refactor into function
 
 have new information for generation, skipped.
+
+skipped should also be logged when it is in the catch error out
+
 suppress the error messages on existing structures write attempts
 
 message formatting for errors in writing or deleting

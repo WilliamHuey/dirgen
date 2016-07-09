@@ -108,16 +108,25 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           }
         } catch (e) {
 
-          //Create the file when it does not exists
-          await writeFileAsync(structureCreatePath, '');
-          structureCreation.generated += 1;
+          //Create the file when there is a stat error
+          //this means that the folder did not exists
+          if (e.syscall === 'stat') {
 
-          //When all generated structures are created with the non-generated
-          //structures ignored, signifies that the generation process comes to
-          //an end
-          if (structureCreation.generated + structureCreation.notGenerated ===
-            contentLineCount) {
-            resolve(structureCreation);
+            //Create the file when it does not exists
+            await writeFileAsync(structureCreatePath, '');
+            structureCreation.generated += 1;
+
+            //When all generated structures are created with the non-generated
+            //structures ignored, signifies that the generation process comes to
+            //an end
+            if (structureCreation.generated + structureCreation.notGenerated ===
+              contentLineCount) {
+              resolve(structureCreation);
+            }
+          } else {
+
+            //Any other error means besides stat means it is a serious error
+            message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
           }
         }
 
@@ -163,21 +172,26 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             resolve(structureCreation);
           }
 
-        } catch (err) {
+        } catch (e) {
 
-          //Create the file when it does not exists
-          await mkdirAsync(parentPath);
-          structureCreation.generated += 1;
+          if (e.syscall === 'stat') {
 
-          //When all generated structures are created with the non-generated
-          //structures ignored, signifies that the generation process comes to
-          //an end
-          if (structureCreation.generated + structureCreation.notGenerated ===
-            contentLineCount) {
-            resolve(structureCreation);
+            //Create the file when it does not exists
+            await mkdirAsync(parentPath);
+            structureCreation.generated += 1;
+
+            //When all generated structures are created with the non-generated
+            //structures ignored, signifies that the generation process comes to
+            //an end
+            if (structureCreation.generated + structureCreation.notGenerated ===
+              contentLineCount) {
+              resolve(structureCreation);
+            }
+
+          } else {
+            message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
           }
 
-          // message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
         }
       })();
     }
@@ -268,7 +282,7 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
 
           //when stat is "undefined", create the structure,
           //because it does not exists
-          if (statUndefined || !statUndefined){
+          if (statUndefined || !statUndefined) {
 
             //When stat is undefined means it does not exist so create it
             //When it is not undefined, stat is reading the first copy
