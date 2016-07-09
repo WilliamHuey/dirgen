@@ -31,6 +31,13 @@ let structureCreation = {
   repeats: []
 };
 
+const generationResolver = (structureCreation, contentLineCount, resolve) => {
+  if (structureCreation.generated + structureCreation.notGenerated ===
+    contentLineCount) {
+    resolve(structureCreation);
+  }
+};
+
 const logNonGenerated = tailCall((linesInfo, structureCreation,
   line, validationResults) => {
   structureCreation.notGenerated += 1;
@@ -101,11 +108,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           }
 
           structureCreation.generated += 1;
-
-          if (structureCreation.generated + structureCreation.notGenerated ===
-            contentLineCount) {
-            resolve(structureCreation);
-          }
+          generationResolver(structureCreation, contentLineCount, resolve);
         } catch (e) {
 
           //Create the file when there is a stat error
@@ -119,10 +122,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             //When all generated structures are created with the non-generated
             //structures ignored, signifies that the generation process comes to
             //an end
-            if (structureCreation.generated + structureCreation.notGenerated ===
-              contentLineCount) {
-              resolve(structureCreation);
-            }
+            generationResolver(structureCreation, contentLineCount, resolve);
           } else {
 
             //Any other error means besides stat means it is a serious error
@@ -167,11 +167,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //When all generated structures are created with the non-generated
           //structures ignored, signifies that the generation process comes to
           //an end
-          if (structureCreation.generated + structureCreation.notGenerated ===
-            contentLineCount) {
-            resolve(structureCreation);
-          }
-
+          generationResolver(structureCreation, contentLineCount, resolve);
         } catch (e) {
 
           if (e.syscall === 'stat') {
@@ -183,11 +179,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             //When all generated structures are created with the non-generated
             //structures ignored, signifies that the generation process comes to
             //an end
-            if (structureCreation.generated + structureCreation.notGenerated ===
-              contentLineCount) {
-              resolve(structureCreation);
-            }
-
+            generationResolver(structureCreation, contentLineCount, resolve);
           } else {
             message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
           }
