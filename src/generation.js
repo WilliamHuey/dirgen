@@ -231,9 +231,7 @@ let startCreatingAtTopLevel = function(linesInfo, rootPath, validationResults, a
 export default (linesInfo, rootPath, validationResults, actionParams) => {
 
   //Flag definition to allow for changing the defaults values such as allowing for overwriting existing files or folders
-  const {
-    options
-  } = actionParams;
+  const options = actionParams ? actionParams.options : {};
 
   //The total number of lines that are possible to generate
   let contentLineCount = linesInfo.contentLineCount;
