@@ -1,3 +1,4 @@
+dirgen demo not generating the files
 
 have new information for generation, skipped.
 
