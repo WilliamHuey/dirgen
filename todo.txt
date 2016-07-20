@@ -1,5 +1,3 @@
-have new information for generation, skipped.
-
 skipped should also be logged when it is in the catch error out
 
 suppress the error messages on existing structures write attempts

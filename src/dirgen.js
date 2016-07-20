@@ -203,7 +203,7 @@ export default (action, actionParams) => {
 
         console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
-        console.log(`Creation count: ${genResult.generated} generated and ${genResult.notGenerated} not generated`);
+        console.log(`Creation count: ${genResult.generated} generated,  ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
 
         console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
       })();

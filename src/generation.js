@@ -28,11 +28,12 @@ const tailCall = recursive.recur;
 let structureCreation = {
   generated: 0,
   notGenerated: 0,
-  repeats: []
+  repeats: [],
+  skipped: 0
 };
 
 const generationResolver = (structureCreation, contentLineCount, resolve) => {
-  if (structureCreation.generated + structureCreation.notGenerated ===
+  if (structureCreation.generated + structureCreation.notGenerated  + structureCreation.skipped ===
     contentLineCount) {
     resolve(structureCreation);
   }
@@ -100,14 +101,20 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         try {
 
           //File already exist situation mean it does not error out
-          await statAsync(structureCreatePath);
+          let fileStat = await statAsync(structureCreatePath);
 
           //Overwrite existing files when the flag is provided
           if (options.forceOverwrite) {
             await writeFileAsync(structureCreatePath, '');
+            structureCreation.generated += 1;
+          } else {
+            //Skip generating file
+            if (fileStat) {
+              structureCreation.skipped += 1;
+            }
           }
 
-          structureCreation.generated += 1;
+
           generationResolver(structureCreation, contentLineCount, resolve);
         } catch (e) {
 
@@ -155,14 +162,18 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       (async function () {
         try {
 
-          await statAsync(parentPath);
+          let fileStat = await statAsync(parentPath);
 
           //Overwrite existing folder when the flag is provided
           if (options.forceOverwrite) {
             await mkdirAsync(parentPath);
+            structureCreation.generated += 1;
+          } else {
+            // Skip folder generation
+            if (fileStat) {
+              structureCreation.skipped += 1;
+            }
           }
-
-          structureCreation.generated += 1;
 
           //When all generated structures are created with the non-generated
           //structures ignored, signifies that the generation process comes to
