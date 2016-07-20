@@ -1,10 +1,12 @@
 skipped should also be logged when it is in the catch error out
 
+queue up the can not write error messages
+
 suppress the error messages on existing structures write attempts
 
 message formatting for errors in writing or deleting
 
-redo the overwrite test case
+redo the overwrite test case, file safety test
 
 new options in help for the force
 

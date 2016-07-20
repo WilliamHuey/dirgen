@@ -188,7 +188,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.generated += 1;
 
             //When all generated structures are created with the non-generated
-            //structures ignored, signifies that the generation process comes to
+            //structures ignored with skips accounted for, signifies that the generation process comes to
             //an end
             generationResolver(structureCreation, contentLineCount, resolve);
           } else {
