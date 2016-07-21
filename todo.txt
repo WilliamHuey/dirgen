@@ -1,8 +1,6 @@
-warnings and non-generated output check
 
 queue up the can not write error messages
-
-suppress the error messages on existing structures write attempts
+note the difference between the other kind of skips
 
 message formatting for errors in writing or deleting
 

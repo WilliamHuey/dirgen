@@ -203,7 +203,9 @@ export default (action, actionParams) => {
 
         console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
-        console.log(`Creation count: ${genResult.generated} generated,  ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
+        //Non-generated count can be larger than the warning count
+        //because the warning logging stops checking items for the top-most repeated folder
+        console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
 
         console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
       })();
