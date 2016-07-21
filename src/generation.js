@@ -134,6 +134,9 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
             //Any other error means besides stat means it is a serious error
             message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+
+            //Failure to generate will be defined as a skip
+            structureCreation.skipped += 1;
           }
         }
 
@@ -193,6 +196,9 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             generationResolver(structureCreation, contentLineCount, resolve);
           } else {
             message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+
+            //Failure to generate will be defined as a skip
+            structureCreation.skipped += 1;
           }
 
         }
