@@ -1,12 +1,14 @@
 
-queue up the can not write error messages
-note the difference between the other kind of skips
+
 
 message formatting for errors in writing or deleting
 
 redo the overwrite test case, file safety test
 
 new options in help for the force
+
+explanation
+note the difference between the other kind of skips
 
 verbose mode to allow for showing the errors and warnings
 

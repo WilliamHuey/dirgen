@@ -71,7 +71,7 @@ const logNonGenerated = tailCall((linesInfo, structureCreation,
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = (linesInfo, lineInfo, rootPath,
-  contentLineCount, validationResults, options, resolve) => {
+  contentLineCount, validationResults, options, resolve, genFailures) => {
 
   let {
     structureName,
@@ -133,7 +133,9 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           } else {
 
             //Any other error means besides stat means it is a serious error
-            message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+            // message.error(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+
+            genFailures.push(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
 
             //Failure to generate will be defined as a skip
             structureCreation.skipped += 1;
@@ -195,7 +197,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             //an end
             generationResolver(structureCreation, contentLineCount, resolve);
           } else {
-            message.error(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+
+            genFailures.push(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
 
             //Failure to generate will be defined as a skip
             structureCreation.skipped += 1;
@@ -233,19 +236,19 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 createStructureTC = tailCall(createStructure);
 
 //Top level lines kick off and for later child structure creation
-let startCreatingAtTopLevel = function(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve) {
+let startCreatingAtTopLevel = function(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve, genFailures) {
   //Take the outer-most level of elements which
   //serves as the initial generation set
   for (let i = 0; i < contentLineCount; i++) {
     let topLevelLine = linesInfo.topLevel[i];
     if (typeof topLevelLine !== 'undefined') {
       createStructureTC(linesInfo, topLevelLine, rootPath,
-        contentLineCount, validationResults, options, resolve);
+        contentLineCount, validationResults, options, resolve, genFailures);
     }
   }
 };
 
-export default (linesInfo, rootPath, validationResults, actionParams) => {
+export default (linesInfo, rootPath, validationResults, actionParams, genFailures) => {
 
   //Flag definition to allow for changing the defaults values such as allowing for overwriting existing files or folders
   const options = actionParams ? actionParams.options : {};
@@ -283,7 +286,7 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
           }
 
           startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-             actionParams, contentLineCount, options, resolve);
+             actionParams, contentLineCount, options, resolve, genFailures);
         } catch (e) {
           let statUndefined = typeof stat === "undefined";
 
@@ -294,7 +297,7 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
             //When stat is undefined means it does not exist so create it
             //When it is not undefined, stat is reading the first copy
             startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-               actionParams, contentLineCount, options, resolve);
+               actionParams, contentLineCount, options, resolve, genFailures);
           }
 
         }
@@ -305,7 +308,7 @@ export default (linesInfo, rootPath, validationResults, actionParams) => {
         //Take the outer-most level of elements which
         //serves as the initial generation set
         startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-           actionParams, contentLineCount, options, resolve);
+           actionParams, contentLineCount, options, resolve, genFailures);
       }
 
     })();

@@ -155,6 +155,9 @@ export default (action, actionParams) => {
       //For displaying the count of the generated and the non-generated
       let genResult = null;
 
+      //Log the failed to generate files or folders
+      let genFailures = [];
+
       (async function () {
 
         // console.log("linesInfo", linesInfo);
@@ -186,7 +189,7 @@ export default (action, actionParams) => {
 
             // console.log("linesInfo", linesInfo);
 
-            genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams);
+            genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams, genFailures);
 
             //Time the generation only
             timeDiff = process.hrtime(time);
@@ -206,6 +209,8 @@ export default (action, actionParams) => {
         //Non-generated count can be larger than the warning count
         //because the warning logging stops checking items for the top-most repeated folder
         console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
+
+        console.log(`Generation failures: ${genFailures.length} write errors`);
 
         console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
       })();
