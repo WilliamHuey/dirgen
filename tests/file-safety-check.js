@@ -7,7 +7,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    lab.test('should not wipe out existing files in a folder', function(done) {
+    lab.test('should not wipe out existing files in a folder with no overwrite flag as default behavior', function(done) {
 
       fs.mkdirAsync(__dirname + '/case-outputs/not-wipe-out-existing')
       .then(function() {
@@ -28,6 +28,24 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
 
     });
+
+
+    lab.test('should not wipe out existing folders with no overwrite flag as default behavior', function(done) {
+
+      done();
+    });
+
+    lab.test('should wipe out existing files in a folder with overwrite flag, -f', function(done) {
+
+      done();
+    });
+
+    lab.test('should wipe out existing folders with overwrite flag, -f', function(done) {
+
+      done();
+    });
+
+
   });
 
 };
