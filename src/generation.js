@@ -223,7 +223,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //Again check for repeated lines in the child level lines
           if (typeof lineInfo.childRepeatedLine === 'undefined' && typeof line !== 'undefined') {
             createStructureTC(linesInfo, line, parentPath,
-              contentLineCount, validationResults, options, resolve);
+              contentLineCount, validationResults, options, resolve, genFailures);
           }
         });
       }
