@@ -7,16 +7,16 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    lab.test('should not wipe out existing folder in a folder with no overwrite flag as default behavior', function(done) {
+    lab.test('should not wipe out existing file in a folder when not matching content in template file', function(done) {
 
-      fs.mkdirAsync(__dirname + '/case-outputs/not-wipe-out-existing-folder-in-folder')
+      fs.mkdirAsync(__dirname + '/case-outputs/not-wipe-out-existing-file')
       .then(function() {
-        fs.ensureDirAsync(__dirname + '/case-outputs/not-wipe-out-existing-folder-in-folder/four')
+        fs.writeFileAsync(__dirname + '/case-outputs/not-wipe-out-existing-file/four', '')
         .then(function(resolve, error) {
-          exec(cliEntryFile + ' g ' + 'tests/fixtures/not-wipe-out-existing-folder-in-folder.txt ' +
-          ' tests/case-outputs/not-wipe-out-existing-folder-in-folder', function(error, stdout, stderr) {
+          exec(cliEntryFile + ' g ' + 'tests/fixtures/not-wipe-out-existing-file.txt ' +
+          ' tests/case-outputs/not-wipe-out-existing-file', function(error, stdout, stderr) {
 
-            fs.isDirectoryAsync(__dirname + '/case-outputs/not-wipe-out-existing-folder-in-folder/four')
+            fs.existsAsync(__dirname + '/case-outputs/not-wipe-out-existing-file/four')
             .then(function(resolve, error) {
 
               __.assertThat(error, __.is( __.undefined()));
@@ -29,8 +29,29 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
     });
 
+    lab.test('should not wipe out existing file in a folder when matching content in template file', function(done) {
 
-    lab.test('should not wipe out existing folders with no overwrite flag as default behavior', function(done) {
+      fs.mkdirAsync(__dirname + '/case-outputs/not-wipe-out-existing-file-matching')
+      .then(function() {
+        fs.writeFileAsync(__dirname + '/case-outputs/not-wipe-out-existing-file-matching/three', '')
+        .then(function(resolve, error) {
+          exec(cliEntryFile + ' g ' + 'tests/fixtures/not-wipe-out-existing-file.txt ' +
+          ' tests/case-outputs/not-wipe-out-existing-file-matching', function(error, stdout, stderr) {
+
+            fs.existsAsync(__dirname + '/case-outputs/not-wipe-out-existing-file-matching/three')
+            .then(function(resolve, error) {
+
+              __.assertThat(error, __.is( __.undefined()));
+              done(error);
+            });
+
+          });
+        });
+      });
+
+    });
+
+    lab.test('should not wipe out existing folder with no overwrite flag', function(done) {
 
       //Create the initial folder
       fs.mkdirAsync(__dirname + '/case-outputs/not-wipe-out-existing-folder')
