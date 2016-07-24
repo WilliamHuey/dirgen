@@ -1,5 +1,3 @@
-redo the overwrite test case, file safety test
-
 new options in help for the force
 
 explanation

@@ -70,36 +70,52 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
         });
       });
+
     });
 
-    lab.test('should wipe out existing files in a folder with overwrite flag, -f', function(done) {
+    lab.test('should wipe out existing file in a folder with overwrite flag, -f', function(done) {
 
       //Create the initial folder
+      fs.mkdirAsync(__dirname + '/case-outputs/wipe-out-existing-file')
+      .then(function(stats, err) {
 
-      //Save the time of creation
+        //Run the generation script two times
+        //and see if the file was overwritten on the second time
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/wipe-out-existing-file.txt ' +
+        ' tests/case-outputs/wipe-out-existing-file', function(error, stdout, stderr) {
 
-      //Run the generation script
+          exec(cliEntryFile + ' g ' + 'tests/fixtures/wipe-out-existing-file.txt ' +
+          ' tests/case-outputs/wipe-out-existing-file -f', function(error, stdout, stderr) {
+            __.assertThat(stdout, __.containsString('1 generated'));
+            done();
+          });
 
-      //Check the modified date of the
-      //file of interest, which should have a different time stamp than the saved time stamp
+        });
+      });
 
-      done();
     });
 
-    lab.test('should wipe out existing folders with overwrite flag, -f', function(done) {
+    lab.test('should wipe out existing folder in a folder with overwrite flag, -f', function(done) {
 
       //Create the initial folder
+      fs.mkdirAsync(__dirname + '/case-outputs/wipe-out-existing-folder')
+      .then(function(stats, err) {
 
-      //Save the time of creation
+        //Run the generation script two times
+        //and see if the file was overwritten on the second time
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/wipe-out-existing-folder.txt ' +
+        ' tests/case-outputs/wipe-out-existing-folder', function(error, stdout, stderr) {
 
-      //Run the generation script
+          exec(cliEntryFile + ' g ' + 'tests/fixtures/wipe-out-existing-folder.txt ' +
+          ' tests/case-outputs/wipe-out-existing-folder -f', function(error, stdout, stderr) {
+            __.assertThat(stdout, __.containsString('1 generated'));
+            done();
+          });
 
-      //Check the modified date of the
-      //folder of interest, which should have a different time stamp than the saved time stamp
+        });
+      });
 
-      done();
     });
-
 
   });
 };
