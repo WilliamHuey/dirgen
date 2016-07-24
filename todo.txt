@@ -1,4 +1,4 @@
-new options in help for the force
+test case for errors, none should be generated
 
 explanation
 note the difference between the other kind of skips

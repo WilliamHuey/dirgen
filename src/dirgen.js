@@ -152,6 +152,8 @@ export default (action, actionParams) => {
     })
     .on('close', () => {
 
+      // console.log("linesInfo", linesInfo);
+
       //For displaying the count of the generated and the non-generated
       let genResult = null;
 
@@ -208,7 +210,13 @@ export default (action, actionParams) => {
 
         //Non-generated count can be larger than the warning count
         //because the warning logging stops checking items for the top-most repeated folder
-        console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
+
+        //When there is an error log, genResult is null
+        if (genResult === null) {
+          console.log(`Creation count: 0 generated,  ${linesInfo.contentLineCount} not generated, 0 skipped`);
+        } else {
+          console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
+        }
 
         console.log(`Generation failures: ${genFailures.length} write errors`);
 

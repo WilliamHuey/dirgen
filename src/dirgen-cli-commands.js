@@ -38,9 +38,13 @@ const helpText = `
 
     Generate files and folders from a template file.
 
+  ----------------------------------------------------------------------------
+
   \x1B[1m Usage: \x1B[22m
 
     dirgen [command] [command parameters] [options]
+
+  ----------------------------------------------------------------------------
 
   \x1B[1m Command: \x1B[22m           \x1B[1m Command Parameters: \x1B[22m
    (Alias below)        (in respective order)
@@ -50,7 +54,7 @@ const helpText = `
                           Ex: "/some-directory/my-file-template.txt"
 
                          <output directory> (required)
-                          The destination location where the generated files
+                          The destination path for where the generated files
                           or folder should go.
 
     demo                 N/A
@@ -60,6 +64,19 @@ const helpText = `
 
     version              N/A
     (v)                   Display what is the edition of this module.
+
+  ----------------------------------------------------------------------------
+
+  \x1B[1m Options: \x1B[22m
+
+    -f                  Overwrite files and directory even if they already
+                        exist. Default behavior without this option does not
+                        forcibly overwrite content.
+
+  ----------------------------------------------------------------------------
+
+  \x1B[1m Generation Output: \x1B[22m
+
                         `;
 
 //Command from console
