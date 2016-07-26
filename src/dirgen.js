@@ -213,14 +213,20 @@ export default (action, actionParams) => {
 
         //When there is an error log, genResult is null
         if (genResult === null) {
-          console.log(`Creation count: 0 generated,  ${linesInfo.contentLineCount} not generated, 0 skipped`);
+          console.log(`Creation count: 0 generated, ${linesInfo.contentLineCount} not generated, 0 skipped`);
         } else {
           console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
         }
 
         console.log(`Generation failures: ${genFailures.length} write errors`);
 
-        console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
+        //On error conditions, no timeDiff is needed
+        if (timeDiff) {
+          console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
+        } else {
+          console.log('Write time: %d nanoseconds', 0);
+        }
+
       })();
     });
 };

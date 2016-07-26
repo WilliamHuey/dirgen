@@ -109,22 +109,22 @@ Object.assign(validator.prototype, {
     firstIndentType, currentIndentType, indentType,
     prevLineParent, prevLineFirstLine) => {
 
+      if (currentIndentAmt < firstIndentAmt) {
 
-      console.log("content", content);
-      console.log("indentType", indentType);
-      console.log("currentIndentAmt", currentIndentAmt);
+        return {
+          type: 'error',
+          line: {
+            number: lineNum,
+            message: `Line #${lineNum}:
+              '${content.trim()}', has an indent
+              amount of ${currentIndentAmt} ${currentIndentType}(s) ,
+              which is greater than the
+              first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+          }
+        };
 
-      console.log("firstIndentAmt", firstIndentAmt);
 
-      console.log("---------------");
-
-
-      // else if (indentType === 'outdent' &&
-      //   !(currentIndentAmt % firstIndentAmt === 0) &&
-      //   !(currentIndentAmt >= firstIndentAmt)) {
-
-
-    if (indentType === 'outdent' &&
+      } else if (indentType === 'outdent' &&
       prevLineParent === null &&
       prevLineFirstLine) {
 
@@ -167,6 +167,7 @@ Object.assign(validator.prototype, {
             first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
         }
       };
+
     } else {
 
       return {
