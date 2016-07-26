@@ -108,6 +108,22 @@ Object.assign(validator.prototype, {
     prevLineIndentAmt, currentIndentAmt,
     firstIndentType, currentIndentType, indentType,
     prevLineParent, prevLineFirstLine) => {
+
+
+      console.log("content", content);
+      console.log("indentType", indentType);
+      console.log("currentIndentAmt", currentIndentAmt);
+
+      console.log("firstIndentAmt", firstIndentAmt);
+
+      console.log("---------------");
+
+
+      // else if (indentType === 'outdent' &&
+      //   !(currentIndentAmt % firstIndentAmt === 0) &&
+      //   !(currentIndentAmt >= firstIndentAmt)) {
+
+
     if (indentType === 'outdent' &&
       prevLineParent === null &&
       prevLineFirstLine) {

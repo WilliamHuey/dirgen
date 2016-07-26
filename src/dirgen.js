@@ -189,9 +189,9 @@ export default (action, actionParams) => {
             //Generate the content
             //Async nature will need the later logging to be delay
 
-            // console.log("linesInfo", linesInfo);
-
             genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams, genFailures);
+
+            console.log("after gen");
 
             //Time the generation only
             timeDiff = process.hrtime(time);

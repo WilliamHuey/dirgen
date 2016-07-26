@@ -33,8 +33,10 @@ let structureCreation = {
 };
 
 const generationResolver = (structureCreation, contentLineCount, resolve) => {
+  console.log("structureCreation", structureCreation);
   if (structureCreation.generated + structureCreation.notGenerated  + structureCreation.skipped ===
     contentLineCount) {
+    console.log("resolved");
     resolve(structureCreation);
   }
 };
