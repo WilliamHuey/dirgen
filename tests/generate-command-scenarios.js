@@ -181,6 +181,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         ' tests/case-outputs/mix-tabs-and-spaces-indent', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('with the first defined outdent'));
+
+          __.assertThat(stdout,
+            __.containsString('0 generated'));
+
           done(error);
         });
       });
@@ -193,6 +197,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         ' tests/case-outputs/same-line-mix-tabs-and-spaces-indent', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('has mixed tabs and spaces on the left of first'));
+
+          __.assertThat(stdout,
+            __.containsString('0 generated'));
+
           done(error);
         });
       });
@@ -205,6 +213,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         ' tests/case-outputs/inconsistent-indent', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('different from the first defined indent amount'));
+
+          __.assertThat(stdout,
+            __.containsString('0 generated'));
+
           done(error);
         });
       });
@@ -217,6 +229,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         ' tests/case-outputs/inconsistent-outdent', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('indented than the current line. Ambigious results might occur.'));
+
+          __.assertThat(stdout,
+            __.containsString('0 generated'));
+
           done(error);
         });
       });
@@ -229,6 +245,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         ' tests/case-outputs/length-greater-than-255', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('which exceeds 255.'));
+
+          __.assertThat(stdout,
+            __.containsString('0 generated'));
+
           done(error);
         });
       });
@@ -241,6 +261,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         ' tests/case-outputs/nothing-in-template', function(error, stdout, stderr) {
           __.assertThat(stdout,
             __.containsString('Supplied template file has no content to generate'));
+
+          __.assertThat(stdout,
+            __.containsString('0 generated'));
+
           done(error);
         });
       });

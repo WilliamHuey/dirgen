@@ -1,5 +1,3 @@
-test case for errors, none should be generated
-
 explanation
 note the difference between the other kind of skips
 
