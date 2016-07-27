@@ -104,12 +104,14 @@ Object.assign(validator.prototype, {
       };
     }
   },
-  properIndentLevel: (lineNum, content, firstIndentAmt,
+  properIndentLevel: (firstLineIndentAmt, lineNum, content, firstIndentAmt,
     prevLineIndentAmt, currentIndentAmt,
     firstIndentType, currentIndentType, indentType,
     prevLineParent, prevLineFirstLine) => {
 
-      if (currentIndentAmt < firstIndentAmt) {
+      if (currentIndentAmt < firstLineIndentAmt) {
+
+        let formatFirstIndentType = firstIndentType === null ? '' : firstIndentType;
 
         return {
           type: 'error',
@@ -117,9 +119,9 @@ Object.assign(validator.prototype, {
             number: lineNum,
             message: `Line #${lineNum}:
               '${content.trim()}', has an indent
-              amount of ${currentIndentAmt} ${currentIndentType}(s) ,
-              which is greater than the
-              first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+              amount of ${currentIndentAmt} ${formatFirstIndentType}(s),
+              which is less than the
+              first line indent amount of ${firstLineIndentAmt} ${firstIndentType}(s). Nothing was generated.`
           }
         };
 
@@ -142,12 +144,14 @@ Object.assign(validator.prototype, {
       !(currentIndentAmt % firstIndentAmt === 0) &&
       !(currentIndentAmt >= firstIndentAmt)) {
 
+      let formatCurrentIndentType = currentIndentType === null ? '' : currentIndentType + '(s)';
+
       return {
         type: 'error',
         line: {
           number: lineNum,
           message: `Line #${lineNum}:
-              '${content.trim()}', has indent amount of ${currentIndentAmt} ${currentIndentType}(s) which is inconsistent with the
+              '${content.trim()}', has indent amount of ${currentIndentAmt} ${formatCurrentIndentType} which is inconsistent with the
               first defined outdent of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
         }
       };

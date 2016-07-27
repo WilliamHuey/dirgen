@@ -152,8 +152,6 @@ export default (action, actionParams) => {
     })
     .on('close', () => {
 
-      // console.log("linesInfo", linesInfo);
-
       //For displaying the count of the generated and the non-generated
       let genResult = null;
 

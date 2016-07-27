@@ -228,10 +228,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         exec(cliEntryFile + ' g ' + 'tests/fixtures/inconsistent-outdent.txt ' +
         ' tests/case-outputs/inconsistent-outdent', function(error, stdout, stderr) {
           __.assertThat(stdout,
-            __.containsString('indented than the current line. Ambigious results might occur.'));
+            __.containsString('1 errors and 0 warnings'));
 
           __.assertThat(stdout,
-            __.containsString('0 generated'));
+            __.containsString('Nothing was generated'));
 
           done(error);
         });

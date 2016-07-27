@@ -187,7 +187,7 @@ let singleLineInfoFunctions = {
 
       //Validate the indent level of child relative to parent
       logValidations(
-        validator.properIndentLevel(linesInfo.totalLineCount,
+        validator.properIndentLevel(linesInfo.firstLine.nameDetails.indentAmount, linesInfo.totalLineCount,
           currentLine.structureName,
           linesInfo.firstIndentationAmount,
           prevLineIndent,
@@ -231,7 +231,7 @@ let singleLineInfoFunctions = {
 
         //Validate the indent level of child relative to parent
         logValidations(
-          validator.properIndentLevel(linesInfo.totalLineCount,
+          validator.properIndentLevel(linesInfo.firstLine.nameDetails.indentAmount, linesInfo.totalLineCount,
             currentLine.structureName, linesInfo.firstIndentationAmount,
             prevLine.nameDetails.indentAmount, currentLineIndent,
             linesInfo.firstIndentationType,
