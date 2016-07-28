@@ -217,7 +217,7 @@ export default (action, actionParams) => {
         console.log(`Generation failures: ${genFailures.length} write errors`);
 
         //On error conditions, no timeDiff is needed
-        if (timeDiff) {
+        if (timeDiff && genResult.generated > 0) {
           console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
         } else {
           console.log('Write time: %d nanoseconds', 0);

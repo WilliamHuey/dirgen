@@ -1,7 +1,4 @@
-remove the write time when not was generated
-
-
-mixed tabs and spaces and indent
+mixed tabs and spaces and indent not generating/console logging properly
 
   gsdf
     afsd
@@ -9,8 +6,6 @@ mixed tabs and spaces and indent
     dd
 //sd,ss
 afsd
-time error on error for indent
-console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
 
 explanation
 note the difference between the other kind of skips
