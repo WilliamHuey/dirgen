@@ -202,6 +202,8 @@ export default (action, actionParams) => {
           message.error(validationResults.errors[0].message);
         }
 
+        console.log(`Template info: ${linesInfo.totalLineCount} total lines (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} blanks)`);
+
         console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
 
         //Non-generated count can be larger than the warning count
