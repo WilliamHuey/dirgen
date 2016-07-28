@@ -189,8 +189,6 @@ export default (action, actionParams) => {
 
             genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams, genFailures);
 
-            console.log("after gen");
-
             //Time the generation only
             timeDiff = process.hrtime(time);
 

@@ -118,8 +118,6 @@ let singleLineInfoFunctions = {
     }, (prevLineIndent, currentLineIndent, linesInfo,
       currentLine, isFirstLine) => {
 
-      console.log("on the first line");
-
       //Assume file type unless the inferType is already set
       if (typeof currentLine.inferType === 'undefined' ||
         currentLine.inferType === null) {
@@ -134,7 +132,6 @@ let singleLineInfoFunctions = {
       //See if the indentation needs to be increased
       //for a consistent relative spacing per line
       if (linesInfo.firstContentLineIndentAmount > 0) {
-        console.log("require indent factor");
         linesInfo.requireIndentFactor = true;
       }
     })

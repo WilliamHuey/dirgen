@@ -127,20 +127,6 @@ Object.assign(validator.prototype, {
 
 
       } else if (indentType === 'outdent' &&
-      prevLineParent === null &&
-      prevLineFirstLine) {
-
-      return {
-        type: 'error',
-        line: {
-          number: lineNum,
-          message: `Line #${lineNum}:
-           '${content.trim()}' , prior line was the first line
-           which was further indented than the current line.
-           Ambigious results might occur. Nothing was generated.`
-        }
-      };
-    } else if (indentType === 'outdent' &&
       !(currentIndentAmt % firstIndentAmt === 0) &&
       !(currentIndentAmt >= firstIndentAmt)) {
 

@@ -1,6 +1,5 @@
-test case for Ambigious results might occur
+remove the write time when not was generated
 
-error not coming out when the first line has greater indent than the any later line
 
 mixed tabs and spaces and indent
 
@@ -12,7 +11,6 @@ mixed tabs and spaces and indent
 afsd
 time error on error for indent
 console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
-
 
 explanation
 note the difference between the other kind of skips
