@@ -22,9 +22,30 @@ const cliText = `
       any one time in a single template file.
 
     Lines:
-      All lines will be counted towards the generation, but not all lines will
-      be generated such as blanks lines.
+      All non-blank lines will be counted towards the generation if the line
+      is valid for generation.
 
+    Structure Type:
+      File:
+        A content line without a folder marker (forward slash) will be
+        identified as a file line.
+
+        Ex:
+          a-file
+          a-file-with-an-extension.someextension
+
+      Folder:
+        A content line with a folder marker (forward slash) will be identified
+        as a folder type. A folder line can also be signified with having
+        a later line with a greater indent than the folder line.
+
+        Ex:
+          /a-folder
+
+          or
+
+          a-folder
+            child-with-greater-indentation
 
 
   ------------------------------------------------------------------------------
@@ -54,7 +75,7 @@ const cliText = `
     version              N/A
     (v)                   Display what is the edition of this module.
 
-  ----------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
 
   \x1B[1m Options: \x1B[22m
 

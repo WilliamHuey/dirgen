@@ -3,28 +3,28 @@ module.exports = function(__, lab, cliEntryFile, exec, validCliCommands, path) {
 
     lab.test('with help command will display the help message', function(done) {
       exec(cliEntryFile + ' help', function(error, stdout, stderr) {
-        __.assertThat(stdout, __.containsString('Description'));
+        __.assertThat(stdout, __.containsString('Generate files and folders from a template file.'));
         done(error);
       });
     });
 
     lab.test('with help alias command, "h", will display the help message', function(done) {
       exec(cliEntryFile + ' h', function(error, stdout, stderr) {
-        __.assertThat(stdout, __.containsString('Description'));
+        __.assertThat(stdout, __.containsString('Generate files and folders from a template file.'));
         done(error);
       });
     });
 
     lab.test('with help alias option , "--help" will display the help message', function(done) {
       exec(cliEntryFile + ' --help', function(error, stdout, stderr) {
-        __.assertThat(stdout, __.containsString('Description'));
+        __.assertThat(stdout, __.containsString('Generate files and folders from a template file.'));
         done(error);
       });
     });
 
     lab.test('with help alias option , "-h" will display the help message', function(done) {
       exec(cliEntryFile + ' -h', function(error, stdout, stderr) {
-        __.assertThat(stdout, __.containsString('Description'));
+        __.assertThat(stdout, __.containsString('Generate files and folders from a template file.'));
         done(error);
       });
     });
