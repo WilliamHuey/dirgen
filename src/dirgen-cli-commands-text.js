@@ -9,6 +9,8 @@ const cliText = `
 
   \x1B[1m Details: \x1B[22m
 
+   \x1B[1m Template file: \x1B[22m
+
     Template files provide the heirarchy of structure which explains the
     nesting of files and folders. Template files are plain textual files.
 
@@ -30,7 +32,7 @@ const cliText = `
         A content line without a folder marker (forward slash) will be
         identified as a file line.
 
-        Ex:
+        Example:
           a-file
           a-file-with-an-extension.someextension
 
@@ -39,14 +41,13 @@ const cliText = `
         as a folder type. A folder line can also be signified with having
         a later line with a greater indent than the folder line.
 
-        Ex:
+        Example:
           /a-folder
 
           or
 
           a-folder
             child-with-greater-indentation
-
 
   ------------------------------------------------------------------------------
 
@@ -85,16 +86,43 @@ const cliText = `
 
   ------------------------------------------------------------------------------
 
-  \x1B[1m Generation Output: \x1B[22m
+  \x1B[1m Example Generation Output: \x1B[22m
 
-    Example:
 
-    Template info: 0 total lines (0 content, 0 blanks)
-    Template read: 1 errors and 0 warnings
-    Creation count: 0 generated, 0 not generated, 0 skipped
-    Generation failures: 0 write errors
-    Write time: 0 nanoseconds
+    Template:
+      gsdf
+      	afsd
+      //sd,ss
+      dfg
+      	jj
+      	ygvhg
+      		dsd
+      	ygvhg
+      /fsfa
+      /fsfa
 
+    Console output:
+
+     Warning: Line #3: '//sd,ss', has illegal characters which has been
+      replaced, resulting in 'sd,ss'.
+
+     Warning: Line #8: 'ygvhg', of file type is a repeated line and was
+     not generated. First appearance of sibling is on line #6.
+
+     Warning: Line #10: '/fsfa', of folder type is a repeated line and
+     was not generated . First appearance of sibling is on line #9.
+
+     Template info: 10 total lines (10 content, 0 blanks)
+     Template read: 0 errors and 3 warnings
+     Creation count: 8 generated, 2 not generated, 0 skipped
+     Generation failures: 0 write errors
+     Write time: 35262057 nanoseconds
+
+    Explanation:
+
+    For a demo of Dirgen, run 'dirgen demo' in your command line
+    environment and look at the output in the 'demo/example-output'
+    folder under the root of the Dirgen module folder.
                         `;
 
 export default cliText;
