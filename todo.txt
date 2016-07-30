@@ -3,7 +3,7 @@ use cases explanations
 explanation
 note the difference between the other kind of skips
 
-verbose/informational mode to allow for showing the errors and warnings
+less verbose/informational mode to allow for showing and hiding the errors and warnings
 
 test deeply nested folder structures
 

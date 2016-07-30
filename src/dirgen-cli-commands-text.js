@@ -51,6 +51,96 @@ const cliText = `
 
   ------------------------------------------------------------------------------
 
+  \x1B[1m Example Generation Output: \x1B[22m
+
+    Template:
+      gsdf
+      	afsd
+      //sd,ss
+      dfg
+      	jj
+      	ygvhg
+      		dsd
+      	ygvhg
+      /fsfa
+      /fsfa
+
+    Console output:
+
+     Warning: Line #3: '//sd,ss', has illegal characters which has been
+      replaced, resulting in 'sd,ss'.
+
+     Warning: Line #8: 'ygvhg', of file type is a repeated line and was
+     not generated. First appearance of sibling is on line #6.
+
+     Warning: Line #10: '/fsfa', of folder type is a repeated line and
+     was not generated . First appearance of sibling is on line #9.
+
+     Template info: 10 total lines (10 content, 0 blanks)
+     Template read: 0 errors and 3 warnings
+     Creation count: 8 generated, 2 not generated, 0 skipped
+     Generation failures: 0 write errors
+     Write time: 35262057 nanoseconds
+
+    Explanation:
+
+      Template info:
+
+        Content:
+          Lines that have characters which are non-white space. These line
+          may or may not be generated.
+
+        Blanks:
+          Lines that are white-space only characters or has not characters
+          at all. These lines are never generated.
+
+      Template read:
+
+        Errors:
+          Upon one or more error, there will be no
+          generated file or folders.
+
+        Warnings:
+          Warning lines that are correctable such as having non-permissible
+          characters can be sanitized and generated, but incorrect lines
+          such as duplicated line content will be not be generated.
+
+      Creation count:
+
+        Generated:
+          Lines that were read that were successfully created
+
+        Not generated:
+          Lines that produced a warning that may or may
+          not have been generated.
+
+        Skipped:
+          Lines that were skipped because they already exists. By default
+          existing files and folders are not overwritten to prevent data lost.
+
+        Generated, Not generated, and Skipped counts total up to the
+        total line count of the template file.
+
+      Generation failures:
+        Failures occurs when a valid line creation attempt did not go through.
+        The generation failures counts towards the "Skipped" of
+        "Creation count".
+
+      Write time:
+        The time taken to write all the files and folders. Will yield "0" when
+        at least one error has occurred on reading the template file because
+        nothing will be generated.
+
+  ------------------------------------------------------------------------------
+
+  \x1B[1m Demo: \x1B[22m
+
+    For a demo of Dirgen, run 'dirgen demo' in your command line
+    environment and look at the output in the 'demo/example-output'
+    folder under the root of the Dirgen module folder.
+
+  ------------------------------------------------------------------------------
+
   \x1B[1m Usage: \x1B[22m
 
     dirgen [command] [command parameters] [options]
@@ -84,45 +174,6 @@ const cliText = `
                         exist. Default behavior without this option does not
                         forcibly overwrite content.
 
-  ------------------------------------------------------------------------------
-
-  \x1B[1m Example Generation Output: \x1B[22m
-
-
-    Template:
-      gsdf
-      	afsd
-      //sd,ss
-      dfg
-      	jj
-      	ygvhg
-      		dsd
-      	ygvhg
-      /fsfa
-      /fsfa
-
-    Console output:
-
-     Warning: Line #3: '//sd,ss', has illegal characters which has been
-      replaced, resulting in 'sd,ss'.
-
-     Warning: Line #8: 'ygvhg', of file type is a repeated line and was
-     not generated. First appearance of sibling is on line #6.
-
-     Warning: Line #10: '/fsfa', of folder type is a repeated line and
-     was not generated . First appearance of sibling is on line #9.
-
-     Template info: 10 total lines (10 content, 0 blanks)
-     Template read: 0 errors and 3 warnings
-     Creation count: 8 generated, 2 not generated, 0 skipped
-     Generation failures: 0 write errors
-     Write time: 35262057 nanoseconds
-
-    Explanation:
-
-    For a demo of Dirgen, run 'dirgen demo' in your command line
-    environment and look at the output in the 'demo/example-output'
-    folder under the root of the Dirgen module folder.
                         `;
 
 export default cliText;
