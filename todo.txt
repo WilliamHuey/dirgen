@@ -1,9 +1,8 @@
-use cases explanations
-
-explanation
-note the difference between the other kind of skips
-
 less verbose/informational mode to allow for showing and hiding the errors and warnings
+
+pluralizing the error messages
+
+npm start more compatible with windows
 
 test deeply nested folder structures
 
@@ -15,8 +14,6 @@ Module
   npmignore and gitignore
 
 Backlog/Optimize
--- pluralizing the error messages
--- npm start more compatible with windows
 -- programatic use should have object pass in
 -- encoding type
 -- permission level
