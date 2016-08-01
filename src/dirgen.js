@@ -172,10 +172,12 @@ export default (action, actionParams) => {
             linesInfo.firstLine),
           validationResults);
 
+        const showMessages = actionParams.hideMessages;
+
         //Last stage before generation with status check
         if (hasContent) {
           let errors = validationResults.errors;
-          if (errors.length > 0) {
+          if (errors.length > 0 && showMessages) {
 
             printValidations(message, 'error', errors, errors.length);
 
@@ -192,14 +194,19 @@ export default (action, actionParams) => {
             //Time the generation only
             timeDiff = process.hrtime(time);
 
-            //Print out warning message
-            printValidations(message, 'warn',
-              validationResults.warnings, validationResults.warnings.length);
+            if (showMessages) {
+              //Print out warning message
+              printValidations(message, 'warn',
+                validationResults.warnings, validationResults.warnings.length);
+            }
+
           }
         } else {
 
-          //No content in the template file produces only one error
-          message.error(validationResults.errors[0].message);
+          if (showMessages) {
+            //No content in the template file produces only one error
+            message.error(validationResults.errors[0].message);
+          }
         }
 
         console.log(`Template info: ${linesInfo.totalLineCount} total lines (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} blanks)`);

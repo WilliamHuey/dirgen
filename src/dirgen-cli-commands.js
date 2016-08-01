@@ -69,6 +69,9 @@ module.exports = function(execPath) {
       //Check for overwrite flag to write over existing files or folders
       const forceOverwrite = flags.f;
 
+      //Prevent the errors and warnings from showing up in the console output
+      const hideMessages = flags.s;
+
       //Quit early when not enough arguments are provided
       const commandArgsLen = data.length;
       if (commandArgsLen === 0) {
@@ -131,7 +134,8 @@ module.exports = function(execPath) {
                 template: data[0],
                 output: data[1],
                 options: {
-                  forceOverwrite
+                  forceOverwrite,
+                  hideMessages
                 }
               });
           }
