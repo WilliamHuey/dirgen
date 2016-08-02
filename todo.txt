@@ -1,4 +1,4 @@
-less verbose/informational mode to allow for showing and hiding the errors and warnings
+less verbose/informational test case
 
 pluralizing the error messages
 
