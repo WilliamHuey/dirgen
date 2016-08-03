@@ -174,6 +174,11 @@ const cliText = `
                         exist. Default behavior without this option does not
                         forcibly overwrite content.
 
+    -s                  Suppress the actual warnings and errors messages from
+                        showing up on the console. The count of warnings and
+                        errors will still be shown in the generation output
+                        information.
+
                         `;
 
 export default cliText;
