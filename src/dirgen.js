@@ -172,7 +172,15 @@ export default (action, actionParams) => {
             linesInfo.firstLine),
           validationResults);
 
-        const hideMessages = actionParams.options.hideMessages;
+        console.log("actionParams", actionParams);
+
+
+        let hideMessages;
+        if (typeof actionParams === 'undefined') {
+          hideMessages = false;
+        } else {
+          hideMessages = actionParams.options.hideMessages;
+        }
 
         //Last stage before generation with status check
         if (hasContent) {

@@ -61,13 +61,31 @@ module.exports = function(__, lab, cliEntryFile, exec, fs) {
     });
 
     lab.test('with warning and error messages and no silent flag will show console warnings', function(done) {
-      done();
+      fs.mkdirAsync(__dirname + '/case-outputs/warnings-and-errors-no-silent-flag')
+      .then(function() {
+
+        exec(cliEntryFile + ' g ' +
+        'tests/fixtures/warnings-and-errors-no-silent-flag.txt ' +
+        ' tests/case-outputs/warnings-and-errors-no-silent-flag', function(error, stdout, stderr) {
+            __.assertThat(stdout, __.containsString('Error:'));
+            __.assertThat(stdout, __.containsString('Warning:'));
+          done();
+        });
+      });
     });
 
     lab.test('with warning and error messages and with silent flag will not show console warnings', function(done) {
-      done();
+      fs.mkdirAsync(__dirname + '/case-outputs/warnings-and-errors-with-silent-flag')
+      .then(function() {
+
+        exec(cliEntryFile + ' g ' +
+        'tests/fixtures/warnings-and-errors-with-silent-flag.txt ' +
+        ' tests/case-outputs/warnings-and-errors-with-silent-flag -s', function(error, stdout, stderr) {
+            __.assertThat(stdout, __.not(__.containsString('Error:')));
+            __.assertThat(stdout, __.not(__.containsString('Warning:')));
+          done();
+        });
+      });
     });
-
-
   });
 };

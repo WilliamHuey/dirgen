@@ -1,5 +1,3 @@
-less verbose/informational test case
-
 pluralizing the error messages
 
 npm start more compatible with windows
