@@ -19,7 +19,7 @@ lab.experiment('Cli commands when input is "dirgen"', function() {
 
   var exec = childProcess.exec;
 
-  require('./display-messages')(__, lab, cliEntryFile, exec);
+  require('./display-messages')(__, lab, cliEntryFile, exec, fs);
   // require('./no-commands-or-options')(__, lab, cliEntryFile, exec);
   // require('./generate-command')(__, lab, cliEntryFile, exec);
   // require('./information-command')(__, lab, cliEntryFile, exec, validCliCommands, path);
