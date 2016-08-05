@@ -172,9 +172,6 @@ export default (action, actionParams) => {
             linesInfo.firstLine),
           validationResults);
 
-        console.log("actionParams", actionParams);
-
-
         let hideMessages;
         if (typeof actionParams === 'undefined') {
           hideMessages = false;
@@ -217,9 +214,9 @@ export default (action, actionParams) => {
           }
         }
 
-        console.log(`Template info: ${linesInfo.totalLineCount} total lines (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} blanks)`);
+        console.log(`Template info: ${linesInfo.totalLineCount} total ${util.pluralize('line', linesInfo.totalLineCount)} (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} ${util.pluralize('blank', linesInfo.totalLineCount)})`);
 
-        console.log(`Template read: ${validationResults.errors.length} errors and ${validationResults.warnings.length} warnings`);
+        console.log(`Template read: ${validationResults.errors.length} ${util.pluralize('error', validationResults.errors.length)} and ${validationResults.warnings.length} ${util.pluralize('warning', validationResults.warnings.length)}`);
 
         //Non-generated count can be larger than the warning count
         //because the warning logging stops checking items for the top-most repeated folder

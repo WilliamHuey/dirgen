@@ -1,8 +1,13 @@
-pluralizing the error messages
+pluralizing the warnings and error messages
 
-npm start more compatible with windows
+optimization
+  immediately generate
+  folders without children
+  files
 
 test deeply nested folder structures
+
+npm start more compatible with windows/linux
 
 Module
 -module type support
