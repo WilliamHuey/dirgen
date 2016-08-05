@@ -132,12 +132,11 @@ Object.assign(validator.prototype, {
             number: lineNum,
             message: `Line #${lineNum}:
               '${content.trim()}', has an indent
-              amount of ${currentIndentAmt} ${formatFirstIndentType}(s),
+              amount of ${currentIndentAmt} ${util.pluralize(formatFirstIndentType, currentIndentAmt)},
               which is less than the
-              first line indent amount of ${firstLineIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+              first line indent amount of ${firstLineIndentAmt} ${util.pluralize(firstIndentType, firstLineIndentAmt)}. Nothing was generated.`
           }
         };
-
 
       } else if (indentType === 'outdent' &&
       !(currentIndentAmt % firstIndentAmt === 0) &&
