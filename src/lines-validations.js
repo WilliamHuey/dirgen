@@ -142,31 +142,33 @@ Object.assign(validator.prototype, {
       !(currentIndentAmt % firstIndentAmt === 0) &&
       !(currentIndentAmt >= firstIndentAmt)) {
 
-      let formatCurrentIndentType = currentIndentType === null ? '' : currentIndentType + '(s)';
+      let formatCurrentIndentType = currentIndentType === null ? '' : currentIndentType;
 
       return {
         type: 'error',
         line: {
           number: lineNum,
           message: `Line #${lineNum}:
-              '${content.trim()}', has indent amount of ${currentIndentAmt} ${formatCurrentIndentType} which is inconsistent with the
-              first defined outdent of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+              '${content.trim()}', has indent amount of ${currentIndentAmt} ${util.pluralize(formatCurrentIndentType, currentIndentAmt)} which is inconsistent with the
+              first defined outdent of ${util.pluralize(firstIndentType, firstIndentAmt)}. Nothing was generated.`
         }
       };
     } else if (indentType !== 'outdent' &&
       !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
         firstIndentAmt)) {
-      //Scaling indent factor and firstIndent is the same
 
+      let currentLineIndent = Math.abs(currentIndentAmt - prevLineIndentAmt);
+
+      //Scaling indent factor and firstIndent is the same
       return {
         type: 'error',
         line: {
           number: lineNum,
           message: `Line #${lineNum}:
             '${content.trim()}', has an indent
-            amount of ${Math.abs(currentIndentAmt - prevLineIndentAmt)} ${currentIndentType}(s) relative to parent folder,
+            amount of ${util.pluralize(currentIndentType, currentLineIndent)} relative to parent folder,
             which is different from the
-            first defined indent amount of ${firstIndentAmt} ${firstIndentType}(s). Nothing was generated.`
+            first defined indent amount of ${util.pluralize(firstIndentType, firstIndentAmt)}. Nothing was generated.`
         }
       };
 

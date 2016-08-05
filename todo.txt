@@ -1,5 +1,3 @@
-pluralizing the warnings and error messages
-
 optimization
   immediately generate
   folders without children
