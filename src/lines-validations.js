@@ -5,6 +5,7 @@ import sanitize from 'sanitize-filename';
 import recursive from 'tail-call/core';
 
 //Source modules
+import util from './utilities';
 import structureMarker from './character-code';
 
 const slashChar = String.fromCharCode(structureMarker.folder);
@@ -30,6 +31,7 @@ Object.assign(validator.prototype, {
       const hasSlashChar = content.includes(slashChar);
       const slashNotAsFirstChar = content.lastIndexOf(slashChar) > 1;
       const moreThanOneSpecialChar = specialCharactersTypeCount > 1;
+      const slashAsFirstChar = content.indexOf(slashChar) === 0;
 
       const excessiveSlashes = hasSlashChar &&
         slashNotAsFirstChar && moreThanOneSpecialChar;
@@ -38,12 +40,23 @@ Object.assign(validator.prototype, {
 
       if (excessiveSlashes || (!excessiveSlashes && isUnCleanName &&
          !hasOnlyRemovedFirstSlash)) {
+
+        let diffCountInSanitized = content.length - cleanedName.length;
+
+        //Do not count a folder marker slash as an invalid character
+        if (slashAsFirstChar) {
+          diffCountInSanitized -= 1;
+        }
+
+        const pluralizedWord = util.pluralize('character', diffCountInSanitized);
+        const needArticleWord = pluralizedWord !== 'character' ? '' : 'an';
+
         return {
           type: 'warning',
           line: {
             number: lineNum,
             message: `Line #${lineNum}:
-              '${content.trim()}', has illegal characters
+              '${content}', has ${needArticleWord} illegal ${pluralizedWord}
               which has been replaced, resulting in '${cleanedName}'.`
           },
           output: cleanedName
