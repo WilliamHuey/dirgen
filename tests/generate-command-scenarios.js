@@ -70,7 +70,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
             exec(cliEntryFile + ' g ' + 'tests/fixtures' +  testCasePath + ' ' + genTestFolder, function(error, stdout, stderr) {
               problematicCases += 1;
               __.assertThat(stdout,
-                __.containsString('has illegal characters which has'));
+                __.containsString('has an illegal character which has'));
 
               if(testFilesPaths.length == problematicCases) {
 
@@ -228,7 +228,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
         exec(cliEntryFile + ' g ' + 'tests/fixtures/inconsistent-outdent.txt ' +
         ' tests/case-outputs/inconsistent-outdent', function(error, stdout, stderr) {
           __.assertThat(stdout,
-            __.containsString('1 errors and 0 warnings'));
+            __.containsString('1 error and 0 warning'));
 
           __.assertThat(stdout,
             __.containsString('Nothing was generated'));
