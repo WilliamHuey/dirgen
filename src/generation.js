@@ -115,7 +115,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             }
           }
 
-
           generationResolver(structureCreation, contentLineCount, resolve);
         } catch (e) {
 
@@ -134,7 +133,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           } else {
 
             //Any other error means besides stat means it is a serious error
-            // message.error(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+            // message.error(`Generation error has occurred with file on
+            //Line #${lineInfo.nameDetails.line}: ${structureName}.`);
 
             genFailures.push(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
 
@@ -145,11 +145,12 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
       })();
     } else {
-      logNonGenerated(linesInfo, structureCreation, lineInfo, validationResults);
+      logNonGenerated(linesInfo, structureCreation,
+        lineInfo, validationResults);
     }
   } else {
-    let parentPath = path.join(rootPath, (nameDetails.sanitizedName ||
-       structureName));
+    let parentPath = path.join(rootPath,
+      (nameDetails.sanitizedName || structureName));
 
     let genFolder = false;
 
@@ -194,8 +195,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.generated += 1;
 
             //When all generated structures are created with the non-generated
-            //structures ignored with skips accounted for, signifies that the generation process comes to
-            //an end
+            //structures ignored with skips accounted for, signifies
+            //that the generation process comes to an end
             generationResolver(structureCreation, contentLineCount, resolve);
           } else {
 
@@ -222,9 +223,11 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         lineInfo.children.forEach((line) => {
 
           //Again check for repeated lines in the child level lines
-          if (typeof lineInfo.childRepeatedLine === 'undefined' && typeof line !== 'undefined') {
+          if (typeof lineInfo.childRepeatedLine === 'undefined' &&
+          typeof line !== 'undefined') {
             createStructureTC(linesInfo, line, parentPath,
-              contentLineCount, validationResults, options, resolve, genFailures);
+              contentLineCount, validationResults, options,
+              resolve, genFailures);
           }
         });
       }
@@ -237,7 +240,9 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 createStructureTC = tailCall(createStructure);
 
 //Top level lines kick off and for later child structure creation
-let startCreatingAtTopLevel = function(linesInfo, rootPath, validationResults, actionParams, contentLineCount, options, resolve, genFailures) {
+let startCreatingAtTopLevel = function(linesInfo, rootPath,
+  validationResults, actionParams, contentLineCount, options,
+  resolve, genFailures) {
   //Take the outer-most level of elements which
   //serves as the initial generation set
   for (let i = 0; i < contentLineCount; i++) {
@@ -249,9 +254,11 @@ let startCreatingAtTopLevel = function(linesInfo, rootPath, validationResults, a
   }
 };
 
-export default (linesInfo, rootPath, validationResults, actionParams, genFailures) => {
+export default (linesInfo, rootPath, validationResults,
+  actionParams, genFailures) => {
 
-  //Flag definition to allow for changing the defaults values such as allowing for overwriting existing files or folders
+  //Flag definition to allow for changing the defaults values such
+  //as allowing for overwriting existing files or folders
   const options = actionParams ? actionParams.options : {};
 
   //The total number of lines that are possible to generate
@@ -262,7 +269,8 @@ export default (linesInfo, rootPath, validationResults, actionParams, genFailure
 
       //Remove all folders and files in the top level
       //of the template file
-      //This will ensure that all generated files are new leading to "overwriting"
+      //This will ensure that all generated files are new leading
+      //to "overwriting"
       if (options.forceOverwrite) {
         let stat;
         try {
@@ -311,8 +319,6 @@ export default (linesInfo, rootPath, validationResults, actionParams, genFailure
         startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
            actionParams, contentLineCount, options, resolve, genFailures);
       }
-
     })();
-
   });
 };
