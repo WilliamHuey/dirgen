@@ -21,7 +21,6 @@ import printValidations from './print-validations';
 import generateStructure from './generation';
 
 //Start timing the write process
-let time = process.hrtime();
 let timeDiff;
 
 const addLinesInfo = new AddLinesInfo();
@@ -193,6 +192,8 @@ export default (action, actionParams) => {
 
             //Generate the content
             //Async nature will need the later logging to be delay
+
+            let time = process.hrtime();
 
             genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams, genFailures);
 

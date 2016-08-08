@@ -1,18 +1,12 @@
-optimization
-  immediately generate
-  folders without children
-  files
-
-test deeply nested folder structures
-
-npm start more compatible with windows/linux
-
 Module
 -module type support
 -What should be checked in to the final npm repo?
 -Selective check-ins for the dist folder:
   -not dist folder on git, but allow for npm?
   npmignore and gitignore
+
+
+npm start more compatible with windows/linux
 
 Backlog/Optimize
 -- programatic use should have object pass in
