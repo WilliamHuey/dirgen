@@ -1,5 +1,7 @@
+conditional file use based on nodejs environment?
+
+
 Module
--module type support
 -What should be checked in to the final npm repo?
 -Selective check-ins for the dist folder:
   -not dist folder on git, but allow for npm?
@@ -12,6 +14,3 @@ Backlog/Optimize
 -- programatic use should have object pass in
 -- encoding type
 -- permission level
--- step through
-  -- overwrite
-  -- warn [skip|ignore|walk]
