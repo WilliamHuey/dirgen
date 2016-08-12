@@ -1,5 +1,4 @@
-conditional file use based on nodejs environment?
-
+programmatic use with require use
 
 Module
 -What should be checked in to the final npm repo?
