@@ -2,7 +2,7 @@
     "name": "dirgen",
     "version": "1.0.0",
     "author": "William Huey",
-    "main": "dist/dirgen.js",
+    "main": "./bin/dirgen-cli-entry.js",
     "description": "Generate folders and files with an indented template file",
     "contributors": [{
         "name": "William Huey",

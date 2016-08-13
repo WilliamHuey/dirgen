@@ -1,4 +1,4 @@
 #!/usr/bin/env node
 
 require('./dirgen-cli-entry')
-  .dirgen(__dirname);
+  .dirgen(__dirname, true);

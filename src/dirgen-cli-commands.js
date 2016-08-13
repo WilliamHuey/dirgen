@@ -47,7 +47,12 @@ if (!commands.includes(cliCommand) && cliArgs.length > 2 &&
   isValidCommand = true;
 }
 
-module.exports = function(execPath) {
+module.exports = function(execPath, fromCli) {
+
+  if (!fromCli) {
+    console.log("requiring dirgen as a module");
+    return;
+  }
 
   //Show an example of how the module is used
   cli
@@ -137,7 +142,7 @@ module.exports = function(execPath) {
                   forceOverwrite,
                   hideMessages
                 }
-              });
+              }, fromCli);
           }
         }, function() {});
     });

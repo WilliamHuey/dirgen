@@ -46,7 +46,9 @@ let linesInfo = {
   topLevelIndex: {}
 };
 
-export default (action, actionParams) => {
+export default (action, actionParams, fromCli) => {
+
+  console.log("last check from fromCli", fromCli);
 
   //Demo input params are different from typical generation
   let actionDemo = null;
