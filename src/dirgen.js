@@ -50,6 +50,12 @@ export default (action, actionParams, fromCli) => {
 
   console.log("last check from fromCli", fromCli);
 
+  if (!fromCli) {
+    console.log("dirgen module load");
+
+    return;
+  }
+
   //Demo input params are different from typical generation
   let actionDemo = null;
   let execPathDemo = null;

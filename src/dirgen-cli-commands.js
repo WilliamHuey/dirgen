@@ -51,6 +51,12 @@ module.exports = function(execPath, fromCli) {
 
   if (!fromCli) {
     console.log("requiring dirgen as a module");
+    console.log("execPath", execPath);
+    require('./dirgen')
+      .default({
+        action: 'generate',
+        'execPath': execPath
+      });
     return;
   }
 
