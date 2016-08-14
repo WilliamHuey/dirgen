@@ -1,6 +1,6 @@
 module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
   lab.experiment('and with the demo command', function() {
-    lab.test('with "demo" command will create the example folder', function(done) {
+    lab.test('will create the example folder', function(done) {
       exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
 
         fs.isDirectoryAsync(__dirname + '/../demo/example-output').then(function(resolve, error) {
@@ -22,7 +22,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    lab.test('with "demo" command will create the files and folders that will match the demo template file', function(done) {
+    lab.test('will create the files and folders that will match the demo template file', function(done) {
       exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
         var readType = {
           file: 'existsAsync',

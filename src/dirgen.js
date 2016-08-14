@@ -48,11 +48,9 @@ let linesInfo = {
 
 export default (action, actionParams, fromCli) => {
 
-  console.log("last check from fromCli", fromCli);
-
-  if (!fromCli) {
-    console.log("dirgen module load");
-
+  if (!fromCli && action.action !== 'demo') {
+    console.log("fromCli", fromCli);
+    console.log("action", action);
     return;
   }
 
@@ -90,6 +88,8 @@ export default (action, actionParams, fromCli) => {
     })
     .on('line', (line) => {
 
+
+      // console.log("line", line);
       //Get properties from the current line
       //in detail with the lexer
       let lexResults = lexer.lex(line);
@@ -182,8 +182,25 @@ export default (action, actionParams, fromCli) => {
         let hideMessages;
         if (typeof actionParams === 'undefined') {
           hideMessages = false;
-        } else {
+        } else if (actionParams !== true) {
           hideMessages = actionParams.options.hideMessages;
+        }
+
+        //Demo situation, need to swap action with actionParams
+        //also vice-versa
+        let demoActionParams = null;
+        let normalizedActionParams = null;
+        if (util.isObject(action)) {
+          demoActionParams = {};
+          demoActionParams.template = action.execPath;
+          demoActionParams.options = action.options;
+          demoActionParams.output = rootPath;
+          normalizedActionParams = demoActionParams;
+        }
+
+        //Non-demo params, generate command
+        if (normalizedActionParams === null) {
+          normalizedActionParams = actionParams;
         }
 
         //Last stage before generation with status check
@@ -203,7 +220,7 @@ export default (action, actionParams, fromCli) => {
 
             let time = process.hrtime();
 
-            genResult = await generateStructure(linesInfo, rootPath, validationResults, actionParams, genFailures);
+            genResult = await generateStructure(linesInfo, rootPath, validationResults, normalizedActionParams, genFailures);
 
             //Time the generation only
             timeDiff = process.hrtime(time);

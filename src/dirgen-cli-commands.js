@@ -1,7 +1,5 @@
 'use strict';
 
-console.time('Command Line Execution Time');
-
 //Native modules
 import fs from 'fs';
 
@@ -50,8 +48,6 @@ if (!commands.includes(cliCommand) && cliArgs.length > 2 &&
 module.exports = function(execPath, fromCli) {
 
   if (!fromCli) {
-    console.log("requiring dirgen as a module");
-    console.log("execPath", execPath);
     require('./dirgen')
       .default({
         action: 'generate',
@@ -64,11 +60,18 @@ module.exports = function(execPath, fromCli) {
   cli
     .command('demo')
     .handler(function(data, flags, done) {
+
+      //Check for overwrite flag to write over existing files or folders
+      const forceOverwrite = flags.f;
+
       require('./dirgen')
         .default({
           action: 'demo',
-          'execPath': execPath
-        });
+          'execPath': execPath,
+          options: {
+            forceOverwrite
+          }
+        }, fromCli);
     });
 
   //Create files or folders
