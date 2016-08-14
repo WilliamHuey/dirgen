@@ -1,4 +1,6 @@
 programmatic use with require use
+  errors and warnings should be an object instead console logging
+  use a promise interface
 
 Module
 -What should be checked in to the final npm repo?
