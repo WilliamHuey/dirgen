@@ -18,11 +18,13 @@ module.exports = {
     loaders: [{
       test: /\.js$/,
       include: [
-
         path.join(__dirname, '/src')
       ],
       exclude: /node_modules/,
-      loader: "babel-loader"
+      loader: "babel-loader",
+      query: {
+        presets: ['es2015']
+      }   
     },{
       test: /\.json$/,
       loader: 'json-loader'
@@ -33,9 +35,6 @@ module.exports = {
   },
   eslint: {
     configFile: './.eslintrc.json'
-  },
-  babel: {
-    presets: ['es2015', 'stage-3']
   },
   target: 'node'
 };

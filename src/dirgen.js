@@ -7,14 +7,15 @@ import "babel-polyfill";
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
+import co from 'co';
 
 //Source modules
 import util from './utilities';
 
 import commandTypeAction from './cli-command-type';
-import AddLinesInfo from './lines-info';
-import Lexer from './lexer';
-import Validations from './lines-validations';
+import addLinesInfo from './lines-info';
+import lexer from './lexer';
+import validator from './lines-validations';
 import message from './validations-messages';
 import logValidations from './log-validations';
 import printValidations from './print-validations';
@@ -22,10 +23,6 @@ import generateStructure from './generation';
 
 //Start timing the write process
 let timeDiff;
-
-const addLinesInfo = new AddLinesInfo();
-const lexer = new Lexer();
-const validator = new Validations();
 
 //Track the status of the lines
 let linesInfo = {
@@ -49,8 +46,8 @@ let linesInfo = {
 export default (action, actionParams, fromCli) => {
 
   if (!fromCli && action.action !== 'demo') {
-    console.log("fromCli", fromCli);
-    console.log("action", action);
+    // console.log("fromCli", fromCli);
+    // console.log("action", action);
     return;
   }
 
@@ -88,8 +85,6 @@ export default (action, actionParams, fromCli) => {
     })
     .on('line', (line) => {
 
-
-      // console.log("line", line);
       //Get properties from the current line
       //in detail with the lexer
       let lexResults = lexer.lex(line);
@@ -165,104 +160,110 @@ export default (action, actionParams, fromCli) => {
       //Log the failed to generate files or folders
       let genFailures = [];
 
-      (async function () {
+      (function(co) {
 
-        // console.log("linesInfo", linesInfo);
+        co(function* () {
+          try {
+            yield co.wrap(function* () {
 
-        //Determine the output filepath of the generated
-        let rootPath = commandTypeAction((actionDemo || action),
-          'output', actionParams, execPathDemo);
+              //Determine the output filepath of the generated
+              let rootPath = commandTypeAction((actionDemo || action),
+                'output', actionParams, execPathDemo);
 
-        //Should not be generated with no lines in the file
-        const hasContent = logValidations(
-          validator.presenceFirstLine(
-            linesInfo.firstLine),
-          validationResults);
+              //Should not be generated with no lines in the file
+              const hasContent = logValidations(
+                validator.presenceFirstLine(
+                  linesInfo.firstLine),
+                validationResults);
 
-        let hideMessages;
-        if (typeof actionParams === 'undefined') {
-          hideMessages = false;
-        } else if (actionParams !== true) {
-          hideMessages = actionParams.options.hideMessages;
-        }
+              let hideMessages;
+              if (typeof actionParams === 'undefined') {
+                hideMessages = false;
+              } else if (actionParams !== true) {
+                hideMessages = actionParams.options.hideMessages;
+              }
 
-        //Demo situation, need to swap action with actionParams
-        //also vice-versa
-        let demoActionParams = null;
-        let normalizedActionParams = null;
-        if (util.isObject(action)) {
-          demoActionParams = {};
-          demoActionParams.template = action.execPath;
-          demoActionParams.options = action.options;
-          demoActionParams.output = rootPath;
-          normalizedActionParams = demoActionParams;
-        }
+              //Demo situation, need to swap action with actionParams
+              //also vice-versa
+              let demoActionParams = null;
+              let normalizedActionParams = null;
+              if (util.isObject(action)) {
+                demoActionParams = {};
+                demoActionParams.template = action.execPath;
+                demoActionParams.options = action.options;
+                demoActionParams.output = rootPath;
+                normalizedActionParams = demoActionParams;
+              }
 
-        //Non-demo params, generate command
-        if (normalizedActionParams === null) {
-          normalizedActionParams = actionParams;
-        }
+              //Non-demo params, generate command
+              if (normalizedActionParams === null) {
+                normalizedActionParams = actionParams;
+              }
 
-        //Last stage before generation with status check
-        if (hasContent) {
-          let errors = validationResults.errors;
-          if (errors.length > 0 && !hideMessages) {
+              //Last stage before generation with status check
+              if (hasContent) {
+                let errors = validationResults.errors;
+                if (errors.length > 0 && !hideMessages) {
 
-            printValidations(message, 'error', errors, errors.length);
+                  printValidations(message, 'error', errors, errors.length);
 
-            //Print all errors first and than any warnings
-            printValidations(message, 'warn',
-              validationResults.warnings, validationResults.warnings.length);
-          } else {
+                  //Print all errors first and than any warnings
+                  printValidations(message, 'warn',
+                    validationResults.warnings, validationResults.warnings.length);
+                } else {
 
-            //Generate the content
-            //Async nature will need the later logging to be delay
+                  //Generate the content
+                  //Async nature will need the later logging to be delay
+                  let time = process.hrtime();
 
-            let time = process.hrtime();
+                  genResult = yield generateStructure(linesInfo, rootPath, validationResults, normalizedActionParams, genFailures);
 
-            genResult = await generateStructure(linesInfo, rootPath, validationResults, normalizedActionParams, genFailures);
+                  //Time the generation only
+                  timeDiff = process.hrtime(time);
 
-            //Time the generation only
-            timeDiff = process.hrtime(time);
+                  if (!hideMessages) {
+                    //Print out warning message
+                    printValidations(message, 'warn',
+                      validationResults.warnings, validationResults.warnings.length);
+                  }
+                }
+              } else {
+                if (!hideMessages) {
 
-            if (!hideMessages) {
-              //Print out warning message
-              printValidations(message, 'warn',
-                validationResults.warnings, validationResults.warnings.length);
-            }
+                  //No content in the template file produces only one error
+                  message.error(validationResults.errors[0].message);
+                }
+              }
 
+              console.log(`Template info: ${linesInfo.totalLineCount} total ${util.pluralize('line', linesInfo.totalLineCount)} (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} ${util.pluralize('blank', linesInfo.totalLineCount)})`);
+
+              console.log(`Template read: ${validationResults.errors.length} ${util.pluralize('error', validationResults.errors.length)} and ${validationResults.warnings.length} ${util.pluralize('warning', validationResults.warnings.length)}`);
+
+              //Non-generated count can be larger than the warning count
+              //because the warning logging stops checking items for the top-most repeated folder
+
+              //When there is an error log, genResult is null
+              if (genResult === null) {
+                console.log(`Creation count: 0 generated, ${linesInfo.contentLineCount} not generated, 0 skipped`);
+              } else {
+                console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
+              }
+
+              console.log(`Generation failures: ${genFailures.length} write errors`);
+
+              //On error conditions, no timeDiff is needed
+              if (timeDiff && genResult.generated > 0) {
+                console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
+              } else {
+                console.log('Write time: %d nanoseconds', 0);
+              }
+
+            })();
+          } catch (error) {
+            console.log("Close file and generation error:", error);
           }
-        } else {
+        });
 
-          if (!hideMessages) {
-            //No content in the template file produces only one error
-            message.error(validationResults.errors[0].message);
-          }
-        }
-
-        console.log(`Template info: ${linesInfo.totalLineCount} total ${util.pluralize('line', linesInfo.totalLineCount)} (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} ${util.pluralize('blank', linesInfo.totalLineCount)})`);
-
-        console.log(`Template read: ${validationResults.errors.length} ${util.pluralize('error', validationResults.errors.length)} and ${validationResults.warnings.length} ${util.pluralize('warning', validationResults.warnings.length)}`);
-
-        //Non-generated count can be larger than the warning count
-        //because the warning logging stops checking items for the top-most repeated folder
-
-        //When there is an error log, genResult is null
-        if (genResult === null) {
-          console.log(`Creation count: 0 generated, ${linesInfo.contentLineCount} not generated, 0 skipped`);
-        } else {
-          console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
-        }
-
-        console.log(`Generation failures: ${genFailures.length} write errors`);
-
-        //On error conditions, no timeDiff is needed
-        if (timeDiff && genResult.generated > 0) {
-          console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
-        } else {
-          console.log('Write time: %d nanoseconds', 0);
-        }
-
-      })();
+      })(co);
     });
 };

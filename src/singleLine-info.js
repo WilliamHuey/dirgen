@@ -8,7 +8,7 @@ import Validations from './lines-validations';
 import structureMarker from './character-code';
 import logValidations from './log-validations';
 
-const validator = new Validations();
+const validator = Validations;
 
 let topLineNonRepeats = new Map();
 

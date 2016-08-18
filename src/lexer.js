@@ -5,9 +5,9 @@ import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
 
 //Should also detect indentation and well as symbols
-let lexer = () => {};
+let lexer = function() {};
 
-Object.assign(lexer.prototype, {
+export default Object.assign(lexer.prototype, {
   lex: (line) => {
     let scanner = strscan(line),
       lineTokenStats = {
@@ -76,4 +76,3 @@ Object.assign(lexer.prototype, {
   }
 });
 
-export default lexer;

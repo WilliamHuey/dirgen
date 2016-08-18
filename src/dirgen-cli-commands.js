@@ -10,6 +10,7 @@ import isTextPath from 'is-text-path';
 import {
   readJsonAsync
 } from 'fs-extra-promise';
+import co from 'co';
 
 //Source modules
 import helpText from './dirgen-cli-commands-text';
@@ -143,6 +144,7 @@ module.exports = function(execPath, fromCli) {
 
           //Only generate on valid file and folder input
           if (values[0].file && values[1].folder) {
+
             require('./dirgen')
               .default('generate', {
                 template: data[0],
@@ -174,7 +176,7 @@ module.exports = function(execPath, fromCli) {
 
   if (asyncCommands.includes(cliCommand)) {
 
-    (async function(cli) {
+    const getJSON = co.wrap(function* (cli) {
       let packageJson = {};
 
       //Get the version from the package.json file
@@ -187,12 +189,20 @@ module.exports = function(execPath, fromCli) {
 
       //Read the version from package.json
       //In the exports function because needs access to the read path
-       packageJson = await readJsonAsync(
+       packageJson = yield readJsonAsync(
         path.resolve(execPath, '../package.json'));
 
       cli.run(['', '', 'version'], function() {});
 
-    })(cli);
+    });
+
+    co(function* () {
+      try {
+        yield getJSON(cli);
+      } catch (error) {
+        console.error('Error from reading package.json:', error);
+      }
+    });
 
   } else if (isValidCommand) {
 

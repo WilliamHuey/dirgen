@@ -3,8 +3,8 @@
 //Source modules
 import singleLineInfoFunctions from './singleLine-info';
 
-let data = {},
-  linesInfo = () => {};
+let data = {};
+let linesInfo = function () {};
 
 const linesInfoFunctions = {
   currentValue: () => {
@@ -27,7 +27,7 @@ const linesInfoFunctions = {
   }
 };
 
-Object.assign(linesInfo.prototype, {
+export default Object.assign(linesInfo.prototype, {
   setGeneralData: (line, lineSetInfo, validationResults) => {
 
     //Update current line data with line set info
@@ -83,4 +83,4 @@ Object.assign(linesInfo.prototype, {
   }
 });
 
-export default linesInfo;
+

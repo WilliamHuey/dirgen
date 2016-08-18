@@ -15,13 +15,14 @@ import {
   removeAsync,
   statAsync
 } from 'fs-extra-promise';
+import co from 'co';
 
 //Source modules
 import Validations from './lines-validations';
 import message from './validations-messages';
 import logValidations from './log-validations';
 
-const validator = new Validations();
+const validator = Validations;
 const tailCall = recursive.recur;
 
 //Log the lines that are not generated due to repeats
@@ -97,16 +98,16 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       }
 
       //Create the file type
-      (async function () {
+      const fileCreate = co.wrap(function* () {
 
         try {
 
           //File already exist situation mean it does not error out
-          let fileStat = await statAsync(structureCreatePath);
+          let fileStat = yield statAsync(structureCreatePath);
 
           //Overwrite existing files when the flag is provided
           if (options.forceOverwrite) {
-            await writeFileAsync(structureCreatePath, '');
+            yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
           } else {
             //Skip generating file
@@ -123,7 +124,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           if (e.syscall === 'stat') {
 
             //Create the file when it does not exists
-            await writeFileAsync(structureCreatePath, '');
+            yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
 
             //When all generated structures are created with the non-generated
@@ -142,8 +143,16 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.skipped += 1;
           }
         }
+      });
 
-      })();
+      co(function* () {
+        try {
+          yield fileCreate();
+        } catch (error) {
+          console.log("File creation error:", error);
+        }
+      });
+
     } else {
       logNonGenerated(linesInfo, structureCreation,
         lineInfo, validationResults);
@@ -166,14 +175,14 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       genFolder = true;
 
       //Create the folder
-      (async function () {
+      const folderCreate = (function* () {
         try {
 
-          let fileStat = await statAsync(parentPath);
+          let fileStat = yield statAsync(parentPath);
 
           //Overwrite existing folder when the flag is provided
           if (options.forceOverwrite) {
-            await mkdirAsync(parentPath);
+            yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
           } else {
             // Skip folder generation
@@ -191,7 +200,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           if (e.syscall === 'stat') {
 
             //Create the file when it does not exists
-            await mkdirAsync(parentPath);
+            yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
 
             //When all generated structures are created with the non-generated
@@ -207,7 +216,17 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           }
 
         }
-      })();
+      });
+
+      co(function* () {
+        try {
+          yield folderCreate();
+        } catch (error) {
+          console.log("Folder creation error:", error);
+        }
+      });
+
+
     }
 
     let nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
@@ -265,7 +284,7 @@ export default (linesInfo, rootPath, validationResults,
   let contentLineCount = linesInfo.contentLineCount;
   return new Promise((resolve, reject) => {
 
-    (async function () {
+    const startGen = co.wrap(function* () {
 
       //Remove all folders and files in the top level
       //of the template file
@@ -286,10 +305,10 @@ export default (linesInfo, rootPath, validationResults,
               let parentPath = path.join(rootPath,
                 (nameDetails.sanitizedName || structureName));
 
-              stat = await statAsync(parentPath);
+              stat = yield statAsync(parentPath);
 
               if (stat.isDirectory() || stat.isFile()) {
-                await removeAsync(parentPath);
+                yield removeAsync(parentPath);
               }
             }
           }
@@ -319,6 +338,14 @@ export default (linesInfo, rootPath, validationResults,
         startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
            actionParams, contentLineCount, options, resolve, genFailures);
       }
-    })();
+    });
+
+    co(function* () {
+      try {
+        yield startGen();
+      } catch (error) {
+        console.log("Start generation error:", error);
+      }
+    });
   });
 };

@@ -4,7 +4,7 @@ export default (againstRule, summaryValidation) => {
   // type: 'error',
     // line: { number: 2, message: 'Line 2 has error on ...'}
   //}
-  // console.log("againstRule", againstRule);
+
   if (typeof againstRule.type !== 'undefined') {
     if (againstRule.type === 'error') {
       summaryValidation.errors.push(againstRule.line);
