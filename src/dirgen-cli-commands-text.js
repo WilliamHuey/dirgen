@@ -30,16 +30,17 @@ const cliText = `
     Structure Type:
       File:
         A content line without a folder marker (forward slash) will be
-        identified as a file line.
+        identified as a file line and if it has not been skipped.
 
         Example:
           a-file
           a-file-with-an-extension.someextension
 
       Folder:
-        A content line with a folder marker (forward slash) will be identified
-        as a folder type. A folder line can also be signified with having
-        a later line with a greater indent than the folder line.
+        A content line with a folder marker (forward slash) at the
+        beginning of the line will be identified as a folder type.
+        A folder line can also be signified with having a later line
+        with a greater indent than the folder line.
 
         Example:
           /a-folder
@@ -64,6 +65,10 @@ const cliText = `
       	ygvhg
       /fsfa
       /fsfa
+
+    Console input:
+
+     dirgen g 'the-template-file.txt' '/where-you-want-output-folder'
 
     Console output:
 
@@ -135,9 +140,9 @@ const cliText = `
 
   \x1B[1m Demo: \x1B[22m
 
-    For a demo of Dirgen, run 'dirgen demo' in your command line
-    environment and look at the output in the 'demo/example-output'
-    folder under the root of the Dirgen module folder.
+    For a demo of Dirgen, run 'dirgen demo' on the command line
+    and look at the output in the 'demo/example-output' folder
+    under the root of the Dirgen module folder.
 
   ------------------------------------------------------------------------------
 
@@ -172,7 +177,7 @@ const cliText = `
 
     -f                  Overwrite files and directory even if they already
                         exist. Default behavior without this option does not
-                        forcibly overwrite content.
+                        forcibly overwrite content as a safety measure.
 
     -s                  Suppress the actual warnings and errors messages from
                         showing up on the console. The count of warnings and
