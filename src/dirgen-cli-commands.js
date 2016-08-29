@@ -1,5 +1,8 @@
 'use strict';
 
+//Add support for features in ES2015 as maps and promises
+import "babel-polyfill";
+
 //Native modules
 import fs from 'fs';
 
@@ -11,6 +14,7 @@ import {
   readJsonAsync
 } from 'fs-extra-promise';
 import co from 'co';
+import includes from 'array-includes';
 
 //Source modules
 import helpText from './dirgen-cli-commands-text';
@@ -38,8 +42,8 @@ const cliCommand = cliArgs[2];
 
 //Non-matching commands will trigger the help doc
 let isValidCommand = false;
-if (!commands.includes(cliCommand) && cliArgs.length > 2 &&
-  !asyncCommands.includes(cliCommand)) {
+if (!includes(commands, cliCommand) && cliArgs.length > 2 &&
+  !includes(asyncCommands, cliCommand)) {
   console.log(`Dirgen: '${cliCommand}'
   is not a recognized command. Type 'dirgen --help' for a list of commands.`);
 } else {
@@ -174,7 +178,7 @@ module.exports = function(execPath, fromCli) {
     cli.run(['', '', 'help'], function() {});
   }
 
-  if (asyncCommands.includes(cliCommand)) {
+  if (includes(asyncCommands, cliCommand)) {
 
     const getJSON = co.wrap(function* (cli) {
       let packageJson = {};

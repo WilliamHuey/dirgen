@@ -1,8 +1,5 @@
 'use strict';
 
-//Add support for features in ES2015 as maps and promises
-import "babel-polyfill";
-
 //Native modules
 import fs from 'fs';
 import path from 'path';

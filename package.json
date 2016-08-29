@@ -17,6 +17,7 @@
         "test": "node_modules/lab/bin/lab ./tests/integrity.js -vp -m 0"
     },
     "dependencies": {
+        "array-includes": "^3.0.2",
         "co": "^4.6.0",
         "detect-indent": "^4.0.0",
         "fs-extra-promise": "^0.4.0",
@@ -34,6 +35,8 @@
         "babel-core": "^6.14.0",
         "babel-eslint": "^6.1.2",
         "babel-loader": "^6.2.5",
+        "babel-plugin-transform-es2015-destructuring": "^6.9.0",
+        "babel-plugin-transform-regenerator": "^6.14.0",
         "babel-polyfill": "^6.13.0",
         "babel-preset-es2015": "^6.14.0",
         "babel-register": "^6.14.0",
@@ -48,7 +51,7 @@
         "lab": "^11.0.1",
         "webpack": "^2.1.0-beta.21"
     },
-    "engine": "node >= 0.10.x",
+    "engine": "node >= 4",
     "private": false,
     "license": "MIT",
     "keywords": [
