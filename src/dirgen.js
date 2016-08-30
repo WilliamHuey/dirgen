@@ -8,7 +8,6 @@ import co from 'co';
 
 //Source modules
 import util from './utilities';
-
 import commandTypeAction from './cli-command-type';
 import addLinesInfo from './lines-info';
 import lexer from './lexer';
@@ -43,8 +42,9 @@ let linesInfo = {
 export default (action, actionParams, fromCli) => {
 
   if (!fromCli && action.action !== 'demo') {
-    // console.log("fromCli", fromCli);
-    // console.log("action", action);
+    console.log("!fromCli", fromCli);
+    console.log("action", action);
+    console.log("actionParams", actionParams);
     return;
   }
 
@@ -61,7 +61,8 @@ export default (action, actionParams, fromCli) => {
   if (typeof action.action !== 'undefined') {
 
     //Demo type generation
-    creationTemplatePath = commandTypeAction(action.action, 'template', actionParams, execPathDemo);
+    creationTemplatePath = commandTypeAction(action.action,
+      'template', actionParams, execPathDemo);
   } else {
 
     //Non-demo generation case
@@ -146,7 +147,10 @@ export default (action, actionParams, fromCli) => {
       }
 
       logValidations(
-        validator.sameLineMixedTabsAndSpaces(currentLine.nameDetails.mixedTabsSpaces, currentLine.nameDetails.line, currentLine.structureName),
+        validator.sameLineMixedTabsAndSpaces(
+          currentLine.nameDetails.mixedTabsSpaces,
+           currentLine.nameDetails.line,
+          currentLine.structureName),
         validationResults);
     })
     .on('close', () => {
@@ -213,7 +217,8 @@ export default (action, actionParams, fromCli) => {
                   //Async nature will need the later logging to be delay
                   let time = process.hrtime();
 
-                  genResult = yield generateStructure(linesInfo, rootPath, validationResults, normalizedActionParams, genFailures);
+                  genResult = yield generateStructure(linesInfo, rootPath,
+                     validationResults, normalizedActionParams, genFailures);
 
                   //Time the generation only
                   timeDiff = process.hrtime(time);
@@ -221,7 +226,8 @@ export default (action, actionParams, fromCli) => {
                   if (!hideMessages) {
                     //Print out warning message
                     printValidations(message, 'warn',
-                      validationResults.warnings, validationResults.warnings.length);
+                      validationResults.warnings,
+                      validationResults.warnings.length);
                   }
                 }
               } else {

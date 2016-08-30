@@ -56,7 +56,9 @@ module.exports = function(execPath, fromCli) {
     require('./dirgen')
       .default({
         action: 'generate',
-        'execPath': execPath
+        //execPath will actually be the settings for
+        //when the dirgen is required
+        'settings': execPath
       });
     return;
   }
