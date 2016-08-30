@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/bin/'),
     filename: '[name].js',
-    library: 'dirgen',
+    library: 'generate',
     libraryTarget: 'commonjs'
   },
   module: {
