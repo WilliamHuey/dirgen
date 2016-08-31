@@ -50,17 +50,17 @@ if (!includes(commands, cliCommand) && cliArgs.length > 2 &&
   isValidCommand = true;
 }
 
-module.exports = function(execPath, fromCli) {
+let cliCommands = function(execPath, fromCli) {
 
   if (!fromCli) {
-    require('./dirgen')
-      .default({
+    let dirgen = require('./dirgen');
+    dirgen.default({
         action: 'generate',
         //execPath will actually be the settings for
         //when the dirgen is required
         'settings': execPath
       });
-    return;
+    return dirgen;
   }
 
   //Show an example of how the module is used
@@ -215,4 +215,12 @@ module.exports = function(execPath, fromCli) {
     //Run the supplied command if it one of the existing commands
     cli.run(cliArgs, function() {});
   }
+
+  return this;
 };
+
+cliCommands.stuff = function() {
+  console.log("stuff");
+}
+
+module.exports = cliCommands;

@@ -45,7 +45,10 @@ export default (action, actionParams, fromCli) => {
     console.log("!fromCli", fromCli);
     console.log("action", action);
     console.log("actionParams", actionParams);
-    return;
+    this.on = function() {
+      console.log("stuff happens");
+    };
+    return this;
   }
 
   //Demo input params are different from typical generation
