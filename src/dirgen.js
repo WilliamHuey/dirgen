@@ -39,37 +39,46 @@ let linesInfo = {
   topLevelIndex: {}
 };
 
-export default (action, actionParams, fromCli) => {
-
-  if (!fromCli && action.action !== 'demo') {
-    console.log("!fromCli", fromCli);
-    console.log("action", action);
-    console.log("actionParams", actionParams);
-    this.on = function() {
-      console.log("stuff happens");
-    };
-    return this;
-  }
-
+const dirgen = function(action, actionParams, fromCli) {
   //Demo input params are different from typical generation
   let actionDemo = null;
   let execPathDemo = null;
   let creationTemplatePath = '';
+
+  console.log("action is now ", action);
 
   if (util.isObject(action)) {
     actionDemo = action.action;
     execPathDemo = action.execPath;
   }
 
-  if (typeof action.action !== 'undefined') {
-
+  if (typeof action.action !== 'undefined' &&
+   !actionParams.settings) {
+     console.log("for demo ");
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
       'template', actionParams, execPathDemo);
   } else {
 
-    //Non-demo generation case
-    creationTemplatePath = commandTypeAction(action, 'template', actionParams);
+    console.log("gen action", action);
+    console.log("gen actionParams", actionParams);
+    if (actionParams.settings) {
+
+      console.log("require use");
+
+      //Reformat the actionParams object
+      let requiredActionParams = {};
+      let {output, template, options} = actionParams.settings;
+      Object.assign(requiredActionParams, {output, template, options})
+      actionParams = requiredActionParams;
+
+      //From 'require' use
+      creationTemplatePath = commandTypeAction(action, 'template', actionParams);
+    } else {
+
+      //From cli - Non-demo generation case
+      creationTemplatePath = commandTypeAction(action, 'template', actionParams);
+    }
   }
 
   //Group the errors and warnings together
@@ -272,4 +281,23 @@ export default (action, actionParams, fromCli) => {
 
       })(co);
     });
+};
+
+export default function (action, actionParams, fromCli) {
+
+  if (!fromCli && action.action !== 'demo') {
+    console.log("!fromCli", fromCli);
+    [actionParams, action] = [action, actionParams];
+    action = actionParams.action;
+    console.log("action", action);
+    console.log("actionParams", actionParams);
+    this.on = function() {
+      console.log("stuff happens");
+    };
+    dirgen(action, actionParams, fromCli);
+    return this;
+  } else {
+    dirgen(action, actionParams, fromCli);
+  }
+
 };

@@ -6,6 +6,12 @@ import path from 'path';
 //Check if command is for demoing
 export default (type, action, generateParams, execPath) => {
 
+  console.log("----------------------");
+  console.log("type", type);
+  console.log("action", action);
+  console.log("generateParams", generateParams);
+  console.log("execPath", execPath);
+
   //Execution directory gives the proper path for the demo example
   let rootModulePath = '';
 
@@ -13,6 +19,8 @@ export default (type, action, generateParams, execPath) => {
   if (execPath) {
     rootModulePath = path.resolve(execPath, '../');
   }
+
+  console.log("rootModulePath", rootModulePath);
 
   //Demo template location and output
   const commandType = {

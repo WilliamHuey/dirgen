@@ -1,8 +1,10 @@
 programmatic use with require use
-  errors and warnings should be an object instead console logging
-  use a promise interface
+
+home directory check for generation
 
 performance with group generation
+
+testing the require dirgen use
 
 Module
 -What should be checked in to the final npm repo?
@@ -13,6 +15,5 @@ Module
 npm start more compatible with windows/linux
 
 Backlog/Optimize
--- programatic use should have object pass in
 -- encoding type
 -- permission level

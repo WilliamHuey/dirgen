@@ -56,6 +56,7 @@ let cliCommands = function(execPath, fromCli) {
     let dirgen = require('./dirgen');
     dirgen.default({
         action: 'generate',
+
         //execPath will actually be the settings for
         //when the dirgen is required
         'settings': execPath
