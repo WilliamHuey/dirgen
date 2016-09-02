@@ -1,16 +1,23 @@
 programmatic use with require use
 
-home directory check for generation
+options
+
+on progress
+promise then(result, error),
 
 performance with group generation
 
 testing the require dirgen use
+
+test home path output path
 
 Module
 -What should be checked in to the final npm repo?
 -Selective check-ins for the dist folder:
   -not dist folder on git, but allow for npm?
   npmignore and gitignore
+
+umd
 
 npm start more compatible with windows/linux
 

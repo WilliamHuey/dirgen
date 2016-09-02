@@ -4,6 +4,9 @@
 import fs from 'fs';
 import path from 'path';
 import readline from 'readline';
+import os from 'os';
+
+//Vendor modules
 import co from 'co';
 
 //Source modules
@@ -39,6 +42,17 @@ let linesInfo = {
   topLevelIndex: {}
 };
 
+//Convert the tilde in the output path to the
+//actual home directory when present at the first
+//of the line
+const convertHome = function(outPath) {
+  if (outPath.indexOf('~') === 0) {
+    return os.homedir() + outPath.slice(1);
+  } else {
+    return outPath;
+  }
+};
+
 const dirgen = function(action, actionParams, fromCli) {
   //Demo input params are different from typical generation
   let actionDemo = null;
@@ -69,6 +83,9 @@ const dirgen = function(action, actionParams, fromCli) {
       //Reformat the actionParams object
       let requiredActionParams = {};
       let {output, template, options} = actionParams.settings;
+
+      //Check for home directory for output path
+      output = convertHome(output);
       Object.assign(requiredActionParams, {output, template, options})
       actionParams = requiredActionParams;
 

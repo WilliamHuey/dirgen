@@ -9,5 +9,6 @@ if (typeof process === 'undefined') {
 }
 
 module.exports = function(execPath, fromCli) {
+
   return require('./dirgen-cli-commands')(execPath, fromCli);
 };

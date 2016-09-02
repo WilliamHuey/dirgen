@@ -6,7 +6,6 @@ import path from 'path';
 //Vendor modules
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
-
 import fs from 'fs-extra-promise';
 import {
   existsAsync,
@@ -89,6 +88,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
     structureRoughPath = path.join(rootPath, name),
     structureCreatePath = normalizePath(structureRoughPath);
 
+
   if (inferType === 'file') {
     if (!childRepeatedLine && !repeatedLine) {
 
@@ -110,6 +110,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
           } else {
+
             //Skip generating file
             if (fileStat) {
               structureCreation.skipped += 1;
