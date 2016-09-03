@@ -291,7 +291,7 @@ export default (linesInfo, rootPath, validationResults,
       //of the template file
       //This will ensure that all generated files are new leading
       //to "overwriting"
-      if (options.forceOverwrite) {
+      if (options && options.forceOverwrite) {
         let stat;
         try {
           for (let i = 0; i < contentLineCount; i++) {

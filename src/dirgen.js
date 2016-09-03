@@ -209,6 +209,10 @@ const dirgen = function(action, actionParams, fromCli) {
               let hideMessages;
               if (typeof actionParams === 'undefined') {
                 hideMessages = false;
+              } else if (typeof actionParams.options === 'undefined') {
+                hideMessages = false;
+              } else if (actionParams.options.hideMessages === false) {
+                hideMessages = false;
               } else if (actionParams !== true) {
                 hideMessages = actionParams.options.hideMessages;
               }

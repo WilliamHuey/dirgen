@@ -70,7 +70,16 @@ let cliCommands = function(execPath, fromCli) {
     .handler(function(data, flags, done) {
 
       //Check for overwrite flag to write over existing files or folders
-      const forceOverwrite = flags.f;
+      let forceOverwrite = false;
+      if (typeof flags.f !== 'undefined') {
+        if (flags.f) {
+          forceOverwrite = true;
+        } else {
+          forceOverwrite = false;
+        }
+      } else {
+        forceOverwrite = false;
+      }
 
       require('./dirgen')
         .default({
@@ -87,6 +96,8 @@ let cliCommands = function(execPath, fromCli) {
     .command('generate')
     .name(['gen', 'g'])
     .handler(function(data, flags, done) {
+
+      console.log("+++++++++++ flags", flags);
 
       //Check for overwrite flag to write over existing files or folders
       const forceOverwrite = flags.f;
@@ -152,12 +163,14 @@ let cliCommands = function(execPath, fromCli) {
           //Only generate on valid file and folder input
           if (values[0].file && values[1].folder) {
 
+            console.log("<<<<<<<<<<< forceOverwrite", forceOverwrite);
+
             require('./dirgen')
               .default('generate', {
                 template: data[0],
                 output: data[1],
                 options: {
-                  forceOverwrite,
+                  forceOverwrite: forceOverwrite,
                   hideMessages
                 }
               }, fromCli);
