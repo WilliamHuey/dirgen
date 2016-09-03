@@ -1,6 +1,7 @@
 features
   require use
     test the require dirgen use
+      options only take in boolean values
     test home path output path
 
     on progress
@@ -10,6 +11,8 @@ features
     overwritten files or folders
 
 issues
+  fix eslint
+
   failure to generate file or folder on first run, but ok on later runs
 
 Module

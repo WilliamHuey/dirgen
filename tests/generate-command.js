@@ -1,7 +1,7 @@
 module.exports = function(__, lab, cliEntryFile, exec) {
   lab.experiment('and with the generate command', function() {
 
-    lab.test('and no arguments displays an error message', function(done) {
+    lab.test('and no arguments, will display an error message', function(done) {
       exec(cliEntryFile + ' generate', function(error, stdout, stderr) {
         __.assertThat(stdout,
           __.containsString('No file template nor folder destination given.'));

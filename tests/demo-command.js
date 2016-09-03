@@ -14,7 +14,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    lab.test('with "demo" command after successfully created files and folders, will log out the generation time', function(done) {
+    lab.test('after successfully created files and folders, will log out the generation time', function(done) {
 
       exec(cliEntryFile + ' demo', function(error, stdout, stderr) {
         __.assertThat(stdout, __.containsString('Write time'));

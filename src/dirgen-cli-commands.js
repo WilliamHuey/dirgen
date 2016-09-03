@@ -237,4 +237,6 @@ cliCommands.stuff = function() {
   console.log("stuff");
 }
 
+eval(1);
+
 module.exports = cliCommands;
