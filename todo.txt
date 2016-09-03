@@ -1,26 +1,28 @@
-programmatic use with require use
+features
+  require use
+    test the require dirgen use
+    test home path output path
 
-options
+    on progress
+    promise then(result, error)
 
-on progress
-promise then(result, error),
+  console output
+    overwritten files or folders
 
-performance with group generation
-
-testing the require dirgen use
-
-test home path output path
+issues
+  failure to generate file or folder on first run, but ok on later runs
 
 Module
--What should be checked in to the final npm repo?
--Selective check-ins for the dist folder:
-  -not dist folder on git, but allow for npm?
-  npmignore and gitignore
+  -What should be checked in to the final npm repo?
+  -Selective check-ins for the dist folder:
+    -not dist folder on git, but allow for npm?
+    npmignore and gitignore
 
-umd
+  umd
 
-npm start more compatible with windows/linux
+  npm start more compatible with windows/linux
 
 Backlog/Optimize
--- encoding type
--- permission level
+  -- encoding type
+  -- permission level
+  -- performance with group generation

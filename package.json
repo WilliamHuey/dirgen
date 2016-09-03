@@ -12,7 +12,7 @@
         "dirgen": "./bin/dirgen-cli-init.js"
     },
     "scripts": {
-        "watch-dev": "node_modules/webpack/bin/webpack.js --watch",
+        "watch": "node_modules/webpack/bin/webpack.js --watch",
         "build": "node_modules/webpack/bin/webpack.js --optimize-dedupe",
         "test": "node_modules/lab/bin/lab ./tests/integrity.js -vp -m 0"
     },
