@@ -1,8 +1,9 @@
 features
   require use
-    test the require dirgen use
+    test
       options only take in boolean values
-    test home path output path
+      home path output path
+      required the generate to be call, no 'on' call by itself
 
     on progress
     promise then(result, error)
@@ -24,6 +25,10 @@ Module
   umd
 
   npm start more compatible with windows/linux
+
+why dirgen
+  repetitive boilerplate projects
+  for unit testing when generating folders
 
 Backlog/Optimize
   -- encoding type

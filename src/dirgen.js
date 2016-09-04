@@ -42,6 +42,9 @@ let linesInfo = {
   topLevelIndex: {}
 };
 
+//Actions for the 'on' function of 'generate'
+let onEvtActions = {};
+
 //Convert the tilde in the output path to the
 //actual home directory when present at the first
 //of the line
@@ -294,6 +297,9 @@ const dirgen = function(action, actionParams, fromCli) {
                 console.log('Write time: %d nanoseconds', 0);
               }
 
+              //For the 'on' callback of 'done' to indicate the generation or processing is complete
+              onEvtActions.done();
+
             })();
           } catch (error) {
             console.log("Close file and generation error:", error);
@@ -312,8 +318,10 @@ export default function (action, actionParams, fromCli) {
     action = actionParams.action;
     console.log("action", action);
     console.log("actionParams", actionParams);
-    this.on = function() {
-      console.log("stuff happens");
+    this.on = function(onActions) {
+      Object.assign(onEvtActions, onActions);
+      // console.log("onEvtActions", onEvtActions);
+      console.log("stuff happens", onActions);
     };
     dirgen(action, actionParams, fromCli);
     return this;

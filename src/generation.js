@@ -124,7 +124,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           //this means that the folder did not exists
           if (e.syscall === 'stat') {
 
-            console.log("write the file ", structureCreatePath);
+            // console.log("write the file ", structureCreatePath);
 
             //Create the file when it does not exists
             yield writeFileAsync(structureCreatePath, '');
