@@ -30,5 +30,5 @@ lab.experiment('Cli commands when input is "dirgen"', function() {
 
 lab.experiment('"Require" the Dirgen module', function() {
   var exec = childProcess.exec;
-  require('./require-file')(__, lab, exec, path);
+  require('./require-file')(__, lab, cliEntryFile, exec, path);
 });

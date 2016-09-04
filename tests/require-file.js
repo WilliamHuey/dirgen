@@ -1,5 +1,16 @@
-module.exports = function(__, lab, exec, path) {
+module.exports = function(__, lab, cliEntryFile, exec, path) {
+
+  var proxyquire = require('proxyquire');
+
   lab.test('will not error out with valid template file and output directory', function(done) {
+
+    // var dirgen =  proxyquire('../node_modules/dirgen/bin/dirgen-cli-entry', {});
+    // dirgen.generate({
+    //   template: '',
+    //   output: '',
+    //   options: { hideMessages: true }
+    // });
+
     done();
   });
 
