@@ -12,8 +12,6 @@ features
     overwritten files or folders
 
 issues
-  fix eslint
-
   failure to generate file or folder on first run, but ok on later runs
 
 Module
