@@ -7,6 +7,7 @@
   },
   "root": true,
   "env": {
+    "es6": true,
     "node": true
   },
   "ecmaFeatures": {
@@ -30,7 +31,8 @@
     "superInFunctions": true,
     "templateStrings": true,
     "unicodeCodePointEscapes": true,
-    "globalReturn": true
+    "globalReturn": true,
+    "prefer-arrow-callback": false
   },
   "rules": {
     "strict": 0,
@@ -57,7 +59,10 @@
     "no-unreachable": 2,
     "use-isnan": 2,
     "block-scoped-var": 2,
-    "quotes": [1, "single"],
+    "quotes": [1, "single", {
+      avoidEscape: true,
+      allowTemplateLiterals: true
+    }],
     "no-shadow": 0,
     "no-shadow-restricted-names": 2,
     "no-unused-vars": [0, {
@@ -139,6 +144,8 @@
     "space-before-function-paren": [2, "never"],
     "space-infix-ops": 2,
     "keyword-spacing": 2,
-    "spaced-comment": 0
+    "spaced-comment": 0,
+    "global-require": 0,
+    "no-prototype-builtins": 0
   }
 }

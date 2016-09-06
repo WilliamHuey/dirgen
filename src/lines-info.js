@@ -4,7 +4,7 @@
 import singleLineInfoFunctions from './singleLine-info';
 
 let data = {};
-let linesInfo = function () {};
+const linesInfo = function() {};
 
 const linesInfoFunctions = {
   currentValue: () => {
@@ -36,10 +36,9 @@ export default Object.assign(linesInfo.prototype, {
       lineSetInfo
     };
 
-    let lineInfo = {
+    const lineInfo = {
       length: line.length,
-      trimLength: line.trim()
-        .length
+      trimLength: line.trim().length
     };
 
     //Only set the line count info for empty lines
@@ -47,11 +46,11 @@ export default Object.assign(linesInfo.prototype, {
 
     //Execute all other data gathering functions
     //for gathering data for lines
-    for (let key in linesInfoFunctions) {
+    Object.keys(linesInfoFunctions).forEach((key) => {
       if (key !== 'countLines') {
         linesInfoFunctions[key]();
       }
-    }
+    });
 
   },
   setLineData: (currentLine, linesInfo, validationResults) => {
@@ -61,8 +60,9 @@ export default Object.assign(linesInfo.prototype, {
     }
 
     //First encounter with content line
-    linesInfo.prevLineInfo ||
+    if (!linesInfo.prevLineInfo) {
       singleLineInfoFunctions.setFirstPrev(linesInfo, currentLine);
+    }
 
     //Set the indentation information of the
     //first encounter of a non - empty line

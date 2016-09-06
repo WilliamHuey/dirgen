@@ -5,11 +5,11 @@ import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
 
 //Should also detect indentation and well as symbols
-let lexer = function() {};
+const lexer = function() {};
 
 export default Object.assign(lexer.prototype, {
   lex: (line) => {
-    let scanner = strscan(line),
+    const scanner = strscan(line),
       lineTokenStats = {
         totalLength: line.length,
 
@@ -22,7 +22,7 @@ export default Object.assign(lexer.prototype, {
       };
 
     //Get indentation information
-    let indentInfo = detectIndent(line);
+    const indentInfo = detectIndent(line);
     lineTokenStats.indentAmount = indentInfo.amount;
     lineTokenStats.indentType = indentInfo.type;
 
@@ -47,7 +47,7 @@ export default Object.assign(lexer.prototype, {
         lineTokenStats.currentCharCode = line.charCodeAt(lineTokenStats.charPos);
 
         //Log all special character information
-        let characterInfo = lineTokenStats
+        const characterInfo = lineTokenStats
           .specialCharacters[lineTokenStats.currentCharCode];
         if (typeof characterInfo === 'undefined') {
           lineTokenStats
@@ -62,7 +62,7 @@ export default Object.assign(lexer.prototype, {
 
           //Update the character prior info
           characterInfo.count += 1;
-          let characterPosition = characterInfo.position;
+          const characterPosition = characterInfo.position;
           characterPosition.push(lineTokenStats.charPos);
           characterInfo.position = characterPosition;
           lineTokenStats.specialCharactersTypeCount += 1;

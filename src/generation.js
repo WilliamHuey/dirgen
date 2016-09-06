@@ -6,8 +6,8 @@ import path from 'path';
 //Vendor modules
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
-import fs from 'fs-extra-promise';
 import {
+  fs,
   existsAsync,
   mkdirAsync,
   writeFileAsync,
@@ -25,7 +25,7 @@ const validator = Validations;
 const tailCall = recursive.recur;
 
 //Log the lines that are not generated due to repeats
-let structureCreation = {
+const structureCreation = {
   generated: 0,
   notGenerated: 0,
   repeats: [],
@@ -34,7 +34,8 @@ let structureCreation = {
 
 const generationResolver = (structureCreation, contentLineCount, resolve) => {
 
-  if (structureCreation.generated + structureCreation.notGenerated  + structureCreation.skipped ===
+  if (structureCreation.generated +
+    structureCreation.notGenerated + structureCreation.skipped ===
     contentLineCount) {
     resolve(structureCreation);
   }
@@ -60,7 +61,7 @@ const logNonGenerated = tailCall((linesInfo, structureCreation,
 
   //Repeated lines with further nesting also gets recorded
   if (line.children.length > 0) {
-    let nonGeneratedChildren = line.children;
+    const nonGeneratedChildren = line.children;
     nonGeneratedChildren.forEach((line) => {
       line.childOfNonGen = true;
       logNonGenerated(linesInfo, structureCreation,
@@ -74,7 +75,7 @@ let createStructureTC = null;
 const createStructure = (linesInfo, lineInfo, rootPath,
   contentLineCount, validationResults, options, resolve, genFailures) => {
 
-  let {
+  const {
     structureName,
     inferType,
     nameDetails,
@@ -83,7 +84,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
     repeatedLine
   } = lineInfo;
 
-  let name = nameDetails.sanitizedName ||
+  const name = nameDetails.sanitizedName ||
     structureName,
     structureRoughPath = path.join(rootPath, name),
     structureCreatePath = normalizePath(structureRoughPath);
@@ -98,23 +99,20 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       }
 
       //Create the file type
-      const fileCreate = co.wrap(function* () {
+      const fileCreate = co.wrap(function* wrapFileCreate() {
 
         try {
 
           //File already exist situation mean it does not error out
-          let fileStat = yield statAsync(structureCreatePath);
+          const fileStat = yield statAsync(structureCreatePath);
 
           //Overwrite existing files when the flag is provided
           if (options.forceOverwrite) {
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
-          } else {
-
+          } else if (fileStat) {
             //Skip generating file
-            if (fileStat) {
-              structureCreation.skipped += 1;
-            }
+            structureCreation.skipped += 1;
           }
 
           generationResolver(structureCreation, contentLineCount, resolve);
@@ -140,7 +138,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             // message.error(`Generation error has occurred with file on
             //Line #${lineInfo.nameDetails.line}: ${structureName}.`);
 
-            genFailures.push(`Generation error has occurred with file on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+            genFailures.push(`Generation error has occurred with file on Line
+               #${lineInfo.nameDetails.line}: ${structureName}.`);
 
             //Failure to generate will be defined as a skip
             structureCreation.skipped += 1;
@@ -148,11 +147,11 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         }
       });
 
-      co(function* () {
+      co(function* coFileCreate() {
         try {
           yield fileCreate();
         } catch (error) {
-          console.log("File creation error:", error);
+          console.log('File creation error:', error);
         }
       });
 
@@ -161,7 +160,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         lineInfo, validationResults);
     }
   } else {
-    let parentPath = path.join(rootPath,
+    const parentPath = path.join(rootPath,
       (nameDetails.sanitizedName || structureName));
 
     let genFolder = false;
@@ -178,20 +177,18 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       genFolder = true;
 
       //Create the folder
-      const folderCreate = (function* () {
+      const folderCreate = (function* genFolderCreate() {
         try {
 
-          let fileStat = yield statAsync(parentPath);
+          const fileStat = yield statAsync(parentPath);
 
           //Overwrite existing folder when the flag is provided
           if (options.forceOverwrite) {
             yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
-          } else {
+          } else if (fileStat) {
             // Skip folder generation
-            if (fileStat) {
-              structureCreation.skipped += 1;
-            }
+            structureCreation.skipped += 1;
           }
 
           //When all generated structures are created with the non-generated
@@ -212,7 +209,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             generationResolver(structureCreation, contentLineCount, resolve);
           } else {
 
-            genFailures.push(`Generation error has occurred with folder on Line #${lineInfo.nameDetails.line}: ${structureName}.`);
+            genFailures.push(`Generation error has occurred with folder on Line
+               #${lineInfo.nameDetails.line}: ${structureName}.`);
 
             //Failure to generate will be defined as a skip
             structureCreation.skipped += 1;
@@ -221,39 +219,38 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         }
       });
 
-      co(function* () {
+      co(function* coFolderCreate() {
         try {
           yield folderCreate();
         } catch (error) {
-          console.log("Folder creation error:", error);
+          console.log('Folder creation error:', error);
         }
       });
 
 
     }
 
-    let nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
+    const nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
 
     //Ungenerated folder means a repeated line, but still attempt
     //to record the nested child of the repeated line
     if (nonGenFolder) {
       logNonGenerated(linesInfo, structureCreation, lineInfo, validationResults);
-    } else {
-      if (lineInfo.children.length > 0) {
+    } else if (lineInfo.children.length > 0) {
 
-        //Checks for non-repeated folder
-        lineInfo.children.forEach((line) => {
+      //Checks for non-repeated folder
+      lineInfo.children.forEach((line) => {
 
-          //Again check for repeated lines in the child level lines
-          if (typeof lineInfo.childRepeatedLine === 'undefined' &&
-          typeof line !== 'undefined') {
-            createStructureTC(linesInfo, line, parentPath,
-              contentLineCount, validationResults, options,
-              resolve, genFailures);
-          }
-        });
-      }
+        //Again check for repeated lines in the child level lines
+        if (typeof lineInfo.childRepeatedLine === 'undefined' &&
+        typeof line !== 'undefined') {
+          createStructureTC(linesInfo, line, parentPath,
+            contentLineCount, validationResults, options,
+            resolve, genFailures);
+        }
+      });
     }
+
   }
 
 };
@@ -262,13 +259,13 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 createStructureTC = tailCall(createStructure);
 
 //Top level lines kick off and for later child structure creation
-let startCreatingAtTopLevel = function(linesInfo, rootPath,
+function startCreatingAtTopLevel(linesInfo, rootPath,
   validationResults, actionParams, contentLineCount, options,
   resolve, genFailures) {
   //Take the outer-most level of elements which
   //serves as the initial generation set
   for (let i = 0; i < contentLineCount; i++) {
-    let topLevelLine = linesInfo.topLevel[i];
+    const topLevelLine = linesInfo.topLevel[i];
     if (typeof topLevelLine !== 'undefined') {
       createStructureTC(linesInfo, topLevelLine, rootPath,
         contentLineCount, validationResults, options, resolve, genFailures);
@@ -284,10 +281,10 @@ export default (linesInfo, rootPath, validationResults,
   const options = actionParams ? actionParams.options : {};
 
   //The total number of lines that are possible to generate
-  let contentLineCount = linesInfo.contentLineCount;
+  const contentLineCount = linesInfo.contentLineCount;
   return new Promise((resolve, reject) => {
 
-    const startGen = co.wrap(function* () {
+    const startGen = co.wrap(function* coStartGen() {
 
       //Remove all folders and files in the top level
       //of the template file
@@ -297,15 +294,15 @@ export default (linesInfo, rootPath, validationResults,
         let stat;
         try {
           for (let i = 0; i < contentLineCount; i++) {
-            let topLevelLine = linesInfo.topLevel[i];
+            const topLevelLine = linesInfo.topLevel[i];
 
             if (typeof topLevelLine !== 'undefined') {
-              let {
+              const {
                 nameDetails,
                 structureName
               } = topLevelLine;
 
-              let parentPath = path.join(rootPath,
+              const parentPath = path.join(rootPath,
                 (nameDetails.sanitizedName || structureName));
 
               stat = yield statAsync(parentPath);
@@ -319,7 +316,7 @@ export default (linesInfo, rootPath, validationResults,
           startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
              actionParams, contentLineCount, options, resolve, genFailures);
         } catch (e) {
-          let statUndefined = typeof stat === "undefined";
+          const statUndefined = typeof stat === 'undefined';
 
           //when stat is "undefined", create the structure,
           //because it does not exists
@@ -343,11 +340,11 @@ export default (linesInfo, rootPath, validationResults,
       }
     });
 
-    co(function* () {
+    co(function* coStartGen() {
       try {
         yield startGen();
       } catch (error) {
-        console.log("Start generation error:", error);
+        console.log('Start generation error:', error);
       }
     });
   });

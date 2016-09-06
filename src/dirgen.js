@@ -62,8 +62,6 @@ const dirgen = function(action, actionParams, fromCli) {
   let execPathDemo = null;
   let creationTemplatePath = '';
 
-  console.log("action is now ", action);
-
   if (util.isObject(action)) {
     actionDemo = action.action;
     execPathDemo = action.execPath;
@@ -71,17 +69,13 @@ const dirgen = function(action, actionParams, fromCli) {
 
   if (typeof action.action !== 'undefined' &&
    !actionParams.settings) {
-     console.log("for demo ");
+
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
       'template', actionParams, execPathDemo);
   } else {
 
-    console.log("gen action", action);
-    console.log("gen actionParams", actionParams);
     if (actionParams.settings) {
-
-      console.log("require use");
 
       //Reformat the actionParams object
       let requiredActionParams = {};
@@ -274,35 +268,52 @@ const dirgen = function(action, actionParams, fromCli) {
                 }
               }
 
-              console.log(`Template info: ${linesInfo.totalLineCount} total ${util.pluralize('line', linesInfo.totalLineCount)} (${linesInfo.contentLineCount} content, ${linesInfo.totalLineCount - linesInfo.contentLineCount} ${util.pluralize('blank', linesInfo.totalLineCount)})`);
+              console.log(`Template info: \
+${linesInfo.totalLineCount} total \
+${util.pluralize('line', linesInfo.totalLineCount)} \
+(${linesInfo.contentLineCount} content, \
+${linesInfo.totalLineCount - linesInfo.contentLineCount} \
+${util.pluralize('blank', linesInfo.totalLineCount)})`);
 
-              console.log(`Template read: ${validationResults.errors.length} ${util.pluralize('error', validationResults.errors.length)} and ${validationResults.warnings.length} ${util.pluralize('warning', validationResults.warnings.length)}`);
+              console.log(`Template read: \
+${validationResults.errors.length} \
+${util.pluralize('error',
+validationResults.errors.length)} and \
+${validationResults.warnings.length} \
+${util.pluralize('warning',
+validationResults.warnings.length)}`);
 
               //Non-generated count can be larger than the warning count
               //because the warning logging stops checking items for the top-most repeated folder
 
               //When there is an error log, genResult is null
               if (genResult === null) {
-                console.log(`Creation count: 0 generated, ${linesInfo.contentLineCount} not generated, 0 skipped`);
+                console.log(`Creation count: 0 generated, \
+${linesInfo.contentLineCount} not \
+generated, 0 skipped`);
               } else {
-                console.log(`Creation count: ${genResult.generated} generated, ${genResult.notGenerated} not generated, ${genResult.skipped} skipped`);
+                console.log(`Creation count: \
+${genResult.generated} generated, \
+${genResult.notGenerated} not generated, \
+${genResult.skipped} skipped`);
               }
 
               console.log(`Generation failures: ${genFailures.length} write errors`);
 
               //On error conditions, no timeDiff is needed
               if (timeDiff && genResult.generated > 0) {
-                console.log('Write time: %d nanoseconds', timeDiff[0] * 1e9 + timeDiff[1]);
+                console.log('Write time: %d nanoseconds', (timeDiff[0] * 1e9) + timeDiff[1]);
               } else {
                 console.log('Write time: %d nanoseconds', 0);
               }
 
-              //For the 'on' callback of 'done' to indicate the generation or processing is complete
-              onEvtActions.done();
+              //For the 'on' callback of 'done' to indicate the generation or processing is complete, but
+              //running Dirgen from the cli will trigger a 'done' callback
+              if (onEvtActions.done) onEvtActions.done();
 
             })();
           } catch (error) {
-            console.log("Close file and generation error:", error);
+            console.log('Close file and generation error:', error);
           }
         });
 
@@ -310,23 +321,20 @@ const dirgen = function(action, actionParams, fromCli) {
     });
 };
 
-export default function (action, actionParams, fromCli) {
+export default function(action, actionParams, fromCli) {
 
   if (!fromCli && action.action !== 'demo') {
-    console.log("!fromCli", fromCli);
     [actionParams, action] = [action, actionParams];
     action = actionParams.action;
-    console.log("action", action);
-    console.log("actionParams", actionParams);
-    this.on = function(onActions) {
+
+    this.on = function onActionsOn(onActions) {
       Object.assign(onEvtActions, onActions);
-      // console.log("onEvtActions", onEvtActions);
-      console.log("stuff happens", onActions);
     };
+
     dirgen(action, actionParams, fromCli);
     return this;
   } else {
     dirgen(action, actionParams, fromCli);
   }
 
-};
+}

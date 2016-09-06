@@ -10,16 +10,17 @@ import logValidations from './log-validations';
 
 const validator = Validations;
 
-let topLineNonRepeats = new Map();
+const topLineNonRepeats = new Map();
 
-let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
+const logTopLevel = (linesInfo, currentLine, isFirstLine) => {
 
   //Actual first line will encounter a null firstLine
   //because nothing was set yet
   //Indent amount of the first top level will equate to its top level siblings
   //Explicit detailing of top line will also suffice
   if (linesInfo.firstLine === null ||
-    linesInfo.firstLine.nameDetails.indentAmount === currentLine.nameDetails.indentAmount || isFirstLine) {
+    linesInfo.firstLine.nameDetails.indentAmount ===
+    currentLine.nameDetails.indentAmount || isFirstLine) {
     currentLine.isTopLine = true;
     currentLine.repeatedChildren = {};
     linesInfo.topLevel.push(currentLine);
@@ -34,20 +35,20 @@ let logTopLevel = (linesInfo, currentLine, isFirstLine) => {
   }
 };
 
-let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
+const logChildrenLevel = (linesInfo, currentLine, firstChild) => {
 
   if (firstChild) {
 
     //The first occurrence of child structure will need
     //create an object on parent to log repeats on current level
     if (typeof currentLine.parent.repeatedChildren !== 'undefined') {
-      let repeatedChildren = currentLine.parent.repeatedChildren;
+      const repeatedChildren = currentLine.parent.repeatedChildren;
       repeatedChildren[currentLine.structureName] = currentLine.nameDetails.line;
     } else {
 
       //First child of any folder will create empty object if it does not
       //exist to track any possible children for the current line
-      let repeatedChildren = currentLine.parent.repeatedChildren = {};
+      const repeatedChildren = currentLine.parent.repeatedChildren = {};
       repeatedChildren[currentLine.structureName] = currentLine.nameDetails.line;
 
       //May or might not have siblings, prepare for the case
@@ -58,8 +59,7 @@ let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
   } else if (!currentLine.isTopLine && currentLine.parent !== null) {
 
     //Not the first child of siblings lines
-    if (currentLine.parent.repeatedChildren
-      [currentLine.structureName]) {
+    if (currentLine.parent.repeatedChildren[currentLine.structureName]) {
 
       //Repeated appearance of the line in a parent
       currentLine.childRepeatedLine = true;
@@ -71,7 +71,7 @@ let logChildrenLevel = (linesInfo, currentLine, firstChild) => {
   }
 };
 
-let singleLineInfoFunctions = {
+const singleLineInfoFunctions = {
   setFirstPrev: (linesInfo, currentLine) => {
     if (linesInfo.prevLineInfo === null) {
       currentLine.isFirstLine = true;
@@ -91,11 +91,11 @@ let singleLineInfoFunctions = {
 
     //If the line has a slash in front than it is a folder,
     //regardless of whether or not it has periods in its name
-    if (currentLine.nameDetails.specialCharacters
-      .hasOwnProperty(structureMarker.folder)) {
+    if (currentLine.nameDetails
+      .specialCharacters.hasOwnProperty(structureMarker.folder)) {
       currentLine.inferType = 'folder';
-    } else if (currentLine.nameDetails.specialCharacters
-      .hasOwnProperty(structureMarker.file)) {
+    } else if (currentLine.nameDetails
+      .specialCharacters.hasOwnProperty(structureMarker.file)) {
 
       //if a one or more periods in the name than it is assumed to be a file
       currentLine.inferType = 'file';
@@ -113,9 +113,8 @@ let singleLineInfoFunctions = {
   },
   compareIndent: guard()
     .when((prevLineIndent, currentLineIndent, linesInfo,
-      currentLine, isFirstLine) => {
-      return isFirstLine;
-    }, (prevLineIndent, currentLineIndent, linesInfo,
+      currentLine, isFirstLine) => isFirstLine,
+      (prevLineIndent, currentLineIndent, linesInfo,
       currentLine, isFirstLine) => {
 
       //Assume file type unless the inferType is already set
@@ -137,10 +136,9 @@ let singleLineInfoFunctions = {
     })
 
   //Previous line indent is equal to the current line
-    .when((prevLineIndent, currentLineIndent) => {
-      return prevLineIndent === currentLineIndent;
-
-    }, (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
+    .when((prevLineIndent, currentLineIndent) =>
+     (prevLineIndent === currentLineIndent),
+     (prevLineIndent, currentLineIndent, linesInfo, currentLine) => {
 
       //Line is the sibling of top level sibling
       //Obvious check case, but need further checks below
@@ -169,13 +167,11 @@ let singleLineInfoFunctions = {
       if (typeof currentLine.inferType === 'undefined') {
         currentLine.inferType = 'file';
       }
-
     })
-    .when((prevLineIndent, currentLineIndent) => {
-
-      //Previous line indent is less than current
-      return prevLineIndent < currentLineIndent;
-    }, (prevLineIndent, currentLineIndent, linesInfo,
+    //Previous line indent is less than current
+    .when((prevLineIndent, currentLineIndent) =>
+     (prevLineIndent < currentLineIndent),
+     (prevLineIndent, currentLineIndent, linesInfo,
       currentLine, isFirstLine, validationResults) => {
 
       //Line is the sibling of top level sibling
@@ -184,7 +180,9 @@ let singleLineInfoFunctions = {
 
       //Validate the indent level of child relative to parent
       logValidations(
-        validator.properIndentLevel(linesInfo.firstLine.nameDetails.indentAmount, linesInfo.totalLineCount,
+        validator.properIndentLevel(
+          linesInfo.firstLine.nameDetails.indentAmount,
+          linesInfo.totalLineCount,
           currentLine.structureName,
           linesInfo.firstIndentationAmount,
           prevLineIndent,
@@ -207,12 +205,10 @@ let singleLineInfoFunctions = {
       if (typeof currentLine.inferType === 'undefined') {
         currentLine.inferType = 'file';
       }
-
     })
-    .when((prevLineIndent, currentLineIndent) => {
-      return prevLineIndent > currentLineIndent;
-
-    }, (prevLineIndent, currentLineIndent,
+    .when((prevLineIndent, currentLineIndent) =>
+     (prevLineIndent > currentLineIndent),
+     (prevLineIndent, currentLineIndent,
        linesInfo, currentLine,
        isFirstLine, validationResults) => {
 
@@ -228,7 +224,9 @@ let singleLineInfoFunctions = {
 
         //Validate the indent level of child relative to parent
         logValidations(
-          validator.properIndentLevel(linesInfo.firstLine.nameDetails.indentAmount, linesInfo.totalLineCount,
+          validator.properIndentLevel(
+            linesInfo.firstLine.nameDetails.indentAmount,
+            linesInfo.totalLineCount,
             currentLine.structureName, linesInfo.firstIndentationAmount,
             prevLine.nameDetails.indentAmount, currentLineIndent,
             linesInfo.firstIndentationType,
@@ -278,9 +276,7 @@ let singleLineInfoFunctions = {
         }
       }
     })
-    .any(() => {
-      return;
-    }),
+    .any(() => {}),
   relations: (linesInfo, currentLine, isFirstLine, validationResults) => {
 
     //Determine the indentation level

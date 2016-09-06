@@ -6,20 +6,20 @@ import RenderKid from 'renderkid';
 const renderKid = new RenderKid();
 
 renderKid.style({
-  "message-text": {
-    display: "inline",
-    background: "white",
-    color: "black",
+  'message-text': {
+    display: 'inline',
+    background: 'white',
+    color: 'black',
     paddingLeft: 1
   },
-  "message-header-error": {
-    background: "red",
-    color: "black",
+  'message-header-error': {
+    background: 'red',
+    color: 'black',
     padding: 2
   },
-  "message-header-warning": {
-    background: "yellow",
-    color: "black",
+  'message-header-warning': {
+    background: 'yellow',
+    color: 'black',
     padding: 2
   }
 });

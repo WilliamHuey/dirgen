@@ -10,13 +10,12 @@ import structureMarker from './character-code';
 
 const slashChar = String.fromCharCode(structureMarker.folder);
 const tailCall = recursive.recur;
-let validator = function () {};
+const validator = function() {};
 
 export default Object.assign(validator.prototype, {
   cleanFileName: (specialCharactersTypeCount, lineNum, content) => {
-    let cleanedName = sanitize(content);
-
-    let isUnCleanName = cleanedName !== content;
+    const cleanedName = sanitize(content);
+    const isUnCleanName = cleanedName !== content;
 
     if (isUnCleanName && content.length < 255) {
 
@@ -88,7 +87,8 @@ export default Object.assign(validator.prototype, {
           message: `Line #${lineNum}:
              '${content.trim()}',
              has indent type of '${currentIndentType}'
-             which is inconsistent with the first defined outdent type of '${firstIndentType}'. Nothing was generated.`
+             which is inconsistent with the first defined outdent type of
+              '${firstIndentType}'. Nothing was generated.`
         }
       };
     } else {
@@ -124,7 +124,8 @@ export default Object.assign(validator.prototype, {
 
       if (currentIndentAmt < firstLineIndentAmt) {
 
-        let formatFirstIndentType = firstIndentType === null ? '' : firstIndentType;
+        const formatFirstIndentType = firstIndentType === null ?
+        '' : firstIndentType;
 
         return {
           type: 'error',
@@ -132,9 +133,12 @@ export default Object.assign(validator.prototype, {
             number: lineNum,
             message: `Line #${lineNum}:
               '${content.trim()}', has an indent
-              amount of ${currentIndentAmt} ${util.pluralize(formatFirstIndentType, currentIndentAmt)},
-              which is less than the
-              first line indent amount of ${firstLineIndentAmt} ${util.pluralize(firstIndentType, firstLineIndentAmt)}. Nothing was generated.`
+              amount of ${currentIndentAmt}
+              ${util.pluralize(formatFirstIndentType, currentIndentAmt)},
+              which is less than the first line indent amount of
+              ${firstLineIndentAmt}
+              ${util.pluralize(firstIndentType, firstLineIndentAmt)}.
+              Nothing was generated.`
           }
         };
 
@@ -142,22 +146,27 @@ export default Object.assign(validator.prototype, {
       !(currentIndentAmt % firstIndentAmt === 0) &&
       !(currentIndentAmt >= firstIndentAmt)) {
 
-      let formatCurrentIndentType = currentIndentType === null ? '' : currentIndentType;
+      const formatCurrentIndentType = currentIndentType === null ? '' : currentIndentType;
 
       return {
         type: 'error',
         line: {
           number: lineNum,
           message: `Line #${lineNum}:
-              '${content.trim()}', has indent amount of ${currentIndentAmt} ${util.pluralize(formatCurrentIndentType, currentIndentAmt)} which is inconsistent with the
-              first defined outdent of ${util.pluralize(firstIndentType, firstIndentAmt)}. Nothing was generated.`
+              '${content.trim()}', has indent amount
+              of ${currentIndentAmt}
+              ${util.pluralize(formatCurrentIndentType, currentIndentAmt)}
+              which is inconsistent with the
+              first defined outdent of
+              ${util.pluralize(firstIndentType, firstIndentAmt)}.
+              Nothing was generated.`
         }
       };
     } else if (indentType !== 'outdent' &&
       !(Math.abs(currentIndentAmt - prevLineIndentAmt) ===
         firstIndentAmt)) {
 
-      let currentLineIndent = Math.abs(currentIndentAmt - prevLineIndentAmt);
+      const currentLineIndent = Math.abs(currentIndentAmt - prevLineIndentAmt);
 
       //Scaling indent factor and firstIndent is the same
       return {
@@ -166,9 +175,13 @@ export default Object.assign(validator.prototype, {
           number: lineNum,
           message: `Line #${lineNum}:
             '${content.trim()}', has an indent
-            amount of ${util.pluralize(currentIndentType, currentLineIndent)} relative to parent folder,
+            amount of
+            ${util.pluralize(currentIndentType, currentLineIndent)}
+            relative to parent folder,
             which is different from the
-            first defined indent amount of ${util.pluralize(firstIndentType, firstIndentAmt)}. Nothing was generated.`
+            first defined indent amount
+            of ${util.pluralize(firstIndentType, firstIndentAmt)}.
+            Nothing was generated.`
         }
       };
 
@@ -204,13 +217,14 @@ export default Object.assign(validator.prototype, {
     let repeatedFirstSiblingLine = '';
     if ((line.parent && !line.earliestSiblingLine)) {
 
-      let repeatedSiblings = line.parent.repeatedChildren;
+      const repeatedSiblings = line.parent.repeatedChildren;
 
-      repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings[line.structureName]}.`;
+      repeatedFirstSiblingLine = `First appearance of sibling is on line
+       #${repeatedSiblings[line.structureName]}.`;
     } else if (line.parent === null) {
 
       //For top level line repeats
-      let repeatedSiblings = linesInfo.topLevelIndex[line.structureName];
+      const repeatedSiblings = linesInfo.topLevelIndex[line.structureName];
 
       repeatedFirstSiblingLine = `First appearance of sibling is on line #${repeatedSiblings}.`;
     }
@@ -257,7 +271,8 @@ export default Object.assign(validator.prototype, {
         line: {
           number: lineNum,
           message: `Line #${lineNum}: '${structureName}',
-           has mixed tabs and spaces on the left of first non-blank character. Nothing was generated.`
+           has mixed tabs and spaces on the left of first non-blank character.
+            Nothing was generated.`
         }
       };
     } else {
