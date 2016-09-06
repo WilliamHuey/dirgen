@@ -4,7 +4,7 @@
 import singleLineInfoFunctions from './singleLine-info';
 
 let data = {};
-const linesInfo = function() {};
+function linesInfo() {}
 
 const linesInfoFunctions = {
   currentValue: () => {

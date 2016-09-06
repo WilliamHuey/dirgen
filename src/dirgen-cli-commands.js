@@ -1,7 +1,7 @@
 'use strict';
 
 //Add support for features in ES2015 as maps and promises
-import "babel-polyfill";
+import 'babel-polyfill';
 
 //Native modules
 import fs from 'fs';
@@ -22,7 +22,7 @@ import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
 
 //Array of cli commands for sync and async operations
-const { commands, asyncCommands} =  validCliCommands;
+const { commands, asyncCommands } = validCliCommands;
 
 //Execution directory gives the proper path for the demo example
 const cli = nash();
@@ -50,10 +50,11 @@ if (!includes(commands, cliCommand) && cliArgs.length > 2 &&
   isValidCommand = true;
 }
 
-let cliCommands = function(execPath, fromCli) {
+const cliCommands = (execPath, fromCli) => {
 
   if (!fromCli) {
-    let dirgen = require('./dirgen');
+    const dirgen = require('./dirgen');
+
     dirgen.default({
         action: 'generate',
 
@@ -67,7 +68,7 @@ let cliCommands = function(execPath, fromCli) {
   //Show an example of how the module is used
   cli
     .command('demo')
-    .handler(function(data, flags, done) {
+    .handler((data, flags, done) => {
 
       //Check for overwrite flag to write over existing files or folders
       let forceOverwrite = false;
@@ -95,7 +96,7 @@ let cliCommands = function(execPath, fromCli) {
   cli
     .command('generate')
     .name(['gen', 'g'])
-    .handler(function(data, flags, done) {
+    .handler((data, flags, done) => {
 
       //Check for overwrite flag to write over existing files or folders
       const forceOverwrite = flags.f;
@@ -116,35 +117,37 @@ let cliCommands = function(execPath, fromCli) {
       Promise.all([
 
         //Check for file template
-        new Promise(function(resolve, reject) {
-            fs.stat(data[0], function(error) {
+        new Promise((resolve, reject) => {
+            fs.stat(data[0], (error) => {
               if (error) {
-                message('Not a valid file. Need a plain text file format in the first command input.');
+                message(`Not a valid file. Need a plain text file
+                format in the first command input.`);
                 return reject({
                   file: false
                 });
-              } else {
+              } else if (!isTextPath(data[0])) {
 
                 //Check for text file
-                if (!isTextPath(data[0])) {
-                  message('Not a valid template file. Please provide a plain text file format in the first command input.');
-                  return resolve({
-                    file: false
-                  });
-                } else {
-                  return resolve({
-                    file: true
-                  });
-                }
+                message(`Not a valid template file. Please
+                  provide a plain text file format in
+                  the first command input.`);
+                return resolve({
+                  file: false
+                });
+              } else {
+                return resolve({
+                  file: true
+                });
               }
             });
           }),
 
         //Check for folder
-        new Promise(function(resolve, reject) {
-          fs.stat(data[1], function(error) {
+        new Promise((resolve, reject) => {
+          fs.stat(data[1], (error) => {
             if (error) {
-              message('Not a valid folder. Please provide a valid folder in the second command input.');
+              message(`Not a valid folder. Please provide a
+                valid folder in the second command input.`);
               return reject({
                 folder: false
               });
@@ -156,7 +159,7 @@ let cliCommands = function(execPath, fromCli) {
           });
         })
       ])
-        .then(function(values) {
+        .then((values) => {
 
           //Only generate on valid file and folder input
           if (values[0].file && values[1].folder) {
@@ -165,19 +168,19 @@ let cliCommands = function(execPath, fromCli) {
                 template: data[0],
                 output: data[1],
                 options: {
-                  forceOverwrite: forceOverwrite,
-                  hideMessages
+                  'forceOverwrite': forceOverwrite,
+                  'hideMessages': hideMessages
                 }
               }, fromCli);
           }
-        }, function() {});
+        }, () => {});
     });
 
   //Get assistance on the command use of this module
   cli
     .command('help')
     .name('h')
-    .handler(function(data, flags, done) {
+    .handler((data, flags, done) => {
       console.log(helpText);
     });
 
@@ -186,19 +189,19 @@ let cliCommands = function(execPath, fromCli) {
     cliCommand === '-h' ||
     cliArgs.length === 2) {
 
-    cli.run(['', '', 'help'], function() {});
+    cli.run(['', '', 'help'], () => {});
   }
 
   if (includes(asyncCommands, cliCommand)) {
 
-    const getJSON = co.wrap(function* (cli) {
+    const getJSON = co.wrap(function* coGetJsonWrap(cli) {
       let packageJson = {};
 
       //Get the version from the package.json file
       cli
         .command('version')
         .name('v')
-        .handler(function(data, flags, done) {
+        .handler((data, flags, done) => {
           console.log(`Dirgen v${packageJson.version}`);
         });
 
@@ -207,11 +210,11 @@ let cliCommands = function(execPath, fromCli) {
        packageJson = yield readJsonAsync(
         path.resolve(execPath, '../package.json'));
 
-      cli.run(['', '', 'version'], function() {});
+      cli.run(['', '', 'version'], () => {});
 
     });
 
-    co(function* () {
+    co(function* coGetJson() {
       try {
         yield getJSON(cli);
       } catch (error) {
@@ -222,14 +225,10 @@ let cliCommands = function(execPath, fromCli) {
   } else if (isValidCommand) {
 
     //Run the supplied command if it one of the existing commands
-    cli.run(cliArgs, function() {});
+    cli.run(cliArgs, () => {});
   }
 
   return this;
 };
-
-cliCommands.stuff = function() {
-  console.log("stuff");
-}
 
 module.exports = cliCommands;

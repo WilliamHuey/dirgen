@@ -271,7 +271,7 @@ function startCreatingAtTopLevel(linesInfo, rootPath,
         contentLineCount, validationResults, options, resolve, genFailures);
     }
   }
-};
+}
 
 export default (linesInfo, rootPath, validationResults,
   actionParams, genFailures) => {

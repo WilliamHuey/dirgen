@@ -13,6 +13,7 @@ features
 
 issues
   failure to generate file or folder on first run, but ok on later runs
+  remove 'use strict'
 
 Module
   -What should be checked in to the final npm repo?

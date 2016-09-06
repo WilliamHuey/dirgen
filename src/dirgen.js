@@ -24,7 +24,7 @@ import generateStructure from './generation';
 let timeDiff;
 
 //Track the status of the lines
-let linesInfo = {
+const linesInfo = {
   prevLineInfo: null,
   currentValue: null,
   contentLineCount: 0,
@@ -43,12 +43,12 @@ let linesInfo = {
 };
 
 //Actions for the 'on' function of 'generate'
-let onEvtActions = {};
+const onEvtActions = {};
 
 //Convert the tilde in the output path to the
 //actual home directory when present at the first
 //of the line
-const convertHome = function(outPath) {
+const convertHome = (outPath) => {
   if (outPath.indexOf('~') === 0) {
     return os.homedir() + outPath.slice(1);
   } else {
@@ -56,7 +56,8 @@ const convertHome = function(outPath) {
   }
 };
 
-const dirgen = function(action, actionParams, fromCli) {
+const dirgen = (action, actionParams, fromCli) => {
+
   //Demo input params are different from typical generation
   let actionDemo = null;
   let execPathDemo = null;
@@ -73,32 +74,30 @@ const dirgen = function(action, actionParams, fromCli) {
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
       'template', actionParams, execPathDemo);
+  } else if (actionParams.settings) {
+
+    //Reformat the actionParams object
+    const requiredActionParams = {};
+    let { output } = actionParams.settings;
+    const { template, options } = actionParams.settings;
+
+    //Check for home directory for output path
+    output = convertHome(output);
+    Object.assign(requiredActionParams, { output, template, options });
+    actionParams = requiredActionParams;
+
+    //From 'require' use
+    creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   } else {
 
-    if (actionParams.settings) {
-
-      //Reformat the actionParams object
-      let requiredActionParams = {};
-      let {output, template, options} = actionParams.settings;
-
-      //Check for home directory for output path
-      output = convertHome(output);
-      Object.assign(requiredActionParams, {output, template, options})
-      actionParams = requiredActionParams;
-
-      //From 'require' use
-      creationTemplatePath = commandTypeAction(action, 'template', actionParams);
-    } else {
-
-      //From cli - Non-demo generation case
-      creationTemplatePath = commandTypeAction(action, 'template', actionParams);
-    }
+    //From cli - Non-demo generation case
+    creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   }
 
   //Group the errors and warnings together
   //to avoid second pass through if errors
   //and delay warning outputs until the end
-  let validationResults = {
+  const validationResults = {
     errors: [],
     warnings: []
   };
@@ -111,7 +110,7 @@ const dirgen = function(action, actionParams, fromCli) {
 
       //Get properties from the current line
       //in detail with the lexer
-      let lexResults = lexer.lex(line);
+      const lexResults = lexer.lex(line);
 
       //Accumulate general information lines
       addLinesInfo.setGeneralData(line, linesInfo);
@@ -185,16 +184,16 @@ const dirgen = function(action, actionParams, fromCli) {
       let genResult = null;
 
       //Log the failed to generate files or folders
-      let genFailures = [];
+      const genFailures = [];
 
-      (function(co) {
+      (function coGenerateIif(co) {
 
-        co(function* () {
+        co(function* coGenerate() {
           try {
-            yield co.wrap(function* () {
+            yield co.wrap(function* coWrapGenerate() {
 
               //Determine the output filepath of the generated
-              let rootPath = commandTypeAction((actionDemo || action),
+              const rootPath = commandTypeAction((actionDemo || action),
                 'output', actionParams, execPathDemo);
 
               //Should not be generated with no lines in the file
@@ -233,7 +232,7 @@ const dirgen = function(action, actionParams, fromCli) {
 
               //Last stage before generation with status check
               if (hasContent) {
-                let errors = validationResults.errors;
+                const errors = validationResults.errors;
                 if (errors.length > 0 && !hideMessages) {
 
                   printValidations(message, 'error', errors, errors.length);
@@ -245,7 +244,7 @@ const dirgen = function(action, actionParams, fromCli) {
 
                   //Generate the content
                   //Async nature will need the later logging to be delay
-                  let time = process.hrtime();
+                  const time = process.hrtime();
 
                   genResult = yield generateStructure(linesInfo, rootPath,
                      validationResults, normalizedActionParams, genFailures);
@@ -260,12 +259,10 @@ const dirgen = function(action, actionParams, fromCli) {
                       validationResults.warnings.length);
                   }
                 }
-              } else {
-                if (!hideMessages) {
+              } else if (!hideMessages) {
 
-                  //No content in the template file produces only one error
-                  message.error(validationResults.errors[0].message);
-                }
+                //No content in the template file produces only one error
+                message.error(validationResults.errors[0].message);
               }
 
               console.log(`Template info: \
@@ -307,8 +304,9 @@ ${genResult.skipped} skipped`);
                 console.log('Write time: %d nanoseconds', 0);
               }
 
-              //For the 'on' callback of 'done' to indicate the generation or processing is complete, but
-              //running Dirgen from the cli will trigger a 'done' callback
+              //For the 'on' callback of 'done' to indicate the generation
+              //or processing is complete, but running Dirgen from the
+              //cli will trigger a 'done' callback
               if (onEvtActions.done) onEvtActions.done();
 
             })();

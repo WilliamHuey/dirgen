@@ -10,7 +10,7 @@ import structureMarker from './character-code';
 
 const slashChar = String.fromCharCode(structureMarker.folder);
 const tailCall = recursive.recur;
-const validator = function() {};
+function validator() {}
 
 export default Object.assign(validator.prototype, {
   cleanFileName: (specialCharactersTypeCount, lineNum, content) => {
