@@ -40,17 +40,18 @@ const message = (msg) => {
 //Command from console
 const cliCommand = cliArgs[2];
 
-//Non-matching commands will trigger the help doc
-let isValidCommand = false;
-if (!includes(commands, cliCommand) && cliArgs.length > 2 &&
-  !includes(asyncCommands, cliCommand)) {
-  console.log(`Dirgen: '${cliCommand}'
-  is not a recognized command. Type 'dirgen --help' for a list of commands.`);
-} else {
-  isValidCommand = true;
-}
-
 const cliCommands = (execPath, fromCli) => {
+
+  //Non-matching commands will trigger the help doc
+  let isValidCommand = false;
+  if (!includes(commands, cliCommand) && cliArgs.length > 2 &&
+    !includes(asyncCommands, cliCommand) &&
+    fromCli) {
+    console.log(`Dirgen: '${cliCommand}'
+    is not a recognized command. Type 'dirgen --help' for a list of commands.`);
+  } else {
+    isValidCommand = true;
+  }
 
   if (!fromCli) {
     const dirgen = require('./dirgen');

@@ -10,6 +10,7 @@ features
 
   console output
     overwritten files or folders
+    complete hiding of all output
 
 issues
   failure to generate file or folder on first run, but ok on later runs
