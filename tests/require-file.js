@@ -1,68 +1,83 @@
-module.exports = function(__, lab, cliEntryFile, exec, path) {
+module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
-  var proxyquire = require('proxyquire');
+  lab.after(function (done) {
+    exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+      done();
+    });
+  });
 
-  var dirgenCliEntry = __dirname +  '/../bin/dirgen-cli-entry.js';
+  lab.experiment('checking for input configuration', function() {
+    var proxyquire = require('proxyquire');
 
-  var fixtureDir = __dirname +  '/../tests/fixtures';
+    var dirgenCliEntry = __dirname +  '/../bin/dirgen-cli-entry.js';
 
-  lab.test('will not error out with valid template file and output directory', function(done) {
+    var fixtureDir = __dirname +  '/fixtures';
 
-    var dirgen =  proxyquire(dirgenCliEntry, {});
+    lab.test('will not error out with valid template file and output directory', function(done) {
 
-    dirgen
-      .generate({
-        template: (fixtureDir + '/top-level-repeated-line.txt'),
-        output: (__dirname +  '/../tests/' + '/case-outputs/'),
-        options: { hideMessages: true }
-      })
-      .on({
-        done: function() {
-          console.log('it is finally finished')
-          done();
-        }
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/not-error-out-valid-template-and-output-directory'))
+      .then(function() {
+
+        var dirgen = proxyquire(dirgenCliEntry, {});
+
+        dirgen
+          .generate({
+            template: (fixtureDir + '/top-level-repeated-line.txt'),
+            output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory'),
+            options: { hideMessages: true }
+          })
+          .on({
+            done: function(results) {
+              __.assertThat(results.errors, __.hasSize(0));
+              done();
+            }
+          });
       });
 
+    });
+
+    lab.test('will error out with invalid template file',
+    function(done) {
+      done();
+    });
+
+    lab.test('will error out with invalid output directory',
+    function(done) {
+      done();
+    });
+
+    lab.test('will not error out without any "options" defined ', function(done) {
+      done();
+    });
+
+    lab.test('will not error out with valid option "force"', function(done) {
+      done();
+    });
+
+    lab.test('will not error out with valid boolean value for "force"', function(done) {
+      done();
+    });
+
+    lab.test('will error out with invalid non-boolean value for "force"', function(done) {
+      done();
+    });
+
+    lab.test('will not error with valid option "silent"',
+    function(done) {
+      done();
+    });
+
+    lab.test('will error out with invalid non-boolean value for "silent"', function(done) {
+      done();
+    });
+
+    lab.test('will error out with only the options key, no "template" or "output" key',
+    function(done) {
+      done();
+    });
+
   });
 
-  lab.test('will error out with invalid template file',
-  function(done) {
-    done();
-  });
-
-  lab.test('will error out with invalid output directory',
-  function(done) {
-    done();
-  });
-
-  lab.test('will not error out without any "options" defined ', function(done) {
-    done();
-  });
-
-  lab.test('will not error out with valid option "force"', function(done) {
-    done();
-  });
-
-  lab.test('will not error out with valid boolean value for "force"', function(done) {
-    done();
-  });
-
-  lab.test('will error out with invalid non-boolean value for "force"', function(done) {
-    done();
-  });
-
-  lab.test('will not error with valid option "silent"',
-  function(done) {
-    done();
-  });
-
-  lab.test('will error out with invalid non-boolean value for "silent"', function(done) {
-    done();
-  });
-
-  lab.test('will error out with only the options key, no "template" or "output" key',
-  function(done) {
-    done();
-  });
 
 };

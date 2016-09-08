@@ -28,7 +28,7 @@ lab.experiment('Cli commands when input is "dirgen"', function() {
   require('./file-safety-check')(__, lab, cliEntryFile, exec, fs, path);
 });
 
-// lab.experiment('"Require" the Dirgen module', function() {
-//   var exec = childProcess.exec;
-//   require('./require-file')(__, lab, cliEntryFile, exec, path);
-// });
+lab.experiment('"Require" the Dirgen module', function(done) {
+  var exec = childProcess.exec;
+  require('./require-file')(__, lab, cliEntryFile, exec, fs, path);
+});

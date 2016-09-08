@@ -307,7 +307,7 @@ ${genResult.skipped} skipped`);
               //For the 'on' callback of 'done' to indicate the generation
               //or processing is complete, but running Dirgen from the
               //cli will trigger a 'done' callback
-              if (onEvtActions.done) onEvtActions.done();
+              if (onEvtActions.done) onEvtActions.done(validationResults);
 
             })();
           } catch (error) {
