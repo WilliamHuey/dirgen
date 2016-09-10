@@ -2,7 +2,9 @@ import path from 'path';
 
 module.exports = {
   entry: {
-    "dirgen-cli-entry": path.join(__dirname, "/src/dirgen-cli-entry.js")
+    "dirgen-cli-entry": [
+      'regenerator-runtime/runtime',
+      path.join(__dirname, "/src/dirgen-cli-entry.js")]
   },
   module: {
     exprContextCritical: false,

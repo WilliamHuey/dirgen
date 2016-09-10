@@ -1,7 +1,6 @@
 'use strict';
 
 //Add support for features in ES2015 as maps and promises
-import 'babel-polyfill';
 
 //Native modules
 import fs from 'fs';
@@ -20,6 +19,10 @@ import includes from 'array-includes';
 import helpText from './dirgen-cli-commands-text';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
+
+if (typeof global._babelPolyfill !== 'undefined') {
+  require('babel-polyfill');
+}
 
 //Array of cli commands for sync and async operations
 const { commands, asyncCommands } = validCliCommands;

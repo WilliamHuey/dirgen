@@ -6,20 +6,26 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
     });
   });
 
+  lab.before(function (done) {
+    exec('rm -rf ' +  __dirname  + '/case-outputs/*', function() {
+      done();
+    });
+  });
+
   lab.experiment('checking for input configuration', function() {
-    var proxyquire = require('proxyquire');
 
     var dirgenCliEntry = __dirname +  '/../bin/dirgen-cli-entry.js';
-
     var fixtureDir = __dirname +  '/fixtures';
 
+
     lab.test('will not error out with valid template file and output directory', function(done) {
+
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
 
       fs.mkdirAsync((__dirname +
        '/case-outputs/not-error-out-valid-template-and-output-directory'))
       .then(function() {
-
-        var dirgen = proxyquire(dirgenCliEntry, {});
 
         dirgen
           .generate({
@@ -39,7 +45,35 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
     lab.test('will error out with invalid template file',
     function(done) {
-      done();
+
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
+
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/does-not-exists'))
+      .then(function() {
+
+        dirgen
+          .generate({
+            template: (fixtureDir + '/zzz.txt'),
+            output: (__dirname + '/case-outputs/does-not-exists')
+          })
+          .on({
+            done: function(results) {
+
+              console.log("results", results);
+              // __.assertThat(results.errors, __.hasSize(1));
+              done();
+            }
+          });
+
+
+      });
+
+
+
+
+
     });
 
     lab.test('will error out with invalid output directory',
