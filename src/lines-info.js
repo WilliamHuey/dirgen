@@ -18,9 +18,9 @@ const linesInfoFunctions = {
 
     //The actual line number involves counting all lines,
     //but the lines with content matters more so count them differently
-    data.lineSetInfo.totalLineCount++;
+    data.lineSetInfo.totalLineCount += 1;
     if (lineInfo.length > 0 && lineInfo.trimLength > 0) {
-      data.lineSetInfo.contentLineCount++;
+      data.lineSetInfo.contentLineCount += 1;
       processFurther = true;
     }
     return processFurther;

@@ -146,6 +146,10 @@
     "keyword-spacing": 2,
     "spaced-comment": 0,
     "global-require": 0,
-    "no-prototype-builtins": 0
+    "no-prototype-builtins": 0,
+    "no-plusplus" : [2, {
+        allowForLoopAfterthoughts : true
+      }
+    ]
   }
 }

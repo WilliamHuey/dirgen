@@ -56,13 +56,13 @@ const cliText = `
 
     Template:
       gsdf
-      	afsd
+        afsd
       //sd,ss
       dfg
-      	jj
-      	ygvhg
-      		dsd
-      	ygvhg
+        jj
+        ygvhg
+          dsd
+        ygvhg
       /fsfa
       /fsfa
 
