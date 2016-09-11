@@ -53,27 +53,24 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
        '/case-outputs/does-not-exists'))
       .then(function() {
 
-        dirgen
-          .generate({
-            template: (fixtureDir + '/zzz.txt'),
-            output: (__dirname + '/case-outputs/does-not-exists')
-          })
-          .on({
-            done: function(results) {
-
-              console.log("results", results);
-              // __.assertThat(results.errors, __.hasSize(1));
-              done();
-            }
-          });
-
+        try {
+          dirgen
+            .generate({
+              template: (fixtureDir + '/zzz.txt'),
+              output: (__dirname + '/case-outputs/does-not-exists'),
+              options: { hideMessages: true }
+            })
+            .on({
+              done: function(results) {
+                __.assertThat(results.errors, __.hasSize(1));
+                done();
+              }
+            });
+        } catch (error) {
+          console.log(error);
+        }
 
       });
-
-
-
-
-
     });
 
     lab.test('will error out with invalid output directory',

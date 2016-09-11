@@ -5,6 +5,7 @@ features
       home path output path
       required the generate to be call, no 'on' call by itself
 
+
     on progress
     promise then(result, error)
 
@@ -13,7 +14,7 @@ features
     complete hiding of all output
 
 issues
-  failure to generate file or folder on first run, but ok on later runs
+  failure to generate file or folder on first run, but ok on later runs?
   remove 'use strict'
 
 Module

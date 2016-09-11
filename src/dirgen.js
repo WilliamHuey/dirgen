@@ -8,6 +8,7 @@ import os from 'os';
 
 //Vendor modules
 import co from 'co';
+import { statAsync } from 'fs-extra-promise';
 
 //Source modules
 import util from './utilities';
@@ -16,6 +17,7 @@ import addLinesInfo from './lines-info';
 import lexer from './lexer';
 import validator from './lines-validations';
 import message from './validations-messages';
+import initializeMsg from './option-validations-messages';
 import logValidations from './log-validations';
 import printValidations from './print-validations';
 import generateStructure from './generation';
@@ -53,6 +55,19 @@ const convertHome = (outPath) => {
     return os.homedir() + outPath.slice(1);
   } else {
     return outPath;
+  }
+};
+
+//Check for when the error or warning messages should be hidden or not
+const shouldHideMessages = (actionParams) => {
+  if (typeof actionParams === 'undefined') {
+    return false;
+  } else if (typeof actionParams.options === 'undefined') {
+    return false;
+  } else if (actionParams.options.hideMessages === false) {
+    return false;
+  } else if (actionParams !== true) {
+    return actionParams.options.hideMessages;
   }
 };
 
@@ -102,177 +117,204 @@ const dirgen = (action, actionParams, fromCli) => {
     warnings: []
   };
 
-  //Read through all the lines of a supplied file
-  readline.createInterface({
-      input: fs.createReadStream(creationTemplatePath)
-    })
-    .on('line', (line) => {
+  //Check if the template file is valid
+  const templateCheck = co.wrap(function* wrapTemplateCheck() {
 
-      //Get properties from the current line
-      //in detail with the lexer
-      const lexResults = lexer.lex(line);
+    let validTemplate = false;
+    try {
+      validTemplate = true;
+      const fileStat = yield statAsync(creationTemplatePath);
+    } catch (error) {
+      if (typeof error.code !== 'undefined') {
+        validTemplate = false;
+      } else {
+        validTemplate = true;
+      }
+    } finally {
+      return validTemplate;
+    }
+  });
 
-      //Accumulate general information lines
-      addLinesInfo.setGeneralData(line, linesInfo);
+  co(function* coTemplateCheck() {
 
-      //Do not further process a line that is
-      //only whitespace or that is without content
-      if (line.length === 0 ||
-        lexResults.currentTrimmedValue.length === 0) {
-        return;
+    const isValidTemplate = yield templateCheck();
+
+    //Skip the reading and generation when the file is not valid
+    if (isValidTemplate !== true) {
+
+      if (!shouldHideMessages(actionParams)) {
+        message.error(initializeMsg.inValidTemplateMsg);
       }
 
-      //Use this object when performing checks
-      //with subsequent lines
-      let currentLine = {
-        structureName: linesInfo.currentTrimmedValue,
-        sibling: [],
-        parent: null,
-        children: [],
-        nameDetails: lexResults
-      };
+      //Run the 'done' callback
+      if (onEvtActions.done) {
+        onEvtActions.done({ errors: [initializeMsg.inValidTemplateMsg] });
+      }
+      return;
+    }
 
-      //Get the information from prior lines to determine
-      //the siblings, parent, and children key values
-      currentLine = addLinesInfo.setLineData(currentLine, linesInfo,
-        validationResults);
+    //Read through all the lines of a supplied file
+    readline.createInterface({
+        input: fs.createReadStream(creationTemplatePath)
+      })
+      .on('line', (line) => {
 
-      //Validate the recently set line data
-      logValidations(
-        validator.sameIndentType(
-          linesInfo.totalLineCount,
-          currentLine.structureName,
-          linesInfo.firstIndentationType,
-          currentLine.nameDetails.indentType),
-        validationResults);
+        //Get properties from the current line
+        //in detail with the lexer
+        const lexResults = lexer.lex(line);
 
-      logValidations(
-        validator.charCountUnder255(
-          currentLine.nameDetails.contentLength,
-          linesInfo.totalLineCount,
-          currentLine.structureName,
-          currentLine.inferType),
-        validationResults);
+        //Accumulate general information lines
+        addLinesInfo.setGeneralData(line, linesInfo);
 
-      //Manipulates the currentLine object
-      //to use for later generation
-      const sanitizedName =
-        logValidations(
-          validator.cleanFileName(
-            currentLine.nameDetails.specialCharactersTypeCount,
-            linesInfo.totalLineCount,
-            currentLine.structureName,
-            currentLine),
+        //Do not further process a line that is
+        //only whitespace or that is without content
+        if (line.length === 0 ||
+          lexResults.currentTrimmedValue.length === 0) {
+          return;
+        }
+
+        //Use this object when performing checks
+        //with subsequent lines
+        let currentLine = {
+          structureName: linesInfo.currentTrimmedValue,
+          sibling: [],
+          parent: null,
+          children: [],
+          nameDetails: lexResults
+        };
+
+        //Get the information from prior lines to determine
+        //the siblings, parent, and children key values
+        currentLine = addLinesInfo.setLineData(currentLine, linesInfo,
           validationResults);
 
-      //Sanitized name will be logged and used
-      //over the original name
-      if (sanitizedName) {
-        currentLine.nameDetails.sanitizedName = sanitizedName;
-      }
+        //Validate the recently set line data
+        logValidations(
+          validator.sameIndentType(
+            linesInfo.totalLineCount,
+            currentLine.structureName,
+            linesInfo.firstIndentationType,
+            currentLine.nameDetails.indentType),
+          validationResults);
 
-      logValidations(
-        validator.sameLineMixedTabsAndSpaces(
-          currentLine.nameDetails.mixedTabsSpaces,
-           currentLine.nameDetails.line,
-          currentLine.structureName),
-        validationResults);
-    })
-    .on('close', () => {
+        logValidations(
+          validator.charCountUnder255(
+            currentLine.nameDetails.contentLength,
+            linesInfo.totalLineCount,
+            currentLine.structureName,
+            currentLine.inferType),
+          validationResults);
 
-      //For displaying the count of the generated and the non-generated
-      let genResult = null;
+        //Manipulates the currentLine object
+        //to use for later generation
+        const sanitizedName =
+          logValidations(
+            validator.cleanFileName(
+              currentLine.nameDetails.specialCharactersTypeCount,
+              linesInfo.totalLineCount,
+              currentLine.structureName,
+              currentLine),
+            validationResults);
 
-      //Log the failed to generate files or folders
-      const genFailures = [];
+        //Sanitized name will be logged and used
+        //over the original name
+        if (sanitizedName) {
+          currentLine.nameDetails.sanitizedName = sanitizedName;
+        }
 
-      (function coGenerateIif(co) {
+        logValidations(
+          validator.sameLineMixedTabsAndSpaces(
+            currentLine.nameDetails.mixedTabsSpaces,
+             currentLine.nameDetails.line,
+            currentLine.structureName),
+          validationResults);
+      })
+      .on('close', () => {
 
-        co(function* coGenerate() {
-          try {
-            yield co.wrap(function* coWrapGenerate() {
+        //For displaying the count of the generated and the non-generated
+        let genResult = null;
 
-              //Determine the output filepath of the generated
-              const rootPath = commandTypeAction((actionDemo || action),
-                'output', actionParams, execPathDemo);
+        //Log the failed to generate files or folders
+        const genFailures = [];
 
-              //Should not be generated with no lines in the file
-              const hasContent = logValidations(
-                validator.presenceFirstLine(
-                  linesInfo.firstLine),
-                validationResults);
+        (function coGenerateIif(co) {
 
-              let hideMessages;
-              if (typeof actionParams === 'undefined') {
-                hideMessages = false;
-              } else if (typeof actionParams.options === 'undefined') {
-                hideMessages = false;
-              } else if (actionParams.options.hideMessages === false) {
-                hideMessages = false;
-              } else if (actionParams !== true) {
-                hideMessages = actionParams.options.hideMessages;
-              }
+          co(function* coGenerate() {
+            try {
+              yield co.wrap(function* coWrapGenerate() {
 
-              //Demo situation, need to swap action with actionParams
-              //also vice-versa
-              let demoActionParams = null;
-              let normalizedActionParams = null;
-              if (util.isObject(action)) {
-                demoActionParams = {};
-                demoActionParams.template = action.execPath;
-                demoActionParams.options = action.options;
-                demoActionParams.output = rootPath;
-                normalizedActionParams = demoActionParams;
-              }
+                //Determine the output filepath of the generated
+                const rootPath = commandTypeAction((actionDemo || action),
+                  'output', actionParams, execPathDemo);
 
-              //Non-demo params, generate command
-              if (normalizedActionParams === null) {
-                normalizedActionParams = actionParams;
-              }
+                //Should not be generated with no lines in the file
+                const hasContent = logValidations(
+                  validator.presenceFirstLine(
+                    linesInfo.firstLine),
+                  validationResults);
 
-              //Last stage before generation with status check
-              if (hasContent) {
-                const errors = validationResults.errors;
-                if (errors.length > 0 && !hideMessages) {
+                const hideMessages = shouldHideMessages(actionParams);
 
-                  printValidations(message, 'error', errors, errors.length);
-
-                  //Print all errors first and than any warnings
-                  printValidations(message, 'warn',
-                    validationResults.warnings, validationResults.warnings.length);
-                } else {
-
-                  //Generate the content
-                  //Async nature will need the later logging to be delay
-                  const time = process.hrtime();
-
-                  genResult = yield generateStructure(linesInfo, rootPath,
-                     validationResults, normalizedActionParams, genFailures);
-
-                  //Time the generation only
-                  timeDiff = process.hrtime(time);
-
-                  if (!hideMessages) {
-                    //Print out warning message
-                    printValidations(message, 'warn',
-                      validationResults.warnings,
-                      validationResults.warnings.length);
-                  }
+                //Demo situation, need to swap action with actionParams
+                //also vice-versa
+                let demoActionParams = null;
+                let normalizedActionParams = null;
+                if (util.isObject(action)) {
+                  demoActionParams = {};
+                  demoActionParams.template = action.execPath;
+                  demoActionParams.options = action.options;
+                  demoActionParams.output = rootPath;
+                  normalizedActionParams = demoActionParams;
                 }
-              } else if (!hideMessages) {
 
-                //No content in the template file produces only one error
-                message.error(validationResults.errors[0].message);
-              }
+                //Non-demo params, generate command
+                if (normalizedActionParams === null) {
+                  normalizedActionParams = actionParams;
+                }
 
-              console.log(`Template info: \
+                //Last stage before generation with status check
+                if (hasContent) {
+                  const errors = validationResults.errors;
+                  if (errors.length > 0 && !hideMessages) {
+
+                    printValidations(message, 'error', errors, errors.length);
+
+                    //Print all errors first and than any warnings
+                    printValidations(message, 'warn',
+                      validationResults.warnings, validationResults.warnings.length);
+                  } else {
+
+                    //Generate the content
+                    //Async nature will need the later logging to be delay
+                    const time = process.hrtime();
+
+                    genResult = yield generateStructure(linesInfo, rootPath,
+                       validationResults, normalizedActionParams, genFailures);
+
+                    //Time the generation only
+                    timeDiff = process.hrtime(time);
+
+                    if (!hideMessages) {
+                      //Print out warning message
+                      printValidations(message, 'warn',
+                        validationResults.warnings,
+                        validationResults.warnings.length);
+                    }
+                  }
+                } else if (!hideMessages) {
+
+                  //No content in the template file produces only one error
+                  message.error(validationResults.errors[0].message);
+                }
+
+                console.log(`Template info: \
 ${linesInfo.totalLineCount} total \
 ${util.pluralize('line', linesInfo.totalLineCount)} \
 (${linesInfo.contentLineCount} content, \
 ${linesInfo.totalLineCount - linesInfo.contentLineCount} \
 ${util.pluralize('blank', linesInfo.totalLineCount)})`);
 
-              console.log(`Template read: \
+                console.log(`Template read: \
 ${validationResults.errors.length} \
 ${util.pluralize('error',
 validationResults.errors.length)} and \
@@ -280,12 +322,12 @@ ${validationResults.warnings.length} \
 ${util.pluralize('warning',
 validationResults.warnings.length)}`);
 
-              //Non-generated count can be larger than the warning count
-              //because the warning logging stops checking items for the top-most repeated folder
+                //Non-generated count can be larger than the warning count
+                //because the warning logging stops checking items for the top-most repeated folder
 
-              //When there is an error log, genResult is null
-              if (genResult === null) {
-                console.log(`Creation count: 0 generated, \
+                //When there is an error log, genResult is null
+                if (genResult === null) {
+                  console.log(`Creation count: 0 generated, \
 ${linesInfo.contentLineCount} not \
 generated, 0 skipped`);
               } else {
@@ -293,30 +335,32 @@ generated, 0 skipped`);
 ${genResult.generated} generated, \
 ${genResult.notGenerated} not generated, \
 ${genResult.skipped} skipped`);
-              }
+                }
 
-              console.log(`Generation failures: ${genFailures.length} write errors`);
+                console.log(`Generation failures: ${genFailures.length} write errors`);
 
-              //On error conditions, no timeDiff is needed
-              if (timeDiff && genResult.generated > 0) {
-                console.log('Write time: %d nanoseconds', (timeDiff[0] * 1e9) + timeDiff[1]);
-              } else {
-                console.log('Write time: %d nanoseconds', 0);
-              }
+                //On error conditions, no timeDiff is needed
+                if (timeDiff && genResult.generated > 0) {
+                  console.log('Write time: %d nanoseconds', (timeDiff[0] * 1e9) + timeDiff[1]);
+                } else {
+                  console.log('Write time: %d nanoseconds', 0);
+                }
 
-              //For the 'on' callback of 'done' to indicate the generation
-              //or processing is complete, but running Dirgen from the
-              //cli will trigger a 'done' callback
-              if (onEvtActions.done) onEvtActions.done(validationResults);
+                //For the 'on' callback of 'done' to indicate the generation
+                //or processing is complete, but running Dirgen from the
+                //cli will trigger a 'done' callback
+                if (onEvtActions.done) onEvtActions.done(validationResults);
 
-            })();
-          } catch (error) {
-            console.log('Close file and generation error:', error);
-          }
-        });
+              })();
+            } catch (error) {
+              console.log('Close file and generation error:', error);
+            }
+          });
 
-      })(co);
-    });
+        })(co);
+      });
+  });
+
 };
 
 export default function(action, actionParams, fromCli) {
