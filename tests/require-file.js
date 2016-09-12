@@ -73,10 +73,32 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    lab.test('will error out with invalid output directory',
-    function(done) {
-      done();
+
+    lab.test('will error out with invalid output directory', function(done) {
+
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
+
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/error-out-with-invalid-directory'))
+      .then(function() {
+
+        dirgen
+          .generate({
+            template: (fixtureDir + '/one-slash.txt'),
+            output: (__dirname + '/case-outputs/error-out-with-invalid-directory/nothing'),
+            options: { hideMessages: true }
+          })
+          .on({
+            done: function(results) {
+              __.assertThat(results.errors, __.hasSize(1));
+              done();
+            }
+          });
+      });
+
     });
+
 
     lab.test('will not error out without any "options" defined ', function(done) {
       done();

@@ -288,6 +288,28 @@ const dirgen = (action, actionParams, fromCli) => {
                     //Async nature will need the later logging to be delay
                     const time = process.hrtime();
 
+                    let validRootPath = true;
+                    try {
+                      const folderStat = yield statAsync(rootPath);
+                    } catch (error) {
+                      if (typeof error.code !== 'undefined') {
+                        validRootPath = false;
+                      }
+                    }
+
+                    //Skip the generation when directory output is invalid
+                    if (!validRootPath) {
+                      if (!shouldHideMessages(actionParams)) {
+                        message.error(initializeMsg.invalidOutputDirMsg);
+                      }
+
+                      //Run the 'done' callback
+                      if (onEvtActions.done) {
+                        onEvtActions.done({ errors: [initializeMsg.invalidOutputDirMsg] });
+                      }
+                      return;
+                    }
+
                     genResult = yield generateStructure(linesInfo, rootPath,
                        validationResults, normalizedActionParams, genFailures);
 

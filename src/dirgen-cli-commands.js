@@ -19,6 +19,7 @@ import includes from 'array-includes';
 import helpText from './dirgen-cli-commands-text';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
+import initializeMsg from './option-validations-messages';
 
 if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');
@@ -124,8 +125,7 @@ const cliCommands = (execPath, fromCli) => {
         new Promise((resolve, reject) => {
             fs.stat(data[0], (error) => {
               if (error) {
-                message(`Not a valid file. Need a plain text file
-                format in the first command input.`);
+                message(initializeMsg.inValidTemplateMsg);
                 return reject({
                   file: false
                 });
