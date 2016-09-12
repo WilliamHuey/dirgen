@@ -17,7 +17,6 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
     var dirgenCliEntry = __dirname +  '/../bin/dirgen-cli-entry.js';
     var fixtureDir = __dirname +  '/fixtures';
 
-
     lab.test('will not error out with valid template file and output directory', function(done) {
 
       var proxyquire = require('proxyquire');
@@ -73,7 +72,6 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-
     lab.test('will error out with invalid output directory', function(done) {
 
       var proxyquire = require('proxyquire');
@@ -96,12 +94,28 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
             }
           });
       });
-
     });
 
+    lab.test('will not error out without any "options" defined', function(done) {
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
 
-    lab.test('will not error out without any "options" defined ', function(done) {
-      done();
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/not-error-out-valid-template-and-output-directory-no-options'))
+      .then(function() {
+
+        dirgen
+          .generate({
+            template: (fixtureDir + '/top-level-repeated-line.txt'),
+            output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-no-options')
+          })
+          .on({
+            done: function(results) {
+              __.assertThat(results.errors, __.hasSize(0));
+              done();
+            }
+          });
+      });
     });
 
     lab.test('will not error out with valid option "force"', function(done) {
@@ -131,6 +145,4 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
     });
 
   });
-
-
 };
