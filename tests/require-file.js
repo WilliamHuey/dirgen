@@ -119,11 +119,26 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
     });
 
     lab.test('will not error out with valid option "force"', function(done) {
-      done();
-    });
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
 
-    lab.test('will not error out with valid boolean value for "force"', function(done) {
-      done();
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-valid-force-option'))
+      .then(function() {
+
+        dirgen
+          .generate({
+            template: (fixtureDir + '/one-slash.txt'),
+            output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-valid-force-option'),
+            options: { forceOverwrite: true }
+          })
+          .on({
+            done: function(results) {
+              __.assertThat(results.errors, __.hasSize(0));
+              done();
+            }
+          });
+      });
     });
 
     lab.test('will error out with invalid non-boolean value for "force"', function(done) {

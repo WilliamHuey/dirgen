@@ -158,6 +158,7 @@ const dirgen = (action, actionParams, fromCli) => {
         input: fs.createReadStream(creationTemplatePath)
       })
       .on('line', (line) => {
+        // console.log('line :', line);
 
         //Get properties from the current line
         //in detail with the lexer
