@@ -123,13 +123,13 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       var dirgen = proxyquire(dirgenCliEntry, {});
 
       fs.mkdirAsync((__dirname +
-       '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-valid-force-option'))
+       '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-force-option'))
       .then(function() {
 
         dirgen
           .generate({
             template: (fixtureDir + '/one-slash.txt'),
-            output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-valid-force-option'),
+            output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-force-option'),
             options: { forceOverwrite: true }
           })
           .on({
@@ -145,12 +145,31 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       done();
     });
 
-    lab.test('will not error with valid option "silent"',
-    function(done) {
-      done();
+    lab.test('will error out with invalid non-boolean value for "silent"', function(done) {
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
+
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/error-out-valid-template-and-output-directory-with-invalid-force-option'))
+      .then(function() {
+
+        dirgen
+          .generate({
+            template: (fixtureDir + '/one-slash.txt'),
+            output: (__dirname + '/case-outputs/error-out-valid-template-and-output-directory-with-invalid-force-option'),
+            options: { hideMessages: 'fdsafd' }
+          })
+          .on({
+            done: function(results) {
+              __.assertThat(results.errors, __.hasSize(1));
+              done();
+            }
+          });
+      });
     });
 
-    lab.test('will error out with invalid non-boolean value for "silent"', function(done) {
+    lab.test('will not error with valid option "silent"',
+    function(done) {
       done();
     });
 

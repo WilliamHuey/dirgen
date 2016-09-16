@@ -47,6 +47,14 @@ const linesInfo = {
 //Actions for the 'on' function of 'generate'
 const onEvtActions = {};
 
+//Group the errors and warnings together
+//to avoid second pass through if errors
+//and delay warning outputs until the end
+const validationResults = {
+  errors: [],
+  warnings: []
+};
+
 //Convert the tilde in the output path to the
 //actual home directory when present at the first
 //of the line
@@ -60,14 +68,21 @@ const convertHome = (outPath) => {
 
 //Check for when the error or warning messages should be hidden or not
 const shouldHideMessages = (actionParams) => {
+
   if (typeof actionParams === 'undefined') {
     return false;
   } else if (typeof actionParams.options === 'undefined') {
     return false;
   } else if (actionParams.options.hideMessages === false) {
     return false;
-  } else if (actionParams !== true) {
-    return actionParams.options.hideMessages;
+  } else if (actionParams.options.hideMessages === true) {
+    return true;
+  } else if (typeof actionParams.options.hideMessages !== 'undefined' &&
+   actionParams.options.hideMessages !== true) {
+
+    validationResults.errors.push(initializeMsg.invalidHideMessageMsg);
+    message.error(initializeMsg.invalidHideMessageMsg);
+    return 'invalid';
   }
 };
 
@@ -109,14 +124,6 @@ const dirgen = (action, actionParams, fromCli) => {
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   }
 
-  //Group the errors and warnings together
-  //to avoid second pass through if errors
-  //and delay warning outputs until the end
-  const validationResults = {
-    errors: [],
-    warnings: []
-  };
-
   //Check if the template file is valid
   const templateCheck = co.wrap(function* wrapTemplateCheck() {
 
@@ -142,7 +149,11 @@ const dirgen = (action, actionParams, fromCli) => {
     //Skip the reading and generation when the file is not valid
     if (isValidTemplate !== true) {
 
-      if (!shouldHideMessages(actionParams)) {
+      const hideMessageResult = !shouldHideMessages(actionParams);
+
+      if (hideMessageResult === 'invalid') {
+        return;
+      } else if (hideMessageResult) {
         message.error(initializeMsg.inValidTemplateMsg);
       }
 

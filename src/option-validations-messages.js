@@ -4,5 +4,9 @@ export default {
 
   invalidOutputDirMsg: `Not a valid template file. \
     Please provide a plain text file \
-    format in the first command input.`
+    format in the first command input.`,
+
+  invalidHideMessageMsg: `Not a valid 'force' option \
+    value, only 'true' or 'false' are permitted values. `
+
 };
