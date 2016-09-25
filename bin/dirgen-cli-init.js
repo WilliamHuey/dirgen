@@ -1,4 +1,7 @@
 #!/usr/bin/env node
 
-require('./dirgen-cli-entry')
-  .generate(__dirname, true);
+
+
+
+require('./dirgen-cli-entry')(__dirname, true);
+  // .generate(__dirname, true);

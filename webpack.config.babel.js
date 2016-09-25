@@ -1,4 +1,5 @@
 import path from 'path';
+import webpack from 'webpack';
 
 module.exports = {
   entry: {
@@ -21,16 +22,22 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.json']
+    extensions: ['.js', '.json']
   },
   output: {
     path: path.join(__dirname, '/bin/'),
     filename: '[name].js',
-    library: 'generate',
-    libraryTarget: 'commonjs'
+    // library: 'generate',
+    libraryTarget: 'umd'
   },
-  eslint: {
-    configFile: './.eslintrc'
-  },
+  plugins: [
+  new webpack.LoaderOptionsPlugin({
+    options: {
+      eslint: {
+        configFile: './.eslintrc'
+      }
+    }
+  })
+],
   target: 'node'
 };

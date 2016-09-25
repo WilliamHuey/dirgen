@@ -89,7 +89,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
     structureRoughPath = path.join(rootPath, name),
     structureCreatePath = normalizePath(structureRoughPath);
 
-
   if (inferType === 'file') {
     if (!childRepeatedLine && !repeatedLine) {
 

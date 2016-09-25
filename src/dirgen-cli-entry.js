@@ -8,7 +8,6 @@ if (typeof process === 'undefined') {
   }
 }
 
-module.exports = function dirgenCliEntry(execPath, fromCli) {
-
-  return require('./dirgen-cli-commands')(execPath, fromCli);
-};
+export default function(execPath, fromCli) {
+  require('./dirgen-cli-commands')(execPath, fromCli);
+}

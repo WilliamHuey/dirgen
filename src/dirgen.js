@@ -20,9 +20,12 @@ import message from './validations-messages';
 import initializeMsg from './option-validations-messages';
 import logValidations from './log-validations';
 import printValidations from './print-validations';
+import optionsValidator from './option-validations';
 import generateStructure from './generation';
 
-//Start timing the write process
+// console.log('optionsValidator', optionsValidator);
+
+//Generation timing for the write process
 let timeDiff;
 
 //Track the status of the lines
@@ -88,18 +91,27 @@ const shouldHideMessages = (actionParams) => {
 
 const dirgen = (action, actionParams, fromCli) => {
 
+  console.log('fromCli', fromCli);
+
+  console.log('actionParams', actionParams);
+
   //Demo input params are different from typical generation
   let actionDemo = null;
   let execPathDemo = null;
   let creationTemplatePath = '';
 
   if (util.isObject(action)) {
+    console.log('setting the actions');
     actionDemo = action.action;
     execPathDemo = action.execPath;
   }
 
+  console.log('action', action);
+  console.log('actionDemo', action.action);
+  console.log('execPathDemo', execPathDemo);
+
   if (typeof action.action !== 'undefined' &&
-   !actionParams.settings) {
+   typeof actionParams === 'undefined') {
 
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
@@ -115,6 +127,34 @@ const dirgen = (action, actionParams, fromCli) => {
     output = convertHome(output);
     Object.assign(requiredActionParams, { output, template, options });
     actionParams = requiredActionParams;
+
+    console.log('actionParams', actionParams);
+
+    if (actionParams.options) {
+      const validatedOptionsResult = optionsValidator.validateOptions(actionParams);
+      console.log('optionsValidator.error', optionsValidator.error);
+      if (validatedOptionsResult.error) {
+
+        console.log('error is found');
+        const optionsValidatedOutputMsg = optionsValidator.message(validatedOptionsResult);
+
+        console.log('optionsValidatedOutputMsg optionsValidatedOutputMsg', optionsValidatedOutputMsg);
+
+        console.log('onEvtActions', onEvtActions);
+
+        if (onEvtActions.done) {
+          console.log('onEvtActions.done', onEvtActions.done);
+          onEvtActions.done({ errors: optionsValidatedOutputMsg });
+        }
+        return;
+      }
+
+      if (onEvtActions.done) {
+        console.log('onEvtActions.done', onEvtActions.done);
+        onEvtActions.done({ errors: [] });
+      }
+
+    }
 
     //From 'require' use
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
@@ -243,6 +283,8 @@ const dirgen = (action, actionParams, fromCli) => {
       })
       .on('close', () => {
 
+        console.log('---------close onEvtActions', onEvtActions);
+
         //For displaying the count of the generated and the non-generated
         let genResult = null;
 
@@ -254,6 +296,8 @@ const dirgen = (action, actionParams, fromCli) => {
           co(function* coGenerate() {
             try {
               yield co.wrap(function* coWrapGenerate() {
+
+                console.log('coGenerate');
 
                 //Determine the output filepath of the generated
                 const rootPath = commandTypeAction((actionDemo || action),
@@ -271,12 +315,18 @@ const dirgen = (action, actionParams, fromCli) => {
                 //also vice-versa
                 let demoActionParams = null;
                 let normalizedActionParams = null;
+
+                console.log('action', action);
                 if (util.isObject(action)) {
                   demoActionParams = {};
                   demoActionParams.template = action.execPath;
                   demoActionParams.options = action.options;
                   demoActionParams.output = rootPath;
                   normalizedActionParams = demoActionParams;
+
+                  console.log('demo settings');
+
+                  console.log('normalizedActionParams', normalizedActionParams);
                 }
 
                 //Non-demo params, generate command
@@ -397,20 +447,25 @@ ${genResult.skipped} skipped`);
 
 };
 
-export default function(action, actionParams, fromCli) {
+const dirgenExported = (action, actionParams, fromCli) => {
 
   if (!fromCli && action.action !== 'demo') {
     [actionParams, action] = [action, actionParams];
     action = actionParams.action;
 
-    this.on = function onActionsOn(onActions) {
-      Object.assign(onEvtActions, onActions);
-    };
+    console.log('--------------------requ');
 
     dirgen(action, actionParams, fromCli);
-    return this;
   } else {
+    console.log('from file');
+    // return dirgenExported;
     dirgen(action, actionParams, fromCli);
   }
 
-}
+};
+
+Object.assign(dirgenExported, {
+  generate: dirgen
+});
+
+module.exports = dirgenExported;

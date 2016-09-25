@@ -60,7 +60,7 @@ const cliCommands = (execPath, fromCli) => {
   if (!fromCli) {
     const dirgen = require('./dirgen');
 
-    dirgen.default({
+    dirgen({
         action: 'generate',
 
         //execPath will actually be the settings for
@@ -87,14 +87,18 @@ const cliCommands = (execPath, fromCli) => {
         forceOverwrite = false;
       }
 
-      require('./dirgen')
-        .default({
+      console.log('demoing fromCli', fromCli);
+      console.log('execPath', execPath);
+
+      require('./dirgen')({
           action: 'demo',
           'execPath': execPath,
           options: {
             forceOverwrite
           }
-        }, fromCli);
+        },
+        undefined,
+        fromCli);
     });
 
   //Create files or folders
@@ -167,8 +171,7 @@ const cliCommands = (execPath, fromCli) => {
 
           //Only generate on valid file and folder input
           if (values[0].file && values[1].folder) {
-            require('./dirgen')
-              .default('generate', {
+            require('./dirgen')('generate', {
                 template: data[0],
                 output: data[1],
                 options: {
