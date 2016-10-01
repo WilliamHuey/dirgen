@@ -28,6 +28,8 @@ import generateStructure from './generation';
 //Generation timing for the write process
 let timeDiff;
 
+let dirgenExported = () => {};
+
 //Track the status of the lines
 const linesInfo = {
   prevLineInfo: null,
@@ -95,6 +97,11 @@ const dirgen = (action, actionParams, fromCli) => {
 
   console.log('actionParams', actionParams);
 
+  if (actionParams.settings) {
+    console.log('found the on done');
+    onEvtActions.done = actionParams.settings.on.done;
+  }
+
   //Demo input params are different from typical generation
   let actionDemo = null;
   let execPathDemo = null;
@@ -113,6 +120,8 @@ const dirgen = (action, actionParams, fromCli) => {
   if (typeof action.action !== 'undefined' &&
    typeof actionParams === 'undefined') {
 
+     console.log('demo gen');
+
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
       'template', actionParams, execPathDemo);
@@ -130,9 +139,10 @@ const dirgen = (action, actionParams, fromCli) => {
 
     console.log('actionParams', actionParams);
 
-    if (actionParams.options) {
+    if (actionParams.options && !fromCli) {
+      console.log('!fromCli');
       const validatedOptionsResult = optionsValidator.validateOptions(actionParams);
-      console.log('optionsValidator.error', optionsValidator.error);
+      console.log('validatedOptionsResult', validatedOptionsResult);
       if (validatedOptionsResult.error) {
 
         console.log('error is found');
@@ -140,11 +150,11 @@ const dirgen = (action, actionParams, fromCli) => {
 
         console.log('optionsValidatedOutputMsg optionsValidatedOutputMsg', optionsValidatedOutputMsg);
 
-        console.log('onEvtActions', onEvtActions);
+        // console.log('onEvtActions', onEvtActions);
 
         if (onEvtActions.done) {
           console.log('onEvtActions.done', onEvtActions.done);
-          onEvtActions.done({ errors: optionsValidatedOutputMsg });
+          onEvtActions.done({ errors: [optionsValidatedOutputMsg.invalidValidForceMsg] });
         }
         return;
       }
@@ -159,7 +169,7 @@ const dirgen = (action, actionParams, fromCli) => {
     //From 'require' use
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   } else {
-
+    console.log('---------------- from cli non-demo');
     //From cli - Non-demo generation case
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   }
@@ -443,11 +453,14 @@ ${genResult.skipped} skipped`);
 
         })(co);
       });
+
+      return dirgen;
   });
 
 };
 
-const dirgenExported = (action, actionParams, fromCli) => {
+
+dirgenExported = (action, actionParams, fromCli) => {
 
   if (!fromCli && action.action !== 'demo') {
     [actionParams, action] = [action, actionParams];
@@ -457,15 +470,11 @@ const dirgenExported = (action, actionParams, fromCli) => {
 
     dirgen(action, actionParams, fromCli);
   } else {
-    console.log('from file');
-    // return dirgenExported;
+    // console.log('from file');
     dirgen(action, actionParams, fromCli);
   }
 
 };
 
-Object.assign(dirgenExported, {
-  generate: dirgen
-});
 
 module.exports = dirgenExported;

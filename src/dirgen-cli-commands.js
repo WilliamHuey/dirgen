@@ -58,6 +58,11 @@ const cliCommands = (execPath, fromCli) => {
   }
 
   if (!fromCli) {
+
+    console.log('!fromCli');
+
+    console.log('cli command this', this);
+
     const dirgen = require('./dirgen');
 
     dirgen({
@@ -66,7 +71,11 @@ const cliCommands = (execPath, fromCli) => {
         //execPath will actually be the settings for
         //when the dirgen is required
         'settings': execPath
-      });
+      },
+      undefined,
+      fromCli,
+      );
+
     return dirgen;
   }
 

@@ -150,27 +150,21 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
        '/case-outputs/error-out-valid-template-and-output-directory-with-invalid-force-option'))
       .then(function() {
 
-        console.log(dirgen());
-        // console.log(dirgen());
-        // console.log(dirgen.default.generate);
+        dirgen({
+            template: (fixtureDir + '/one-slash.txt'),
+            output: (__dirname + '/case-outputs/error-out-valid-template-and-output-directory-with-invalid-force-option'),
+            options: { forceOverwrite: 'vvzxg' },
+            on: {
+              done: (results) => {
 
+                console.log('results.errors', results.errors);
+                __.assertThat(results.errors, __.hasSize(1));
+                done();
+                console.log('done');
+              }
+            }
+          })
 
-
-        //console.log(dirgen.default());
-        // console.log();
-        // dirgen
-          // .generate({
-          //   template: (fixtureDir + '/one-slash.txt'),
-          //   output: (__dirname + '/case-outputs/error-out-valid-template-and-output-directory-with-invalid-force-option'),
-          //   options: { forceOverwrite: 'vvzxg' }
-          // })
-          // .on({
-          //   done: function(results) {
-          //     console.log('========================results', results);
-          //     __.assertThat(results.errors, __.hasSize(1));
-          //     done();
-          //   }
-          // });
       });
 
     });

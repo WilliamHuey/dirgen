@@ -9,5 +9,7 @@ if (typeof process === 'undefined') {
 }
 
 export default function(execPath, fromCli) {
+
+  // console.log('first execPath', execPath);
   require('./dirgen-cli-commands')(execPath, fromCli);
 }
