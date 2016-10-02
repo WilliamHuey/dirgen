@@ -97,7 +97,9 @@ const dirgen = (action, actionParams, fromCli) => {
 
   console.log('actionParams', actionParams);
 
-  if (actionParams.settings) {
+
+  if (typeof actionParams !== 'undefined' &&
+   actionParams.settings) {
     console.log('found the on done');
     onEvtActions.done = actionParams.settings.on.done;
   }
