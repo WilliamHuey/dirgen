@@ -1,5 +1,3 @@
-'use strict';
-
 //Vendor modules
 import detectIndent from 'detect-indent';
 import strscan from 'strscanner';

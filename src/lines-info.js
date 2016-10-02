@@ -1,5 +1,3 @@
-'use strict';
-
 //Source modules
 import singleLineInfoFunctions from './singleLine-info';
 

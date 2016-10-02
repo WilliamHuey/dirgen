@@ -1,5 +1,3 @@
-'use strict';
-
 //Vendor modules
 import sanitize from 'sanitize-filename';
 import recursive from 'tail-call/core';

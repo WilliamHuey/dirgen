@@ -1,5 +1,3 @@
-'use strict';
-
 //Add support for features in ES2015 as maps and promises
 
 //Native modules

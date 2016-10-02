@@ -1,5 +1,3 @@
-'use strict';
-
 //Vendor modules
 import guard from 'guard-js';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 const cliText = `
   \x1B[1m Overview: \x1B[22m
 

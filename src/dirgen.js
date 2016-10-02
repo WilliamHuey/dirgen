@@ -1,5 +1,3 @@
-'use strict';
-
 //Native modules
 import fs from 'fs';
 import path from 'path';
@@ -141,7 +139,6 @@ const dirgen = (action, actionParams, fromCli) => {
         }
         return;
       }
-
     }
 
     //From 'require' use

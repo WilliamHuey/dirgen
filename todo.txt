@@ -24,6 +24,8 @@ Module
 
   umd
 
+  nodejs4 support and above upon compilation
+
   npm start more compatible with windows/linux
 
 why dirgen
