@@ -173,6 +173,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
             options: { hideMessages: 'fdsafd' },
             on: {
               done: function(results) {
+
                 __.assertThat(results.errors, __.hasSize(1));
                 done();
               }
@@ -181,11 +182,28 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    // lab.test('will not error with valid option "silent"',
-    // function(done) {
-    //   done();
-    // });
+    lab.test('will not error out with valid option "silent"', function(done) {
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
 
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-silent-option'))
+      .then(function() {
+
+        dirgen({
+          template: (fixtureDir + '/one-slash.txt'),
+          output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-silent-option'),
+          options: { hideMessages: true },
+          on: {
+            done: (results) => {
+              __.assertThat(results.errors, __.isEmpty());
+              done();
+            }
+          }
+        })
+
+      });
+    });
 
     // lab.test('will error out with only the options key, no "template" or "output" key',
     // function(done) {

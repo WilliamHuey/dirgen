@@ -14,6 +14,9 @@ const validateOptions = Object.assign(optionsValidator.prototype, {
   forceOverwrite: (params) => {
     return util.isBoolean(params.forceOverwrite);
   },
+  hideMessages: (params) => {
+    return util.isBoolean(params.hideMessages);
+  },
   message: (validationResult) => {
 
     const optionErrors = [];
@@ -24,17 +27,16 @@ const validateOptions = Object.assign(optionsValidator.prototype, {
       message.error(optionErrorMsg);
     });
 
-    return optionMessages;
+    return optionErrors;
   },
   validateOptions: (params) => {
     const optionTypes = [];
     let validatedResult = {};
 
-    //Got through all the rules defined above 'validateOption'
-    Object.keys(validateOptions).forEach((key) => {
-      if (key !== 'validateOptions' &&
-          key !== 'message') {
-        const validatedResults = validateOptions.forceOverwrite(params.options);
+    //Go through all the option keys that are present in the 'validateOptions' object
+    Object.keys(params.options).forEach((key) => {
+      if (typeof validateOptions[key] !== 'undefined') {
+        const validatedResults = validateOptions[key](params.options);
 
         //'False' means the option fails validation and will need to be logged
         if (!validatedResults) {

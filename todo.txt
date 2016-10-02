@@ -22,8 +22,6 @@ Module
     -not dist folder on git, but allow for npm?
     npmignore and gitignore
 
-  umd
-
   nodejs4 support and above upon compilation
 
   npm start more compatible with windows/linux

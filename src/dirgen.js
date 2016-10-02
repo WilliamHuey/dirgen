@@ -135,8 +135,9 @@ const dirgen = (action, actionParams, fromCli) => {
 
         //Display errors on 'done'
         if (onEvtActions.done) {
-          onEvtActions.done({ errors: [optionsValidatedOutputMsg.invalidValidForceMsg] });
+          onEvtActions.done({ errors: [optionsValidatedOutputMsg] });
         }
+
         return;
       }
     }
@@ -428,7 +429,6 @@ ${genResult.skipped} skipped`);
 
 
 dirgenExported = (action, actionParams, fromCli) => {
-
   if (!fromCli && action.action !== 'demo') {
     [actionParams, action] = [action, actionParams];
     action = actionParams.action;
@@ -437,8 +437,6 @@ dirgenExported = (action, actionParams, fromCli) => {
     // console.log('from file');
     dirgen(action, actionParams, fromCli);
   }
-
 };
-
 
 module.exports = dirgenExported;
