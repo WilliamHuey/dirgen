@@ -12,12 +12,9 @@ const optionsValidator = () => {};
 
 const validateOptions = Object.assign(optionsValidator.prototype, {
   forceOverwrite: (params) => {
-
-    console.log('forceoverwrite params', params);
     return util.isBoolean(params.forceOverwrite);
   },
   message: (validationResult) => {
-    console.log('validationResult', validationResult);
 
     const optionErrors = [];
 
@@ -32,8 +29,6 @@ const validateOptions = Object.assign(optionsValidator.prototype, {
   validateOptions: (params) => {
     const optionTypes = [];
     let validatedResult = {};
-
-    console.log('before loop params', params);
 
     //Got through all the rules defined above 'validateOption'
     Object.keys(validateOptions).forEach((key) => {

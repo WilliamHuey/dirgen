@@ -7,7 +7,6 @@ features
 
 
     on progress
-    promise then(result, error)
 
   console output
     overwritten files or folders

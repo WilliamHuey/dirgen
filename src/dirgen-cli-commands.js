@@ -58,11 +58,6 @@ const cliCommands = (execPath, fromCli) => {
   }
 
   if (!fromCli) {
-
-    console.log('!fromCli');
-
-    console.log('cli command this', this);
-
     const dirgen = require('./dirgen');
 
     dirgen({
@@ -95,9 +90,6 @@ const cliCommands = (execPath, fromCli) => {
       } else {
         forceOverwrite = false;
       }
-
-      console.log('demoing fromCli', fromCli);
-      console.log('execPath', execPath);
 
       require('./dirgen')({
           action: 'demo',

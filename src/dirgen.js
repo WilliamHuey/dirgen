@@ -23,8 +23,6 @@ import printValidations from './print-validations';
 import optionsValidator from './option-validations';
 import generateStructure from './generation';
 
-// console.log('optionsValidator', optionsValidator);
-
 //Generation timing for the write process
 let timeDiff;
 
@@ -93,14 +91,9 @@ const shouldHideMessages = (actionParams) => {
 
 const dirgen = (action, actionParams, fromCli) => {
 
-  console.log('fromCli', fromCli);
-
-  console.log('actionParams', actionParams);
-
-
+  //When 'requiring', for getting callbacks
   if (typeof actionParams !== 'undefined' &&
    actionParams.settings) {
-    console.log('found the on done');
     onEvtActions.done = actionParams.settings.on.done;
   }
 
@@ -115,14 +108,8 @@ const dirgen = (action, actionParams, fromCli) => {
     execPathDemo = action.execPath;
   }
 
-  console.log('action', action);
-  console.log('actionDemo', action.action);
-  console.log('execPathDemo', execPathDemo);
-
   if (typeof action.action !== 'undefined' &&
    typeof actionParams === 'undefined') {
-
-     console.log('demo gen');
 
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
@@ -139,31 +126,20 @@ const dirgen = (action, actionParams, fromCli) => {
     Object.assign(requiredActionParams, { output, template, options });
     actionParams = requiredActionParams;
 
-    console.log('actionParams', actionParams);
-
+    //'Requiring' check
     if (actionParams.options && !fromCli) {
-      console.log('!fromCli');
       const validatedOptionsResult = optionsValidator.validateOptions(actionParams);
-      console.log('validatedOptionsResult', validatedOptionsResult);
+
+      //Errors are found in the options of requiring
       if (validatedOptionsResult.error) {
 
-        console.log('error is found');
         const optionsValidatedOutputMsg = optionsValidator.message(validatedOptionsResult);
 
-        console.log('optionsValidatedOutputMsg optionsValidatedOutputMsg', optionsValidatedOutputMsg);
-
-        // console.log('onEvtActions', onEvtActions);
-
+        //Display errors on 'done'
         if (onEvtActions.done) {
-          console.log('onEvtActions.done', onEvtActions.done);
           onEvtActions.done({ errors: [optionsValidatedOutputMsg.invalidValidForceMsg] });
         }
         return;
-      }
-
-      if (onEvtActions.done) {
-        console.log('onEvtActions.done', onEvtActions.done);
-        onEvtActions.done({ errors: [] });
       }
 
     }
@@ -171,7 +147,7 @@ const dirgen = (action, actionParams, fromCli) => {
     //From 'require' use
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   } else {
-    console.log('---------------- from cli non-demo');
+
     //From cli - Non-demo generation case
     creationTemplatePath = commandTypeAction(action, 'template', actionParams);
   }
@@ -295,8 +271,6 @@ const dirgen = (action, actionParams, fromCli) => {
       })
       .on('close', () => {
 
-        console.log('---------close onEvtActions', onEvtActions);
-
         //For displaying the count of the generated and the non-generated
         let genResult = null;
 
@@ -308,8 +282,6 @@ const dirgen = (action, actionParams, fromCli) => {
           co(function* coGenerate() {
             try {
               yield co.wrap(function* coWrapGenerate() {
-
-                console.log('coGenerate');
 
                 //Determine the output filepath of the generated
                 const rootPath = commandTypeAction((actionDemo || action),
@@ -328,17 +300,13 @@ const dirgen = (action, actionParams, fromCli) => {
                 let demoActionParams = null;
                 let normalizedActionParams = null;
 
-                console.log('action', action);
+
                 if (util.isObject(action)) {
                   demoActionParams = {};
                   demoActionParams.template = action.execPath;
                   demoActionParams.options = action.options;
                   demoActionParams.output = rootPath;
                   normalizedActionParams = demoActionParams;
-
-                  console.log('demo settings');
-
-                  console.log('normalizedActionParams', normalizedActionParams);
                 }
 
                 //Non-demo params, generate command
@@ -467,9 +435,6 @@ dirgenExported = (action, actionParams, fromCli) => {
   if (!fromCli && action.action !== 'demo') {
     [actionParams, action] = [action, actionParams];
     action = actionParams.action;
-
-    console.log('--------------------requ');
-
     dirgen(action, actionParams, fromCli);
   } else {
     // console.log('from file');
