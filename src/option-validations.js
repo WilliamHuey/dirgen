@@ -12,10 +12,10 @@ const optionsValidator = () => {};
 
 const validateOptions = Object.assign(optionsValidator.prototype, {
   forceOverwrite: (params) => {
-    return util.isBoolean(params.forceOverwrite);
+    (util.isBoolean(params.forceOverwrite));
   },
   hideMessages: (params) => {
-    return util.isBoolean(params.hideMessages);
+    (util.isBoolean(params.hideMessages));
   },
   message: (validationResult) => {
 
