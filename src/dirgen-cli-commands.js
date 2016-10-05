@@ -17,7 +17,7 @@ import includes from 'array-includes';
 import helpText from './dirgen-cli-commands-text';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
-import initializeMsg from './option-validations-messages';
+import initializeMsg from './require-validations-messages';
 
 if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');

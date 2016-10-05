@@ -151,6 +151,7 @@
         allowForLoopAfterthoughts : true
       }
     ],
-    "no-unsafe-finally": "off"
+    "no-unsafe-finally": "off",
+    "arrow-body-style": 0
   }
 }

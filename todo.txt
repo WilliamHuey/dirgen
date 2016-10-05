@@ -6,6 +6,8 @@ features
 
     on progress
 
+    more rigorous check of the keys of require options, using indexOf comparison in an array
+
   console output
     overwritten files or folders
 

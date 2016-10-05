@@ -15,10 +15,10 @@ import addLinesInfo from './lines-info';
 import lexer from './lexer';
 import validator from './lines-validations';
 import message from './validations-messages';
-import initializeMsg from './option-validations-messages';
+import initializeMsg from './require-validations-messages';
 import logValidations from './log-validations';
 import printValidations from './print-validations';
-import optionsValidator from './option-validations';
+import requireValidator from './require-validations';
 import generateStructure from './generation';
 
 //Generation timing for the write process
@@ -101,7 +101,6 @@ const dirgen = (action, actionParams, fromCli) => {
   let creationTemplatePath = '';
 
   if (util.isObject(action)) {
-    console.log('setting the actions');
     actionDemo = action.action;
     execPathDemo = action.execPath;
   }
@@ -119,6 +118,20 @@ const dirgen = (action, actionParams, fromCli) => {
     let { output } = actionParams.settings;
     const { template, options } = actionParams.settings;
 
+    //Check if the template and output directory is defined
+    const validatedInputOutputResult = requireValidator
+      .validateInputOutput(template, output);
+
+    if (validatedInputOutputResult.length > 0) {
+      const requireValidatedOutputMsg = requireValidator.message(validatedInputOutputResult);
+
+      if (onEvtActions.done) {
+        onEvtActions.done({ errors: [requireValidatedOutputMsg] });
+      }
+
+      return;
+    }
+
     //Check for home directory for output path
     output = convertHome(output);
     Object.assign(requiredActionParams, { output, template, options });
@@ -126,12 +139,12 @@ const dirgen = (action, actionParams, fromCli) => {
 
     //'Requiring' check
     if (actionParams.options && !fromCli) {
-      const validatedOptionsResult = optionsValidator.validateOptions(actionParams);
+      const validatedOptionsResult = requireValidator.validateOptions(actionParams);
 
       //Errors are found in the options of requiring
       if (validatedOptionsResult.error) {
 
-        const optionsValidatedOutputMsg = optionsValidator.message(validatedOptionsResult);
+        const optionsValidatedOutputMsg = requireValidator.message(validatedOptionsResult);
 
         //Display errors on 'done'
         if (onEvtActions.done) {

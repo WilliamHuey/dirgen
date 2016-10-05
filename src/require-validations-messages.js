@@ -1,4 +1,9 @@
 export default {
+
+  noOutputDirMsg: `No valid output directory was provided.`,
+
+  noTemplateMsg: `No valid template file was provided.`,
+
   inValidTemplateMsg: `Not a valid file. Need a plain \
     text file format in the first command input.`,
 

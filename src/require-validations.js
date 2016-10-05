@@ -1,33 +1,46 @@
 //Source modules
 import util from './utilities';
-import optionMessages from './option-validations-messages';
+import requireMessages from './require-validations-messages';
 import message from './validations-messages';
 
-const optionErrorMap = {
+const requireErrorMap = {
   forceOverwrite: 'invalidValidForceMsg',
-  hideMessages: 'invalidHideMessageMsg'
+  hideMessages: 'invalidHideMessageMsg',
+  template: 'noTemplateMsg',
+  output: 'noOutputDirMsg'
 };
 
 const optionsValidator = () => {};
 
 const validateOptions = Object.assign(optionsValidator.prototype, {
   forceOverwrite: (params) => {
-    (util.isBoolean(params.forceOverwrite));
+    return util.isBoolean(params.forceOverwrite);
   },
   hideMessages: (params) => {
-    (util.isBoolean(params.hideMessages));
+    return util.isBoolean(params.hideMessages);
   },
   message: (validationResult) => {
 
-    const optionErrors = [];
+    const requireErrors = [];
+    const validationEntries = validationResult.error || validationResult;
 
-    validationResult.error.forEach((error) => {
-      const optionErrorMsg = optionMessages[optionErrorMap[error]];
-      optionErrors.push(optionErrorMsg);
-      message.error(optionErrorMsg);
+    validationEntries.forEach((error) => {
+      const requireErrorMsg = requireMessages[requireErrorMap[error]];
+      requireErrors.push(requireErrorMsg);
+      message.error(requireErrorMsg);
     });
 
-    return optionErrors;
+    return requireErrors;
+  },
+  validateInputOutput: (template, output) => {
+    const validatedResult = [];
+    if (typeof template === 'undefined') {
+      validatedResult.push('template');
+    }
+    if (typeof output === 'undefined') {
+      validatedResult.push('output');
+    }
+    return validatedResult;
   },
   validateOptions: (params) => {
     const optionTypes = [];

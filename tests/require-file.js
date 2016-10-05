@@ -205,10 +205,28 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    // lab.test('will error out with only the options key, no "template" or "output" key',
-    // function(done) {
-    //   done();
-    // });
+
+    lab.test('will error out with only the options key, no "template" or "output" key', function(done) {
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
+
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/error-out-with-only-option-key'))
+      .then(function() {
+
+        dirgen({
+          options: { hideMessages: true },
+          on: {
+            done: (results) => {
+              __.assertThat(results.errors, __.hasSize(1));
+              done();
+            }
+          }
+        })
+
+      });
+    });
+
 
   });
 };

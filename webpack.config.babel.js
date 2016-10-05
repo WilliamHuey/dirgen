@@ -27,7 +27,6 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/bin/'),
     filename: '[name].js',
-    // library: 'generate',
     libraryTarget: 'umd'
   },
   plugins: [
