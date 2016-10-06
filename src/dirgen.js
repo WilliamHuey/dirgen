@@ -447,7 +447,7 @@ dirgenExported = (action, actionParams, fromCli) => {
     action = actionParams.action;
     dirgen(action, actionParams, fromCli);
   } else {
-    // console.log('from file');
+    //From file
     dirgen(action, actionParams, fromCli);
   }
 };

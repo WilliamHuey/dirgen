@@ -2,11 +2,8 @@ features
   require use
     test
       home path output path
-      required the generate to be call, no 'on' call by itself
 
     on progress
-
-    more rigorous check of the keys of require options, using indexOf comparison in an array
 
   console output
     overwritten files or folders

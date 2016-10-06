@@ -1,3 +1,6 @@
+//Vendor modules
+import includes from 'array-includes';
+
 //Source modules
 import util from './utilities';
 import requireMessages from './require-validations-messages';
@@ -11,6 +14,8 @@ const requireErrorMap = {
 };
 
 const optionsValidator = () => {};
+
+const validOptionsChoices = ['forceOverwrite', 'hideMessages'];
 
 const validateOptions = Object.assign(optionsValidator.prototype, {
   forceOverwrite: (params) => {
@@ -48,7 +53,8 @@ const validateOptions = Object.assign(optionsValidator.prototype, {
 
     //Go through all the option keys that are present in the 'validateOptions' object
     Object.keys(params.options).forEach((key) => {
-      if (typeof validateOptions[key] !== 'undefined') {
+      if (typeof validateOptions[key] !== 'undefined' &&
+        includes(validOptionsChoices, key)) {
         const validatedResults = validateOptions[key](params.options);
 
         //'False' means the option fails validation and will need to be logged
