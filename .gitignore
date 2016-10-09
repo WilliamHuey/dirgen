@@ -2,5 +2,5 @@ npm-debug.log
 node_modules
 .DS_Store
 bin/dirgen-cli-entry.js
-demo/example-output
+demo/example-output/*
 tests/cases-outputs
