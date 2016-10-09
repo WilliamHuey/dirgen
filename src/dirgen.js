@@ -60,7 +60,8 @@ const validationResults = {
 //actual home directory when present at the first
 //of the line
 const convertHome = (outPath) => {
-  if (outPath.indexOf('~') === 0) {
+  if (typeof outPath !== 'undefined' &&
+  outPath.indexOf('~') === 0) {
     return os.homedir() + outPath.slice(1);
   } else {
     return outPath;
@@ -117,10 +118,11 @@ const dirgen = (action, actionParams, fromCli) => {
     const requiredActionParams = {};
     let { output } = actionParams.settings;
     const { template, options } = actionParams.settings;
+    const templateConvertedPath = convertHome(template);
 
     //Check if the template and output directory is defined
     const validatedInputOutputResult = requireValidator
-      .validateInputOutput(template, output);
+      .validateInputOutput(templateConvertedPath, output);
 
     if (validatedInputOutputResult.length > 0) {
       const requireValidatedOutputMsg = requireValidator.message(validatedInputOutputResult);
@@ -134,11 +136,13 @@ const dirgen = (action, actionParams, fromCli) => {
 
     //Check for home directory for output path
     output = convertHome(output);
-    Object.assign(requiredActionParams, { output, template, options });
+
+    Object.assign(requiredActionParams, { output, template: templateConvertedPath, options });
     actionParams = requiredActionParams;
 
     //'Requiring' check
     if (actionParams.options && !fromCli) {
+
       const validatedOptionsResult = requireValidator.validateOptions(actionParams);
 
       //Errors are found in the options of requiring
@@ -208,7 +212,6 @@ const dirgen = (action, actionParams, fromCli) => {
         input: fs.createReadStream(creationTemplatePath)
       })
       .on('line', (line) => {
-        // console.log('line :', line);
 
         //Get properties from the current line
         //in detail with the lexer

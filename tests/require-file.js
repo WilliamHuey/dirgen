@@ -87,7 +87,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
               done();
             }
           }
-        })
+        });
       });
     });
 
@@ -108,7 +108,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
               done();
             }
           }
-        })
+        });
 
       });
     });
@@ -131,7 +131,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
               done();
             }
           }
-        })
+        });
 
       });
     });
@@ -154,7 +154,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
                 done();
               }
             }
-          })
+          });
       });
 
     });
@@ -178,7 +178,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
                 done();
               }
             }
-          })
+          });
       });
     });
 
@@ -200,11 +200,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
               done();
             }
           }
-        })
+        });
 
       });
     });
-
 
     lab.test('will error out with only the options key, no "template" or "output" key', function(done) {
       var proxyquire = require('proxyquire');
@@ -222,10 +221,10 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
               done();
             }
           }
-        })
-
+        });
       });
     });
+
 
 
   });

@@ -1,9 +1,9 @@
-features
+test
   require use
-    test
-      home path output path
-
     on progress
+
+features
+  on progress
 
   console output
     overwritten files or folders
