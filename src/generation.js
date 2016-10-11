@@ -256,7 +256,8 @@ createStructureTC = tailCall(createStructure);
 //Top level lines kick off and for later child structure creation
 function startCreatingAtTopLevel(linesInfo, rootPath,
   validationResults, actionParams, contentLineCount, options,
-  resolve, genFailures) {
+  resolve, genFailures, onEvtActions) {
+
   //Take the outer-most level of elements which
   //serves as the initial generation set
   for (let i = 0; i < contentLineCount; i++) {
@@ -269,7 +270,7 @@ function startCreatingAtTopLevel(linesInfo, rootPath,
 }
 
 export default (linesInfo, rootPath, validationResults,
-  actionParams, genFailures) => {
+  actionParams, genFailures, onEvtActions) => {
 
   //Flag definition to allow for changing the defaults values such
   //as allowing for overwriting existing files or folders
@@ -309,7 +310,7 @@ export default (linesInfo, rootPath, validationResults,
           }
 
           startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-             actionParams, contentLineCount, options, resolve, genFailures);
+             actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
         } catch (e) {
           const statUndefined = typeof stat === 'undefined';
 
@@ -320,7 +321,7 @@ export default (linesInfo, rootPath, validationResults,
             //When stat is undefined means it does not exist so create it
             //When it is not undefined, stat is reading the first copy
             startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-               actionParams, contentLineCount, options, resolve, genFailures);
+               actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
           }
 
         }
@@ -331,7 +332,7 @@ export default (linesInfo, rootPath, validationResults,
         //Take the outer-most level of elements which
         //serves as the initial generation set
         startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-           actionParams, contentLineCount, options, resolve, genFailures);
+           actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
       }
     });
 

@@ -91,9 +91,15 @@ const shouldHideMessages = (actionParams) => {
 const dirgen = (action, actionParams, fromCli) => {
 
   //When 'requiring', for getting callbacks
-  if (typeof actionParams !== 'undefined' &&
-   actionParams.settings) {
-    onEvtActions.done = actionParams.settings.on.done;
+  if (typeof actionParams !== 'undefined') {
+   if (actionParams.settings && actionParams.settings.on) {
+     if (actionParams.settings.on.done) {
+        onEvtActions.done = actionParams.settings.on.done;
+     }
+     if (actionParams.settings.on.line) {
+       onEvtActions.line = actionParams.settings.on.line;
+     }
+   }
   }
 
   //Demo input params are different from typical generation
@@ -314,7 +320,6 @@ const dirgen = (action, actionParams, fromCli) => {
                 let demoActionParams = null;
                 let normalizedActionParams = null;
 
-
                 if (util.isObject(action)) {
                   demoActionParams = {};
                   demoActionParams.template = action.execPath;
@@ -367,7 +372,7 @@ const dirgen = (action, actionParams, fromCli) => {
                     }
 
                     genResult = yield generateStructure(linesInfo, rootPath,
-                       validationResults, normalizedActionParams, genFailures);
+                       validationResults, normalizedActionParams, genFailures, onEvtActions);
 
                     //Time the generation only
                     timeDiff = process.hrtime(time);

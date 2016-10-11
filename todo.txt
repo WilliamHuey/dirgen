@@ -4,6 +4,7 @@ test
 
 features
   on progress
+    status, line#, content
 
   console output
     overwritten files or folders
