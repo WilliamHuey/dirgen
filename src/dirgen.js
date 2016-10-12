@@ -353,6 +353,8 @@ const dirgen = (action, actionParams, fromCli) => {
                     try {
                       const folderStat = yield statAsync(rootPath);
                     } catch (error) {
+
+
                       if (typeof error.code !== 'undefined') {
                         validRootPath = false;
                       }
@@ -425,8 +427,10 @@ ${genResult.skipped} skipped`);
                 //On error conditions, no timeDiff is needed
                 if (timeDiff && genResult.generated > 0) {
                   console.log('Write time: %d nanoseconds', (timeDiff[0] * 1e9) + timeDiff[1]);
+                  console.log('\n');
                 } else {
                   console.log('Write time: %d nanoseconds', 0);
+                  console.log('\n');
                 }
 
                 //For the 'on' callback of 'done' to indicate the generation

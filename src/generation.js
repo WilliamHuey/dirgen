@@ -71,7 +71,7 @@ const logNonGenerated = tailCall((linesInfo, structureCreation,
 //Convert createStructure into a tail recursive function
 let createStructureTC = null;
 const createStructure = (linesInfo, lineInfo, rootPath,
-  contentLineCount, validationResults, options, resolve, genFailures) => {
+  contentLineCount, validationResults, options, resolve, genFailures, onEvtActions) => {
 
   const {
     structureName,
@@ -107,9 +107,18 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           if (options.forceOverwrite) {
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Overwritten: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+            }
           } else if (fileStat) {
+
             //Skip generating file
             structureCreation.skipped += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Skipped: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+            }
           }
 
           generationResolver(structureCreation, contentLineCount, resolve);
@@ -122,6 +131,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             //Create the file when it does not exists
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Generated: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+            }
 
             //When all generated structures are created with the non-generated
             //structures ignored, signifies that the generation process comes to
@@ -138,6 +151,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
             //Failure to generate will be defined as a skip
             structureCreation.skipped += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Skipped: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+            }
           }
         }
       });
@@ -181,9 +198,18 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           if (options.forceOverwrite) {
             yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Overwritten: Line #${lineInfo.nameDetails.line} (Folder): ${structureName}`);
+            }
           } else if (fileStat) {
+
             // Skip folder generation
             structureCreation.skipped += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Skipped: Line #${lineInfo.nameDetails.line} (Folder): ${structureName}`);
+            }
           }
 
           //When all generated structures are created with the non-generated
@@ -197,6 +223,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             //Create the file when it does not exists
             yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
+
+            if (typeof onEvtActions.line !== 'undefined') {
+              onEvtActions.line(`Generated: Line #${lineInfo.nameDetails.line} (Folder): ${structureName}`);
+            }
 
             //When all generated structures are created with the non-generated
             //structures ignored with skips accounted for, signifies
@@ -222,7 +252,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         }
       });
 
-
     }
 
     const nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
@@ -241,7 +270,7 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         typeof line !== 'undefined') {
           createStructureTC(linesInfo, line, parentPath,
             contentLineCount, validationResults, options,
-            resolve, genFailures);
+            resolve, genFailures, onEvtActions);
         }
       });
     }
@@ -254,9 +283,9 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 createStructureTC = tailCall(createStructure);
 
 //Top level lines kick off and for later child structure creation
-function startCreatingAtTopLevel(linesInfo, rootPath,
+const startCreatingAtTopLevel = (linesInfo, rootPath,
   validationResults, actionParams, contentLineCount, options,
-  resolve, genFailures, onEvtActions) {
+  resolve, genFailures, onEvtActions) => {
 
   //Take the outer-most level of elements which
   //serves as the initial generation set
@@ -264,10 +293,10 @@ function startCreatingAtTopLevel(linesInfo, rootPath,
     const topLevelLine = linesInfo.topLevel[i];
     if (typeof topLevelLine !== 'undefined') {
       createStructureTC(linesInfo, topLevelLine, rootPath,
-        contentLineCount, validationResults, options, resolve, genFailures);
+        contentLineCount, validationResults, options, resolve, genFailures, onEvtActions);
     }
   }
-}
+};
 
 export default (linesInfo, rootPath, validationResults,
   actionParams, genFailures, onEvtActions) => {

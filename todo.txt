@@ -1,15 +1,16 @@
 test
   require use
-    on progress
+    overwritten files or folders
+
 
 features
-  on progress
-    status, line#, content
 
   console output
     overwritten files or folders
 
 issues
+  error logs in generation touch ups
+
   failure to generate file or folder on first run, but ok on later runs?
 
 Module
