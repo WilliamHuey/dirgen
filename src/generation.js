@@ -18,6 +18,7 @@ import co from 'co';
 import Validations from './lines-validations';
 import message from './validations-messages';
 import logValidations from './log-validations';
+import requireMessages from './require-messages';
 
 const validator = Validations;
 const tailCall = recursive.recur;
@@ -109,7 +110,11 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.generated += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Overwritten: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+
+              onEvtActions.line(
+                requireMessages
+                  .onLineOverwritten(lineInfo.nameDetails.line, 'File',
+                    structureName));
             }
           } else if (fileStat) {
 
@@ -117,7 +122,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.skipped += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Skipped: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+              onEvtActions.line(
+                requireMessages
+                  .onLineSkipped(lineInfo.nameDetails.line, 'File',
+                    structureName));
             }
           }
 
@@ -133,7 +141,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.generated += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Generated: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+              onEvtActions.line(
+                requireMessages
+                  .onLineGenerated(lineInfo.nameDetails.line, 'File',
+                    structureName));
             }
 
             //When all generated structures are created with the non-generated
@@ -144,7 +155,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
             //Any other error means besides stat means it is a serious error
             // message.error(`Generation error has occurred with file on
-            //Line #${lineInfo.nameDetails.line}: ${structureName}.`);
 
             genFailures.push(`Generation error has occurred with file on Line
                #${lineInfo.nameDetails.line}: ${structureName}.`);
@@ -153,7 +163,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.skipped += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Skipped: Line #${lineInfo.nameDetails.line} (File): ${structureName}`);
+              onEvtActions.line(
+                requireMessages
+                  .onLineSkipped(lineInfo.nameDetails.line, 'File',
+                    structureName));
             }
           }
         }
@@ -200,7 +213,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.generated += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Overwritten: Line #${lineInfo.nameDetails.line} (Folder): ${structureName}`);
+              onEvtActions.line(
+                requireMessages
+                  .onLineOverwritten(lineInfo.nameDetails.line, 'Folder',
+                    structureName));
             }
           } else if (fileStat) {
 
@@ -208,7 +224,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.skipped += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Skipped: Line #${lineInfo.nameDetails.line} (Folder): ${structureName}`);
+              onEvtActions.line(
+                requireMessages
+                  .onLineSkipped(lineInfo.nameDetails.line, 'File',
+                    structureName));
             }
           }
 
@@ -225,7 +244,10 @@ const createStructure = (linesInfo, lineInfo, rootPath,
             structureCreation.generated += 1;
 
             if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(`Generated: Line #${lineInfo.nameDetails.line} (Folder): ${structureName}`);
+              onEvtActions.line(
+                requireMessages
+                  .onLineGenerated(lineInfo.nameDetails.line, 'Folder',
+                    structureName));
             }
 
             //When all generated structures are created with the non-generated

@@ -3,7 +3,7 @@ import includes from 'array-includes';
 
 //Source modules
 import util from './utilities';
-import requireMessages from './require-validations-messages';
+import requireValidationMessages from './require-validations-messages';
 import message from './validations-messages';
 
 const requireErrorMap = {
@@ -30,7 +30,7 @@ const validateOptions = Object.assign(optionsValidator.prototype, {
     const validationEntries = validationResult.error || validationResult;
 
     validationEntries.forEach((error) => {
-      const requireErrorMsg = requireMessages[requireErrorMap[error]];
+      const requireErrorMsg = requireValidationMessages[requireErrorMap[error]];
       requireErrors.push(requireErrorMsg);
       message.error(requireErrorMsg);
     });

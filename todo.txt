@@ -1,11 +1,13 @@
 test
   require use
+    non-generated will be logged as skipped
     overwritten files or folders
 
 
 features
 
   console output
+    renderkid online msg
     overwritten files or folders
 
 issues
@@ -31,3 +33,6 @@ Backlog/Optimize
   -- encoding type
   -- permission level
   -- performance with group generation
+  -- log out errors on error condition
+    --- resume point to start from after last error cond
+  -- dry run command

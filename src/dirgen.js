@@ -15,7 +15,7 @@ import addLinesInfo from './lines-info';
 import lexer from './lexer';
 import validator from './lines-validations';
 import message from './validations-messages';
-import initializeMsg from './require-validations-messages';
+import requireValidationMessages from './require-validations-messages';
 import logValidations from './log-validations';
 import printValidations from './print-validations';
 import requireValidator from './require-validations';
@@ -82,8 +82,9 @@ const shouldHideMessages = (actionParams) => {
   } else if (typeof actionParams.options.hideMessages !== 'undefined' &&
    actionParams.options.hideMessages !== true) {
 
-    validationResults.errors.push(initializeMsg.invalidHideMessageMsg);
-    message.error(initializeMsg.invalidHideMessageMsg);
+    validationResults.errors.push(
+      requireValidationMessages.invalidHideMessageMsg);
+    message.error(requireValidationMessages.invalidHideMessageMsg);
     return 'invalid';
   }
 };
@@ -131,7 +132,8 @@ const dirgen = (action, actionParams, fromCli) => {
       .validateInputOutput(templateConvertedPath, output);
 
     if (validatedInputOutputResult.length > 0) {
-      const requireValidatedOutputMsg = requireValidator.message(validatedInputOutputResult);
+      const requireValidatedOutputMsg = requireValidator.message(
+        validatedInputOutputResult);
 
       if (onEvtActions.done) {
         onEvtActions.done({ errors: [requireValidatedOutputMsg] });
@@ -149,7 +151,8 @@ const dirgen = (action, actionParams, fromCli) => {
     //'Requiring' check
     if (actionParams.options && !fromCli) {
 
-      const validatedOptionsResult = requireValidator.validateOptions(actionParams);
+      const validatedOptionsResult = requireValidator.validateOptions(
+        actionParams);
 
       //Errors are found in the options of requiring
       if (validatedOptionsResult.error) {
@@ -203,12 +206,13 @@ const dirgen = (action, actionParams, fromCli) => {
       if (hideMessageResult === 'invalid') {
         return;
       } else if (hideMessageResult) {
-        message.error(initializeMsg.inValidTemplateMsg);
+        message.error(requireValidationMessages.inValidTemplateMsg);
       }
 
       //Run the 'done' callback
       if (onEvtActions.done) {
-        onEvtActions.done({ errors: [initializeMsg.inValidTemplateMsg] });
+        onEvtActions.done({ errors:
+          [requireValidationMessages.inValidTemplateMsg] });
       }
       return;
     }
@@ -342,7 +346,8 @@ const dirgen = (action, actionParams, fromCli) => {
 
                     //Print all errors first and than any warnings
                     printValidations(message, 'warn',
-                      validationResults.warnings, validationResults.warnings.length);
+                      validationResults.warnings,
+                      validationResults.warnings.length);
                   } else {
 
                     //Generate the content
@@ -363,18 +368,21 @@ const dirgen = (action, actionParams, fromCli) => {
                     //Skip the generation when directory output is invalid
                     if (!validRootPath) {
                       if (!shouldHideMessages(actionParams)) {
-                        message.error(initializeMsg.invalidOutputDirMsg);
+                        message.error(requireValidationMessages
+                          .invalidOutputDirMsg);
                       }
 
                       //Run the 'done' callback
                       if (onEvtActions.done) {
-                        onEvtActions.done({ errors: [initializeMsg.invalidOutputDirMsg] });
+                        onEvtActions.done({ errors:
+                          [requireValidationMessages.invalidOutputDirMsg] });
                       }
                       return;
                     }
 
                     genResult = yield generateStructure(linesInfo, rootPath,
-                       validationResults, normalizedActionParams, genFailures, onEvtActions);
+                       validationResults, normalizedActionParams,
+                       genFailures, onEvtActions);
 
                     //Time the generation only
                     timeDiff = process.hrtime(time);
@@ -408,7 +416,8 @@ ${util.pluralize('warning',
 validationResults.warnings.length)}`);
 
                 //Non-generated count can be larger than the warning count
-                //because the warning logging stops checking items for the top-most repeated folder
+                //because the warning logging stops checking items
+                //for the top-most repeated folder
 
                 //When there is an error log, genResult is null
                 if (genResult === null) {
@@ -422,11 +431,13 @@ ${genResult.notGenerated} not generated, \
 ${genResult.skipped} skipped`);
                 }
 
-                console.log(`Generation failures: ${genFailures.length} write errors`);
+                console.log(`Generation failures: ${genFailures.length} \
+write errors`);
 
                 //On error conditions, no timeDiff is needed
                 if (timeDiff && genResult.generated > 0) {
-                  console.log('Write time: %d nanoseconds', (timeDiff[0] * 1e9) + timeDiff[1]);
+                  console.log(`Write time: \
+${(timeDiff[0] * 1e9) + timeDiff[1]} nanoseconds`);
                   console.log('\n');
                 } else {
                   console.log('Write time: %d nanoseconds', 0);

@@ -237,7 +237,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
           template: (fixtureDir + '/top-level-repeated-line.txt'),
           output: (__dirname +
            '/case-outputs/contain-line-information-on-line-callback'),
-          options: { hideMessages: true },
+          options: { hideMessages: false },
           on: {
             done: (results) => {
               __.assertThat(results.errors, __.isEmpty());
@@ -251,8 +251,6 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
       });
     });
-
-
 
 
   });

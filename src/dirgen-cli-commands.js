@@ -17,7 +17,7 @@ import includes from 'array-includes';
 import helpText from './dirgen-cli-commands-text';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
-import initializeMsg from './require-validations-messages';
+import requireValidationMessages from './require-validations-messages';
 
 if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');
@@ -128,7 +128,7 @@ const cliCommands = (execPath, fromCli) => {
         new Promise((resolve, reject) => {
             fs.stat(data[0], (error) => {
               if (error) {
-                message(initializeMsg.inValidTemplateMsg);
+                message(requireValidationMessages.inValidTemplateMsg);
                 return reject({
                   file: false
                 });
