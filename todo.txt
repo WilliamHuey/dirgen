@@ -1,13 +1,12 @@
 test
   require use
-    non-generated will be logged as skipped
+    non-generated will be logged too
     overwritten files or folders
 
 
 features
 
   console output
-    renderkid online msg
     overwritten files or folders
 
 issues

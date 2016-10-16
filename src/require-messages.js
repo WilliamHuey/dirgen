@@ -1,5 +1,63 @@
+//Vendor modules
+import RenderKid from 'renderkid';
+
+const renderKid = new RenderKid();
+
+renderKid.style({
+  'message-text': {
+    display: 'inline',
+    background: 'white',
+    color: 'black',
+    paddingLeft: 1
+  },
+  'message-header-generated': {
+    background: 'green',
+    color: 'black',
+    padding: 1
+  },
+  'message-header-skipped': {
+    background: 'yellow',
+    color: 'black',
+    padding: 1
+  },
+  'message-header-overwritten': {
+    background: 'orange',
+    color: 'black',
+    padding: 1
+  }
+});
+
+const messageTemplate = (onlineType, line, type, structureName) => {
+  if (onlineType === 'Generated') {
+    return `
+      <message-header-generated>
+        ${onlineType}:
+      </message-header-generated>
+      <message-text>
+        Line #${line} (${type}): ${structureName}
+      <message-text><br>`;
+  } else if (onlineType === 'Skipped') {
+    return `
+      <message-header-skipped>
+        ${onlineType}:
+      </message-header-skipped>
+      <message-text>
+        Line #${line} (${type}): ${structureName}
+      <message-text><br>`;
+  } else if (onlineType === 'Overwritten') {
+    return `
+      <message-header-overwritten>
+        ${onlineType}:
+      </message-header-overwritten>
+      <message-text>
+        Line #${line} (${type}): ${structureName}
+      <message-text><br>`;
+  }
+};
+
+//General log message on an 'onLine' event action
 const onLineLog = (onlineType, line, type, structureName) => {
-return `${onlineType}: Line #${line} (${type}): ${structureName}`;
+  return renderKid.render(messageTemplate(onlineType, line, type, structureName));
 };
 
 export default {
