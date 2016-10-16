@@ -1,6 +1,6 @@
-function getCheckedType(obj) {
+const getCheckedType = (obj) => {
   return Object.prototype.toString.call(obj).slice(8, -1);
-}
+};
 
 const toString = Object.prototype.toString;
 

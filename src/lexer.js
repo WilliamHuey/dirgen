@@ -3,7 +3,7 @@ import detectIndent from 'detect-indent';
 import strscan from 'strscanner';
 
 //Should also detect indentation and well as symbols
-function lexer() {}
+const lexer = () => {};
 
 export default Object.assign(lexer.prototype, {
   lex: (line) => {

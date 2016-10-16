@@ -2,7 +2,7 @@
 import singleLineInfoFunctions from './singleLine-info';
 
 let data = {};
-function linesInfo() {}
+const linesInfo = () => {};
 
 const linesInfoFunctions = {
   currentValue: () => {
