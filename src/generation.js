@@ -5,13 +5,13 @@ import path from 'path';
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
 import {
-  fs,
   existsAsync,
   mkdirAsync,
   writeFileAsync,
   removeAsync,
   statAsync
 } from 'fs-extra-promise';
+
 import co from 'co';
 
 //Source modules
@@ -28,7 +28,8 @@ const structureCreation = {
   generated: 0,
   notGenerated: 0,
   repeats: [],
-  skipped: 0
+  skipped: 0,
+  overwritten: { file: 0, folder: 0 }
 };
 
 const generationResolver = (structureCreation, contentLineCount, resolve) => {
@@ -100,76 +101,47 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       const fileCreate = co.wrap(function* wrapFileCreate() {
 
         try {
+          yield existsAsync(structureCreatePath);
 
           //File already exist situation mean it does not error out
-          const fileStat = yield statAsync(structureCreatePath);
-
           //Overwrite existing files when the flag is provided
-          if (options.forceOverwrite) {
+          if (options && options.forceOverwrite) {
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
+            structureCreation.overwritten.file += 1;
+          } else {
 
-            if (typeof onEvtActions.line !== 'undefined') {
-
-              onEvtActions.line(
-                requireMessages
-                  .onLineOverwritten(lineInfo.nameDetails.line, 'File',
-                    structureName));
-            }
-          } else if (fileStat) {
-
-            //Skip generating file
-            structureCreation.skipped += 1;
-
-            if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(
-                requireMessages
-                  .onLineSkipped(lineInfo.nameDetails.line, 'File',
-                    structureName));
-            }
+            //Non-generated file
+            structureCreation.notGenerated += 1;
           }
 
-          generationResolver(structureCreation, contentLineCount, resolve);
+          //Console line information for each line
+          if (typeof onEvtActions.line !== 'undefined') {
+            onEvtActions.line(
+              requireMessages
+                .onLineOverwritten(lineInfo.nameDetails.line, 'File',
+                  structureName));
+          }
         } catch (e) {
 
           //Create the file when there is a stat error
-          //this means that the folder did not exists
-          if (e.syscall === 'stat') {
+          //this means that the file did not exists
+          yield writeFileAsync(structureCreatePath, '');
+          structureCreation.generated += 1;
 
-            //Create the file when it does not exists
-            yield writeFileAsync(structureCreatePath, '');
-            structureCreation.generated += 1;
-
-            if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(
-                requireMessages
-                  .onLineGenerated(lineInfo.nameDetails.line, 'File',
-                    structureName));
-            }
-
-            //When all generated structures are created with the non-generated
-            //structures ignored, signifies that the generation process comes to
-            //an end
-            generationResolver(structureCreation, contentLineCount, resolve);
-          } else {
-
-            //Any other error means besides stat means it is a serious error
-            // message.error(`Generation error has occurred with file on
-
-            genFailures.push(`Generation error has occurred with file on Line
-               #${lineInfo.nameDetails.line}: ${structureName}.`);
-
-            //Failure to generate will be defined as a skip
-            structureCreation.skipped += 1;
-
-            if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(
-                requireMessages
-                  .onLineSkipped(lineInfo.nameDetails.line, 'File',
-                    structureName));
-            }
+          if (typeof onEvtActions.line !== 'undefined') {
+            onEvtActions.line(
+              requireMessages
+                .onLineGenerated(lineInfo.nameDetails.line, 'File',
+                  structureName));
           }
         }
+
+        //When all generated structures are created with the non-generated
+        //structures ignored, signifies that the generation process comes to
+        //an end
+
+        generationResolver(structureCreation, contentLineCount, resolve);
       });
 
       co(function* coFileCreate() {
@@ -205,65 +177,44 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       const folderCreate = (function* genFolderCreate() {
         try {
 
-          const fileStat = yield statAsync(parentPath);
+          yield existsAsync(parentPath);
 
           //Overwrite existing folder when the flag is provided
-          if (options.forceOverwrite) {
+          if (options && options.forceOverwrite) {
             yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
-
-            if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(
-                requireMessages
-                  .onLineOverwritten(lineInfo.nameDetails.line, 'Folder',
-                    structureName));
-            }
-          } else if (fileStat) {
+            structureCreation.overwritten.folder += 1;
+          } else {
 
             // Skip folder generation
             structureCreation.skipped += 1;
-
-            if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(
-                requireMessages
-                  .onLineSkipped(lineInfo.nameDetails.line, 'File',
-                    structureName));
-            }
           }
 
-          //When all generated structures are created with the non-generated
-          //structures ignored, signifies that the generation process comes to
-          //an end
-          generationResolver(structureCreation, contentLineCount, resolve);
+          if (typeof onEvtActions.line !== 'undefined') {
+            onEvtActions.line(
+              requireMessages
+                .onLineOverwritten(lineInfo.nameDetails.line, 'Folder',
+                  structureName));
+          }
+
         } catch (e) {
 
-          if (e.syscall === 'stat') {
+          //Create the file when it does not exists
+          yield mkdirAsync(parentPath);
+          structureCreation.generated += 1;
 
-            //Create the file when it does not exists
-            yield mkdirAsync(parentPath);
-            structureCreation.generated += 1;
-
-            if (typeof onEvtActions.line !== 'undefined') {
-              onEvtActions.line(
-                requireMessages
-                  .onLineGenerated(lineInfo.nameDetails.line, 'Folder',
-                    structureName));
-            }
-
-            //When all generated structures are created with the non-generated
-            //structures ignored with skips accounted for, signifies
-            //that the generation process comes to an end
-            generationResolver(structureCreation, contentLineCount, resolve);
-          } else {
-
-            genFailures.push(`Generation error has occurred with folder on Line
-               #${lineInfo.nameDetails.line}: ${structureName}.`);
-
-            //Failure to generate will be defined as a skip
-            structureCreation.skipped += 1;
+          if (typeof onEvtActions.line !== 'undefined') {
+            onEvtActions.line(
+              requireMessages
+                .onLineGenerated(lineInfo.nameDetails.line, 'Folder',
+                  structureName));
           }
-
         }
+
+        //When all generated structures are created with the non-generated
+        //structures ignored with skips accounted for, signifies
+        //that the generation process comes to an end
+        generationResolver(structureCreation, contentLineCount, resolve);
       });
 
       co(function* coFolderCreate() {

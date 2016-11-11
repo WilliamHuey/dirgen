@@ -1,15 +1,17 @@
-test
-  require use
-    non-generated will be logged too
-    overwritten files or folders
-
-
 features
-
   console output
     overwritten files or folders
 
+test
+  require use
+    all of the console info should be shown in the require use
+      non-generated will be logged too
+      overwritten files or folders
+
 issues
+  slashes in text line causing error
+  try catch on all statAsync
+
   error logs in generation touch ups
 
   failure to generate file or folder on first run, but ok on later runs?

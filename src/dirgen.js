@@ -430,6 +430,9 @@ generated, 0 skipped`);
 ${genResult.generated} generated, \
 ${genResult.notGenerated} not generated, \
 ${genResult.skipped} skipped`);
+                console.log(`Overwrite count: \
+${genResult.overwritten.file} file, \
+${genResult.overwritten.folder} folder`);
                 }
 
                 console.log(`Generation failures: ${genFailures.length} \
