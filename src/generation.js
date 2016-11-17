@@ -101,11 +101,14 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       const fileCreate = co.wrap(function* wrapFileCreate() {
 
         try {
-          yield existsAsync(structureCreatePath);
+
+          const fileExists = yield statAsync(structureCreatePath);
+
+          console.log('fileExists.isFile()', fileExists.isFile());
 
           //File already exist situation mean it does not error out
           //Overwrite existing files when the flag is provided
-          if (options && options.forceOverwrite) {
+          if (!fileExists.isFile() || (options && options.forceOverwrite)) {
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
             structureCreation.overwritten.file += 1;
@@ -123,6 +126,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
                   structureName));
           }
         } catch (e) {
+
+          console.log('e', e);
 
           //Create the file when there is a stat error
           //this means that the file did not exists
@@ -176,11 +181,12 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       //Create the folder
       const folderCreate = (function* genFolderCreate() {
         try {
+          const folderExists = yield statAsync(parentPath);
 
-          yield existsAsync(parentPath);
+          console.log('folderExists.isDirectory()', folderExists.isDirectory());
 
           //Overwrite existing folder when the flag is provided
-          if (options && options.forceOverwrite) {
+          if (!folderExists.isDirectory() || (options && options.forceOverwrite)) {
             yield mkdirAsync(parentPath);
             structureCreation.generated += 1;
             structureCreation.overwritten.folder += 1;

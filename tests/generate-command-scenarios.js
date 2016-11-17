@@ -27,95 +27,96 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
-    // lab.test('and file sanitizing with additional slashes in front will default to a folder and will display a warning message', function(done) {
-    //   fs.mkdirAsync(__dirname + '/case-outputs/more-than-one-slash')
-    //   .then(function() {
-    //     exec(cliEntryFile + ' g ' + 'tests/fixtures/more-than-one-slash.txt' + ' tests/case-outputs/more-than-one-slash', function(error, stdout, stderr) {
-    //       __.assertThat(stdout,
-    //         __.containsString('has illegal characters which has'));
-    //
-    //       fs.isDirectoryAsync( __dirname + '/case-outputs/more-than-one-slash/slashesinexcess')
-    //       .then(function(resolve, error) {
-    //         __.assertThat(error, __.is( __.undefined()));
-    //
-    //         done(error);
-    //       }, function(error) {
-    //         __.assertThat(error, __.is( __.not(__.defined())));
-    //       });
-    //     });
-    //   }, function(error) {
-    //     done(error);
-    //   });
-    // });
+    lab.test('and file sanitizing with additional slashes in front will default to a folder and will display a warning message', function(done) {
+      fs.mkdirAsync(__dirname + '/case-outputs/more-than-one-slash')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/more-than-one-slash.txt' + ' tests/case-outputs/more-than-one-slash', function(error, stdout, stderr) {
 
-    // lab.test('and file sanitizing with problematic names for oses will display a warning message', function(done) {
-    //
-    //   var problematicCases = 0;
-    //
-    //   exec('ls ' + __dirname + '/fixtures/problematic*', function(error, stdout, stderr) {
-    //
-    //     var modulePath = new RegExp(__dirname + '/fixtures' ,"g");
-    //     var testFilesPaths = stdout.replace(modulePath, '').split('\n');
-    //
-    //     //Remove the blank entry in the array
-    //     testFilesPaths.pop();
-    //
-    //     testFilesPaths.forEach(function(testCasePath) {
-    //
-    //       var genTestFolder = path.resolve('tests/case-outputs/' +  testCasePath).replace(/.txt/i, '');
-    //
-    //       fs.mkdirAsync(genTestFolder)
-    //       .then(function() {
-    //
-    //         exec(cliEntryFile + ' g ' + 'tests/fixtures' +  testCasePath + ' ' + genTestFolder, function(error, stdout, stderr) {
-    //           problematicCases += 1;
-    //           __.assertThat(stdout,
-    //             __.containsString('has an illegal character which has'));
-    //
-    //           if(testFilesPaths.length == problematicCases) {
-    //
-    //             fs.statAsync(genTestFolder + '/valid', function(error, stat) {
-    //               if (error == null) {
-    //                 __.assertThat(error, __.is(__.falsy()))
-    //                 done(error);
-    //               } else if (error.code == 'ENOENT') {
-    //                 __.assertThat(error, __.is( __.defined()));
-    //                 done(error);
-    //               } else {
-    //                 __.assertThat(error, __.is( __.defined()));
-    //                 done(error);
-    //               }
-    //             });
-    //           }
-    //         })
-    //       });
-    //     });
-    //   });
-    // });
-    //
-    // lab.test('and with repeated lines in the same level will display a warning message', function(done) {
-    //   fs.mkdirAsync(__dirname + '/case-outputs/repeated-lines-same-level')
-    //   .then(function() {
-    //     exec(cliEntryFile + ' g ' + 'tests/fixtures/repeated-lines-same-level.txt ' +
-    //     ' tests/case-outputs/repeated-lines-same-level', function(error, stdout, stderr) {
-    //       __.assertThat(stdout,
-    //         __.containsString('repeated line'));
-    //
-    //       fs.statAsync(__dirname + '/case-outputs/repeated-lines-same-level/afadsfsf', function(error, stat) {
-    //         if (error == null) {
-    //           __.assertThat(error, __.is(__.falsy()))
-    //           done(error);
-    //         } else if (error.code == 'ENOENT') {
-    //           __.assertThat(error, __.is( __.defined()));
-    //           done(error);
-    //         } else {
-    //           __.assertThat(error, __.is( __.defined()));
-    //           done(error);
-    //         }
-    //       });
-    //     });
-    //   });
-    // });
+          __.assertThat(stdout,
+            __.containsString('has illegal characters which has'));
+
+          fs.isDirectoryAsync( __dirname + '/case-outputs/more-than-one-slash/slashesinexcess')
+          .then(function(resolve, error) {
+            __.assertThat(error, __.is( __.undefined()));
+
+            done(error);
+          }, function(error) {
+            __.assertThat(error, __.is( __.not(__.defined())));
+          });
+        });
+      }, function(error) {
+        done(error);
+      });
+    });
+
+    lab.test('and file sanitizing with problematic names for oses will display a warning message', function(done) {
+
+      var problematicCases = 0;
+
+      exec('ls ' + __dirname + '/fixtures/problematic*', function(error, stdout, stderr) {
+
+        var modulePath = new RegExp(__dirname + '/fixtures' ,"g");
+        var testFilesPaths = stdout.replace(modulePath, '').split('\n');
+
+        //Remove the blank entry in the array
+        testFilesPaths.pop();
+
+        testFilesPaths.forEach(function(testCasePath) {
+
+          var genTestFolder = path.resolve('tests/case-outputs/' +  testCasePath).replace(/.txt/i, '');
+
+          fs.mkdirAsync(genTestFolder)
+          .then(function() {
+
+            exec(cliEntryFile + ' g ' + 'tests/fixtures' +  testCasePath + ' ' + genTestFolder, function(error, stdout, stderr) {
+              problematicCases += 1;
+              __.assertThat(stdout,
+                __.containsString('has an illegal character which has'));
+
+              if(testFilesPaths.length == problematicCases) {
+
+                fs.statAsync(genTestFolder + '/valid', function(error, stat) {
+                  if (error == null) {
+                    __.assertThat(error, __.is(__.falsy()))
+                    done(error);
+                  } else if (error.code == 'ENOENT') {
+                    __.assertThat(error, __.is( __.defined()));
+                    done(error);
+                  } else {
+                    __.assertThat(error, __.is( __.defined()));
+                    done(error);
+                  }
+                });
+              }
+            })
+          });
+        });
+      });
+    });
+
+    lab.test('and with repeated lines in the same level will display a warning message', function(done) {
+      fs.mkdirAsync(__dirname + '/case-outputs/repeated-lines-same-level')
+      .then(function() {
+        exec(cliEntryFile + ' g ' + 'tests/fixtures/repeated-lines-same-level.txt ' +
+        ' tests/case-outputs/repeated-lines-same-level', function(error, stdout, stderr) {
+          __.assertThat(stdout,
+            __.containsString('repeated line'));
+
+          fs.statAsync(__dirname + '/case-outputs/repeated-lines-same-level/afadsfsf', function(error, stat) {
+            if (error == null) {
+              __.assertThat(error, __.is(__.falsy()))
+              done(error);
+            } else if (error.code == 'ENOENT') {
+              __.assertThat(error, __.is( __.defined()));
+              done(error);
+            } else {
+              __.assertThat(error, __.is( __.defined()));
+              done(error);
+            }
+          });
+        });
+      });
+    });
 
     lab.test('and with a repeated top level line will display a warning message noting the first of the repeats', function(done) {
 

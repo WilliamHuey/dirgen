@@ -21,6 +21,8 @@ import printValidations from './print-validations';
 import requireValidator from './require-validations';
 import generateStructure from './generation';
 
+eval()
+
 //Generation timing for the write process
 let timeDiff;
 

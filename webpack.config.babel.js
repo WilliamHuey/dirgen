@@ -9,11 +9,21 @@ module.exports = {
   },
   module: {
     exprContextCritical: false,
-    loaders: [
+    rules: [
+      // {
+      //   test: /\.js$/,
+      //   enforce: "pre",
+      //   exclude: [
+      //     path.join(__dirname, "/node_modules/")
+      //   ],
+      //   loader: "eslint-loader"
+      // },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel!eslint'
+        exclude: [
+          path.join(__dirname, "/node_modules/")
+        ],
+        loader: "babel-loader"
       },
       {
         test: /\.json$/,
@@ -29,6 +39,10 @@ module.exports = {
     filename: '[name].js',
     libraryTarget: 'umd'
   },
+  // loaders: [
+  //   "babel-loader",
+  //   "json-loader"
+  // ],
   plugins: [
   new webpack.LoaderOptionsPlugin({
     options: {
