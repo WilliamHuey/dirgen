@@ -10,14 +10,14 @@ module.exports = {
   module: {
     exprContextCritical: false,
     rules: [
-      // {
-      //   test: /\.js$/,
-      //   enforce: "pre",
-      //   exclude: [
-      //     path.join(__dirname, "/node_modules/")
-      //   ],
-      //   loader: "eslint-loader"
-      // },
+      {
+        test: /\.js$/,
+        enforce: "pre",
+        exclude: [
+          path.join(__dirname, "/node_modules/")
+        ],
+        loader: "eslint-loader"
+      },
       {
         test: /\.js$/,
         exclude: [
