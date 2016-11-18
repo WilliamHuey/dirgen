@@ -9,12 +9,12 @@ test
       overwritten files or folders
 
 issues
+  console output consistency on silent
+
   statasync distinguish between file and folder
   try catch on all statAsync
 
   error logs in generation touch ups
-
-  failure to generate file or folder on first run, but ok on later runs?
 
 Module
   -What should be checked in to the final npm repo?
@@ -30,7 +30,7 @@ why dirgen
   repetitive boilerplate projects
   for unit testing when generating folders
 
-Backlog/Optimize
+Optimize
   -- encoding type
   -- permission level
   -- performance with group generation

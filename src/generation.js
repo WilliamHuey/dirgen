@@ -104,8 +104,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
           const fileExists = yield statAsync(structureCreatePath);
 
-          console.log('fileExists.isFile()', fileExists.isFile());
-
           //File already exist situation mean it does not error out
           //Overwrite existing files when the flag is provided
           if (!fileExists.isFile() || (options && options.forceOverwrite)) {
@@ -126,8 +124,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
                   structureName));
           }
         } catch (e) {
-
-          console.log('e', e);
 
           //Create the file when there is a stat error
           //this means that the file did not exists

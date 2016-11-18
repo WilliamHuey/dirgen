@@ -340,7 +340,9 @@ const dirgen = (action, actionParams, fromCli) => {
                 //Last stage before generation with status check
                 if (hasContent) {
                   const errors = validationResults.errors;
-                  if (errors.length > 0 && !hideMessages) {
+
+                  const displayErrorsAndWarningMsg = hideMessages === false || typeof hideMessages === 'undefined';
+                  if (errors.length > 0 && displayErrorsAndWarningMsg) {
 
                     printValidations(message, 'error', errors, errors.length);
 
