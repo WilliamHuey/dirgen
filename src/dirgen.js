@@ -342,14 +342,20 @@ const dirgen = (action, actionParams, fromCli) => {
                   const errors = validationResults.errors;
 
                   const displayErrorsAndWarningMsg = hideMessages === false || typeof hideMessages === 'undefined';
-                  if (errors.length > 0 && displayErrorsAndWarningMsg) {
 
-                    printValidations(message, 'error', errors, errors.length);
+                  if (errors.length > 0) {
 
-                    //Print all errors first and than any warnings
-                    printValidations(message, 'warn',
-                      validationResults.warnings,
-                      validationResults.warnings.length);
+                    if (displayErrorsAndWarningMsg) {
+
+                      //Show error message by default or when explicitly shown
+                      printValidations(message, 'error', errors, errors.length);
+
+                      //Print all errors first and than any warnings
+                      printValidations(message, 'warn',
+                        validationResults.warnings,
+                        validationResults.warnings.length);
+                    }
+
                   } else {
 
                     //Generate the content
@@ -398,6 +404,8 @@ const dirgen = (action, actionParams, fromCli) => {
                     }
                   }
                 } else if (!hideMessages) {
+
+                  console.log('!hideMessages');
 
                   //No content in the template file produces only one error
                   message.error(validationResults.errors[0].message);

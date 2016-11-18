@@ -9,7 +9,7 @@ test
       overwritten files or folders
 
 issues
-  console output consistency on silent
+  console output consistency on silent testing for require file
 
   statasync distinguish between file and folder
   try catch on all statAsync
