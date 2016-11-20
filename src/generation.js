@@ -5,7 +5,6 @@ import path from 'path';
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
 import {
-  existsAsync,
   mkdirAsync,
   writeFileAsync,
   removeAsync,
