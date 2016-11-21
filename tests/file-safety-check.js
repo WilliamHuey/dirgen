@@ -108,6 +108,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
           exec(cliEntryFile + ' g ' + 'tests/fixtures/wipe-out-existing-folder.txt ' +
           ' tests/case-outputs/wipe-out-existing-folder -f', function(error, stdout, stderr) {
+
             __.assertThat(stdout, __.containsString('1 generated'));
             done();
           });

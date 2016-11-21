@@ -452,11 +452,12 @@ write errors`);
                 if (timeDiff && genResult.generated > 0) {
                   console.log(`Write time: \
 ${(timeDiff[0] * 1e9) + timeDiff[1]} nanoseconds`);
-                  console.log('\n');
                 } else {
                   console.log('Write time: %d nanoseconds', 0);
-                  console.log('\n');
                 }
+
+                console.log('Finish processing');
+                console.log('\n');
 
                 //For the 'on' callback of 'done' to indicate the generation
                 //or processing is complete, but running Dirgen from the

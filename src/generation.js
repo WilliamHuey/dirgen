@@ -5,12 +5,11 @@ import path from 'path';
 import normalizePath from 'normalize-path';
 import recursive from 'tail-call/core';
 import {
-  mkdirAsync,
+  ensureDirAsync,
   writeFileAsync,
   removeAsync,
   statAsync
 } from 'fs-extra-promise';
-
 import co from 'co';
 
 //Source modules
@@ -105,7 +104,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
           //File already exist situation mean it does not error out
           //Overwrite existing files when the flag is provided
-          if (!fileExists.isFile() || (options && options.forceOverwrite)) {
+          if (fileExists.isFile() && (options && options.forceOverwrite)) {
+
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;
             structureCreation.overwritten.file += 1;
@@ -140,7 +140,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         //When all generated structures are created with the non-generated
         //structures ignored, signifies that the generation process comes to
         //an end
-
         generationResolver(structureCreation, contentLineCount, resolve);
       });
 
@@ -178,11 +177,12 @@ const createStructure = (linesInfo, lineInfo, rootPath,
         try {
           const folderExists = yield statAsync(parentPath);
 
-          console.log('folderExists.isDirectory()', folderExists.isDirectory());
-
-          //Overwrite existing folder when the flag is provided
-          if (!folderExists.isDirectory() || (options && options.forceOverwrite)) {
-            yield mkdirAsync(parentPath);
+          //'Overwrite' existing folder when the flag is provided
+          //This means that the folder
+          //is deleted and then recreated
+          if (folderExists.isDirectory() && (options && options.forceOverwrite)) {
+            yield removeAsync(parentPath);
+            yield ensureDirAsync(parentPath);
             structureCreation.generated += 1;
             structureCreation.overwritten.folder += 1;
           } else {
@@ -200,8 +200,8 @@ const createStructure = (linesInfo, lineInfo, rootPath,
 
         } catch (e) {
 
-          //Create the file when it does not exists
-          yield mkdirAsync(parentPath);
+          //Create the folder when it does not exists
+          yield ensureDirAsync(parentPath);
           structureCreation.generated += 1;
 
           if (typeof onEvtActions.line !== 'undefined') {
@@ -283,68 +283,12 @@ export default (linesInfo, rootPath, validationResults,
   const contentLineCount = linesInfo.contentLineCount;
   return new Promise((resolve, reject) => {
 
-    const startGen = co.wrap(function* coStartGen() {
+    //Go ahead with the writing of files and folders
 
-      //Remove all folders and files in the top level
-      //of the template file
-      //This will ensure that all generated files are new leading
-      //to "overwriting"
-      if (options && options.forceOverwrite) {
-        let stat;
-        try {
-          for (let i = 0; i < contentLineCount; i++) {
-            const topLevelLine = linesInfo.topLevel[i];
+    //Take the outer-most level of elements which
+    //serves as the initial generation set
+    startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
+       actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
 
-            if (typeof topLevelLine !== 'undefined') {
-              const {
-                nameDetails,
-                structureName
-              } = topLevelLine;
-
-              const parentPath = path.join(rootPath,
-                (nameDetails.sanitizedName || structureName));
-
-              stat = yield statAsync(parentPath);
-
-              if (stat.isDirectory() || stat.isFile()) {
-                yield removeAsync(parentPath);
-              }
-            }
-          }
-
-          startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-             actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
-        } catch (e) {
-          const statUndefined = typeof stat === 'undefined';
-
-          //when stat is "undefined", create the structure,
-          //because it does not exists
-          if (statUndefined || !statUndefined) {
-
-            //When stat is undefined means it does not exist so create it
-            //When it is not undefined, stat is reading the first copy
-            startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-               actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
-          }
-
-        }
-      } else {
-
-        //Go ahead with the writing of files and folders
-
-        //Take the outer-most level of elements which
-        //serves as the initial generation set
-        startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
-           actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
-      }
-    });
-
-    co(function* coStartGen() {
-      try {
-        yield startGen();
-      } catch (error) {
-        console.log('Start generation error:', error);
-      }
-    });
   });
 };
