@@ -1,16 +1,3 @@
-features
-  console output
-    overwritten files or folders
-
-test
-  require use
-    all of the console info should be shown in the require use
-      non-generated will be logged too
-      overwritten files or folders
-
-issues
-  error logs in generation touch ups
-
 Module
   -What should be checked in to the final npm repo?
   -Selective check-ins for the dist folder:

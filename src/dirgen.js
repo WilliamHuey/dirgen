@@ -136,7 +136,9 @@ const dirgen = (action, actionParams, fromCli) => {
         validatedInputOutputResult);
 
       if (onEvtActions.done) {
-        onEvtActions.done({ errors: [requireValidatedOutputMsg] });
+        onEvtActions.done({
+          errors: [requireValidatedOutputMsg]
+        });
       }
 
       return;
@@ -161,7 +163,9 @@ const dirgen = (action, actionParams, fromCli) => {
 
         //Display errors on 'done'
         if (onEvtActions.done) {
-          onEvtActions.done({ errors: [optionsValidatedOutputMsg] });
+          onEvtActions.done({
+            errors: [optionsValidatedOutputMsg]
+          });
         }
 
         return;
@@ -211,8 +215,9 @@ const dirgen = (action, actionParams, fromCli) => {
 
       //Run the 'done' callback
       if (onEvtActions.done) {
-        onEvtActions.done({ errors:
-          [requireValidationMessages.inValidTemplateMsg] });
+        onEvtActions.done({
+          errors: [requireValidationMessages.inValidTemplateMsg]
+        });
       }
       return;
     }
@@ -462,7 +467,7 @@ ${(timeDiff[0] * 1e9) + timeDiff[1]} nanoseconds`);
                 //For the 'on' callback of 'done' to indicate the generation
                 //or processing is complete, but running Dirgen from the
                 //cli will trigger a 'done' callback
-                if (onEvtActions.done) onEvtActions.done(validationResults);
+                if (onEvtActions.done) onEvtActions.done(validationResults, genResult);
 
               })();
             } catch (error) {

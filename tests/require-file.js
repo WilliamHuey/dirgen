@@ -126,7 +126,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
           output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-force-option'),
           options: { forceOverwrite: true },
           on: {
-            done: (results) => {
+            done: (results, logOuput) => {
               __.assertThat(results.errors, __.isEmpty());
               done();
             }
@@ -252,6 +252,36 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
       });
     });
 
+    lab.test('will produce console output information on successful creation', function(done) {
+      var proxyquire = require('proxyquire');
+      var dirgen = proxyquire(dirgenCliEntry, {});
+
+      fs.mkdirAsync((__dirname +
+       '/case-outputs/produce-console-output-information'))
+      .then(function() {
+
+        dirgen({
+          template: (fixtureDir + '/one-slash.txt'),
+          output: (__dirname + '/case-outputs/produce-console-output-information'),
+          options: { forceOverwrite: true },
+          on: {
+            done: (results, logOuput) => {
+
+              var requiredOutputKeys =  [
+                'generated', 'logOuput', 'notGenerated',
+                'repeats', 'skipped', 'overwritten'];
+
+              for (let key of Object.keys(logOuput)) {
+                 __.assertThat(requiredOutputKeys, __.hasItem(key));
+              }
+
+              done();
+            }
+          }
+        });
+
+      });
+    });
 
   });
 };
