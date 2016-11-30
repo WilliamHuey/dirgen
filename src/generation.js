@@ -99,12 +99,12 @@ const createStructure = (linesInfo, lineInfo, rootPath,
       const fileCreate = co.wrap(function* wrapFileCreate() {
 
         try {
-
           const fileExists = yield statAsync(structureCreatePath);
 
           //File already exist situation mean it does not error out
           //Overwrite existing files when the flag is provided
-          if (fileExists.isFile() && (options && options.forceOverwrite)) {
+          if (fileExists.isFile() &&
+          (options && options.forceOverwrite)) {
 
             yield writeFileAsync(structureCreatePath, '');
             structureCreation.generated += 1;

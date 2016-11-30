@@ -271,7 +271,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
                 'generated', 'logOuput', 'notGenerated',
                 'repeats', 'skipped', 'overwritten'];
 
-              for (let key of Object.keys(logOuput)) {
+              for (var key of Object.keys(logOuput)) {
                  __.assertThat(requiredOutputKeys, __.hasItem(key));
               }
 
