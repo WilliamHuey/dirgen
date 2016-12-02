@@ -16,7 +16,9 @@
   "scripts": {
     "watch": "node_modules/webpack/bin/webpack.js --watch",
     "build": "node_modules/webpack/bin/webpack.js --optimize-dedupe",
-    "test": "node_modules/lab/bin/lab ./tests/integrity.js -vp -m 0 -l"
+    "test": "node_modules/lab/bin/lab ./tests/integrity.js -vp -m 0 -l",
+    "publish-please": "publish-please",
+    "prepublish": "publish-please guard"
   },
   "dependencies": {
     "array-includes": "^3.0.2",
@@ -26,6 +28,7 @@
     "fs-extra-promise": "^0.4.1",
     "guard-js": "^0.1.1",
     "is-text-path": "^1.0.1",
+    "marky-markdown": "^9.0.1",
     "nash": "^2.0.4",
     "normalize-path": "^2.0.1",
     "renderkid": "^2.0.0",
@@ -54,6 +57,7 @@
     "json-loader": "^0.5.4",
     "lab": "^11.2.1",
     "proxyquire": "^1.7.10",
+    "publish-please": "^2.2.0",
     "webpack": "^2.1.0-beta.27"
   },
   "engine": "node >= 4",
