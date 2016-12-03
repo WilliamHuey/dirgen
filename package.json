@@ -30,7 +30,6 @@
     "is-text-path": "^1.0.1",
     "nash": "^2.0.4",
     "normalize-path": "^2.0.1",
-    "remarkable": "^1.7.1",
     "renderkid": "^2.0.0",
     "sanitize-filename": "^1.6.1",
     "strscanner": "0.0.8",

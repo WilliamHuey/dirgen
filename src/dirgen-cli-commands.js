@@ -12,16 +12,29 @@ import {
 } from 'fs-extra-promise';
 import co from 'co';
 import includes from 'array-includes';
+import RenderKid from 'renderkid';
 
 //Source modules
 import helpText from './dirgen-cli-commands-text';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
 import requireValidationMessages from './require-validations-messages';
+import htmlHelpText from '../README.md';
 
 if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');
 }
+
+const renderKid = new RenderKid();
+
+renderKid.style({
+  'h1': {
+    display: 'inline',
+    background: 'white',
+    color: 'black',
+    paddingLeft: 1
+  }
+});
 
 //Array of cli commands for sync and async operations
 const { commands, asyncCommands } = validCliCommands;
@@ -187,6 +200,9 @@ const cliCommands = (execPath, fromCli) => {
     .command('help')
     .name('h')
     .handler((data, flags, done) => {
+
+      // console.log(renderKid.render(htmlHelpText));
+
       console.log(helpText);
     });
 

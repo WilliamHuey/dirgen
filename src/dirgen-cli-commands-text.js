@@ -1,9 +1,3 @@
-import Remarkable from 'remarkable';
-import stuff from '../README.md';
-
-const md = new Remarkable();
-
-
 const cliText = `
   \x1B[1m Overview: \x1B[22m
 
