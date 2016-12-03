@@ -11,6 +11,10 @@ module.exports = {
     exprContextCritical: false,
     rules: [
       {
+        test: /\.md/,
+        loader: 'html-loader!markdown-loader'
+      },
+      {
         test: /\.js$/,
         enforce: "pre",
         exclude: [
