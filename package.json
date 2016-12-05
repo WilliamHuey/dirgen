@@ -21,6 +21,7 @@
     "prepublish": "publish-please guard"
   },
   "dependencies": {
+    "ansimd": "^0.2.1",
     "array-includes": "^3.0.2",
     "babel-polyfill": "^6.16.0",
     "co": "^4.6.0",
@@ -28,8 +29,6 @@
     "fs-extra-promise": "^0.4.1",
     "guard-js": "^0.1.1",
     "is-text-path": "^1.0.1",
-    "marked": "^0.3.6",
-    "marked-terminal": "^2.0.0",
     "nash": "^2.0.4",
     "normalize-path": "^2.0.1",
     "raw-loader": "^0.5.1",
@@ -56,10 +55,8 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.7.1",
     "hamjest": "^3.0.0-8",
-    "html-loader": "^0.4.4",
     "json-loader": "^0.5.4",
     "lab": "^11.2.1",
-    "markdown-loader": "^0.1.7",
     "proxyquire": "^1.7.10",
     "publish-please": "^2.2.0",
     "webpack": "^2.1.0-beta.27"

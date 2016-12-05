@@ -12,9 +12,7 @@ import {
 } from 'fs-extra-promise';
 import co from 'co';
 import includes from 'array-includes';
-import RenderKid from 'renderkid';
-import marked from 'marked';
-import TerminalRenderer from 'marked-terminal';
+import ansimd from 'ansimd';
 
 //Source modules
 import helpText from './dirgen-cli-commands-text';
@@ -26,13 +24,6 @@ import htmlHelpText from '../README.md';
 if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');
 }
-
-marked.setOptions({
-  // Define custom renderer
-  renderer: new TerminalRenderer()
-});
-
-const renderer = new marked.Renderer();
 
 //Array of cli commands for sync and async operations
 const { commands, asyncCommands } = validCliCommands;
@@ -198,7 +189,7 @@ const cliCommands = (execPath, fromCli) => {
     .command('help')
     .name('h')
     .handler((data, flags, done) => {
-      console.log(marked(htmlHelpText));
+      console.log(ansimd(htmlHelpText));
     });
 
   //Option --help is an alias for command 'help'

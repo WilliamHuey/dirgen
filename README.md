@@ -139,7 +139,7 @@ under the root of the Dirgen module folder.
 
 dirgen [command] [command parameters] [options]
 
-## Command:          Command Parameters:
+## Command:             Command Parameters:
 (Alias below)        (in respective order)
 
  generate             <template> (required)
@@ -160,12 +160,12 @@ dirgen [command] [command parameters] [options]
 
 ## Options:
 
--f                  Overwrite files and directory even if they already
-                    exist. Default behavior without this option does not
-                    forcibly overwrite content as a safety measure.
+  -f                  Overwrite files and directory even if they already
+                      exist. Default behavior without this option does not
+                      forcibly overwrite content as a safety measure.
 
--s                  Suppress the actual warnings and errors messages from
-                    showing up on the console. The count of warnings and
-                    errors will still be shown in the generation output
-                    information.
+  -s                  Suppress the actual warnings and errors messages from
+                      showing up on the console. The count of warnings and
+                      errors will still be shown in the generation output
+                      information.
 
