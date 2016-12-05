@@ -13,6 +13,8 @@ import {
 import co from 'co';
 import includes from 'array-includes';
 import RenderKid from 'renderkid';
+import marked from 'marked';
+import TerminalRenderer from 'marked-terminal';
 
 //Source modules
 import helpText from './dirgen-cli-commands-text';
@@ -25,16 +27,12 @@ if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');
 }
 
-const renderKid = new RenderKid();
-
-renderKid.style({
-  'h1': {
-    display: 'inline',
-    background: 'white',
-    color: 'black',
-    paddingLeft: 1
-  }
+marked.setOptions({
+  // Define custom renderer
+  renderer: new TerminalRenderer()
 });
+
+const renderer = new marked.Renderer();
 
 //Array of cli commands for sync and async operations
 const { commands, asyncCommands } = validCliCommands;
@@ -200,10 +198,7 @@ const cliCommands = (execPath, fromCli) => {
     .command('help')
     .name('h')
     .handler((data, flags, done) => {
-
-      // console.log(renderKid.render(htmlHelpText));
-
-      console.log(helpText);
+      console.log(marked(htmlHelpText));
     });
 
   //Option --help is an alias for command 'help'

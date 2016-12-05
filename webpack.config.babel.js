@@ -12,7 +12,7 @@ module.exports = {
     rules: [
       {
         test: /\.md/,
-        loader: 'html-loader!markdown-loader'
+        loader: 'raw-loader'
       },
       {
         test: /\.js$/,
