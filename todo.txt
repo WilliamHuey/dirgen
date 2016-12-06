@@ -1,8 +1,4 @@
 Module
-  -Documentation reuse
-    -github readme / dirgen help
-      -however github markdown should have more info
-      -marky-markdown - convert help text to readme
   -What should be checked in to the final npm repo?
   -Selective check-ins for the dist folder:
     -not dist folder on git, but allow for npm?

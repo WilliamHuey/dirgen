@@ -15,7 +15,6 @@ import includes from 'array-includes';
 import ansimd from 'ansimd';
 
 //Source modules
-import helpText from './dirgen-cli-commands-text';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
 import requireValidationMessages from './require-validations-messages';
