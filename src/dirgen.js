@@ -393,7 +393,7 @@ const dirgen = (action, actionParams, fromCli) => {
                       return;
                     }
 
-                    console.log('Started generating file and folders:');
+                    console.log('Started generating file(s) and folder(s):');
                     genResult = yield generateStructure(linesInfo, rootPath,
                        validationResults, normalizedActionParams,
                        genFailures, onEvtActions);

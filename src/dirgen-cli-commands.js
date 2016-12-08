@@ -18,7 +18,7 @@ import ansimd from 'ansimd';
 import messenger from './validations-messages';
 import validCliCommands from './cli-command-valid.json';
 import requireValidationMessages from './require-validations-messages';
-import htmlHelpText from '../README.md';
+import helpText from '../README.md';
 
 if (typeof global._babelPolyfill !== 'undefined') {
   require('babel-polyfill');
@@ -188,7 +188,7 @@ const cliCommands = (execPath, fromCli) => {
     .command('help')
     .name('h')
     .handler((data, flags, done) => {
-      console.log(ansimd(htmlHelpText));
+      console.log(ansimd(helpText));
     });
 
   //Option --help is an alias for command 'help'
