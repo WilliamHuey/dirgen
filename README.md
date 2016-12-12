@@ -59,9 +59,34 @@ Template:
   /fsfa
   /fsfa
 
-Console input:
+Command Line Usage:
 
- dirgen g 'the-template-file.txt' '/where-you-want-output-folder'
+``` bash
+dirgen g 'the-template-file.txt' '/where-you-want-output-folder'
+```
+
+'Require' Usage:
+
+The following is an equivalent to the above but is
+'require' as a module in a JavaScript file
+
+``` js
+import dirgen from 'dirgen';
+
+dirgen({
+  template: 'the-template-file.txt',
+  output: '/where-you-want-output-folder'
+  /*
+  OPTIONAL
+  (following two keys below are command options and
+  are opposite of their default value)
+
+  hideMessages: true,
+  forceOverwrite: false
+
+  */
+});
+```
 
 Console output:
 
@@ -80,7 +105,7 @@ Console output:
  Generation failures: 0 write errors
  Write time: 35262057 nanoseconds
 
-Explanation:
+# Terminologies:
 
   Template info:
 
