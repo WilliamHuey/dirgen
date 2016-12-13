@@ -1,12 +1,12 @@
-Console help - dirgen non-command line usage
+readme
+differences between help on github and command line help - add more to the readme
+for github - selective remove on console help read
 
 Module
   -What should be checked in to the final npm repo?
   -Selective check-ins for the dist folder:
     -not dist folder on git, but allow for npm?
     npmignore and gitignore
-
-  differences between help on github and command line help
 
   badges
     cont integration
@@ -16,14 +16,3 @@ Module
 
   npm start more compatible with windows/linux
 
-why dirgen
-  repetitive boilerplate projects
-  for unit testing when generating folders
-
-Optimize
-  -- encoding type
-  -- permission level
-  -- performance with group generation
-  -- log out errors on error condition
-    --- resume point to start from after last error cond
-  -- dry run command

@@ -2,50 +2,10 @@
 
 Generate files and folders from a template file.
 
-# Details:
+## Example:
 
-## Template file:
-
-Template files provide the heirarchy of structure which explains the
-nesting of files and folders. Template files are plain textual files.
-
-Indentation:
-  Determines what file or folder types should be on the same folder level.
-  Same indentation level between two lines means that the lines
-  are siblings assuming that the two have the same parent.
-
-  White space characters such as tabs or spaces define the indentations.
-  However, only one type of white space character can be used at
-  any one time in a single template file.
-
-Lines:
-  All non-blank lines will be counted towards the generation if the line
-  is valid for generation.
-
-Structure Type:
-  File:
-    A content line without a folder marker (forward slash) will be
-    identified as a file line and if it has not been skipped.
-
-    Example:
-      a-file
-      a-file-with-an-extension.someextension
-
-  Folder:
-    A content line with a folder marker (forward slash) at the
-    beginning of the line will be identified as a folder type.
-    A folder line can also be signified with having a later line
-    with a greater indent than the folder line.
-
-    Example:
-      /a-folder
-
-      or
-
-      a-folder
-        child-with-greater-indentation
-
-## Example Generation Output:
+Create a text file with the following contents and
+give it a name of 'the-template-file.txt':
 
 Template:
   gsdf
@@ -105,6 +65,49 @@ Console output:
  Generation failures: 0 write errors
  Write time: 35262057 nanoseconds
 
+# Details:
+
+## Template file:
+
+Template files provide the heirarchy of structure which explains the
+nesting of files and folders. Template files are plain textual files.
+
+Indentation:
+  Determines what file or folder types should be on the same folder level.
+  Same indentation level between two lines means that the lines
+  are siblings assuming that the two have the same parent.
+
+  White space characters such as tabs or spaces define the indentations.
+  However, only one type of white space character can be used at
+  any one time in a single template file.
+
+Lines:
+  All non-blank lines will be counted towards the generation if the line
+  is valid for generation.
+
+Structure Type:
+  File:
+    A content line without a folder marker (forward slash) will be
+    identified as a file line and if it has not been skipped.
+
+    Example:
+      a-file
+      a-file-with-an-extension.someextension
+
+  Folder:
+    A content line with a folder marker (forward slash) at the
+    beginning of the line will be identified as a folder type.
+    A folder line can also be signified with having a later line
+    with a greater indent than the folder line.
+
+    Example:
+      /a-folder
+
+      or
+
+      a-folder
+        child-with-greater-indentation
+
 # Terminologies:
 
   Template info:
@@ -160,7 +163,7 @@ For a demo of Dirgen, run 'dirgen demo' on the command line
 and look at the output in the 'demo/example-output' folder
 under the root of the Dirgen module folder.
 
-## Usage:
+## CLI Usage:
 
 dirgen [command] [command parameters] [options]
 
