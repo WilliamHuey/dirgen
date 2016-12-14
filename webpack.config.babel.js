@@ -28,10 +28,6 @@ module.exports = {
           path.join(__dirname, "/node_modules/")
         ],
         loader: "babel-loader"
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
       }
     ]
   },

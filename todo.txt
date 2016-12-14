@@ -2,6 +2,8 @@ readme
 differences between help on github and command line help - add more to the readme
 for github - selective remove on console help read
 
+build command cli
+
 Module
   -What should be checked in to the final npm repo?
   -Selective check-ins for the dist folder:
