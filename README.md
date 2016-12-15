@@ -34,8 +34,8 @@ The following is an equivalent to the above but is
 import dirgen from 'dirgen';
 
 dirgen({
-  template: 'the-template-file.txt',
-  output: '/where-you-want-output-folder'
+  template: '/location-of/the-template-file.txt',
+  output: '/folder-location-for-generated-files-or-folders'
   /*
   OPTIONAL
   (following two keys below are command options and
@@ -196,4 +196,3 @@ dirgen [command] [command parameters] [options]
                       showing up on the console. The count of warnings and
                       errors will still be shown in the generation output
                       information.
-

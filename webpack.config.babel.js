@@ -39,10 +39,6 @@ module.exports = {
     filename: '[name].js',
     libraryTarget: 'umd'
   },
-  // loaders: [
-  //   "babel-loader",
-  //   "json-loader"
-  // ],
   plugins: [
   new webpack.LoaderOptionsPlugin({
     options: {
