@@ -2,6 +2,13 @@
 
 Generate files and folders from a template file.
 
+[//]: <> (Repo Specific)
+# Installation:
+```js
+npm install dirgen -g
+```
+[//]: <> (Repo Specific)
+
 ## Example:
 
 Create a text file with the following contents and
@@ -100,6 +107,10 @@ Structure Type:
     A folder line can also be signified with having a later line
     with a greater indent than the folder line.
 
+    It might be desirable to use the explicit 'slash'
+    syntax to intend for an empty folder to be created
+    among all the files that are created at the same level.
+
     Example:
       /a-folder
 
@@ -189,8 +200,8 @@ dirgen [command] [command parameters] [options]
 ## Options:
 
   -f                  Overwrite files and directory even if they already
-                      exist. Default behavior without this option does not
-                      forcibly overwrite content as a safety measure.
+                      exist. Default behavior is to not use this option
+                      as a safety measure.
 
   -s                  Suppress the actual warnings and errors messages from
                       showing up on the console. The count of warnings and
