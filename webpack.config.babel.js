@@ -1,12 +1,13 @@
 import path from 'path';
 import webpack from 'webpack';
+import { localPath, localPathJoin } from './webpack.helpers.babel';
 
 module.exports = {
   entry: {
     "dirgen-cli-entry": [
       'regenerator-runtime/runtime',
-      path.join(__dirname, "/src/dirgen-cli-entry.js")]
-  },
+      localPath("/src/dirgen-cli-entry.js")
+  ]},
   module: {
     exprContextCritical: false,
     rules: [
@@ -17,16 +18,12 @@ module.exports = {
       {
         test: /\.js$/,
         enforce: "pre",
-        exclude: [
-          path.join(__dirname, "/node_modules/")
-        ],
+        exclude: localPathJoin(["/node_modules/"]),
         loader: "eslint-loader"
       },
       {
         test: /\.js$/,
-        exclude: [
-          path.join(__dirname, "/node_modules/")
-        ],
+        exclude: localPathJoin(["/node_modules/"]),
         loader: "babel-loader"
       }
     ]
@@ -35,7 +32,7 @@ module.exports = {
     extensions: ['.js', '.json']
   },
   output: {
-    path: path.join(__dirname, '/bin/'),
+    path: localPath('/bin/'),
     filename: '[name].js',
     libraryTarget: 'umd'
   },
