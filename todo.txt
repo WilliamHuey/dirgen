@@ -1,7 +1,3 @@
-readme
-differences between help on github and command line help - add more to the readme
-for github - selective remove on console help read
-
 build command cli
 
 Module

@@ -2,12 +2,12 @@
 
 Generate files and folders from a template file.
 
-[//]: <> (Repo Specific)
+[//]: <> (Module Only - Begin)
 # Installation:
 ```js
 npm install dirgen -g
 ```
-[//]: <> (Repo Specific)
+[//]: <> (Module Only - End)
 
 ## Example:
 

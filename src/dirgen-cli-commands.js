@@ -188,7 +188,20 @@ const cliCommands = (execPath, fromCli) => {
     .command('help')
     .name('h')
     .handler((data, flags, done) => {
-      console.log(ansimd(helpText));
+
+      //Remove the sections that are relevant
+      //to a module README.md based on the
+      //comment block markers
+      const cliHelpText = helpText.split('[//]: <> (Module Only - End)')
+        .map((value, index) => {
+
+          return value.slice(0, value.indexOf('[//]: <> (Module Only - Begin)'));
+        }).filter((value) => {
+
+          return value.replace(/\s+/g, '').length > 0;
+        }).join('');
+
+      console.log(ansimd(cliHelpText));
     });
 
   //Option --help is an alias for command 'help'
