@@ -7,7 +7,6 @@ import structureMarker from './character-code';
 import logValidations from './log-validations';
 
 const validator = Validations;
-
 const topLineNonRepeats = new Map();
 
 const logTopLevel = (linesInfo, currentLine, isFirstLine) => {

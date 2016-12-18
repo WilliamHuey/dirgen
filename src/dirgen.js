@@ -24,6 +24,7 @@ import generateStructure from './generation';
 //Generation timing for the write process
 let timeDiff;
 
+//Object for export
 let dirgenExported = () => {};
 
 //Track the status of the lines
@@ -480,9 +481,7 @@ ${(timeDiff[0] * 1e9) + timeDiff[1]} nanoseconds`);
 
       return dirgen;
   });
-
 };
-
 
 dirgenExported = (action, actionParams, fromCli) => {
   if (!fromCli && action.action !== 'demo') {
@@ -490,6 +489,7 @@ dirgenExported = (action, actionParams, fromCli) => {
     action = actionParams.action;
     dirgen(action, actionParams, fromCli);
   } else {
+
     //From file
     dirgen(action, actionParams, fromCli);
   }

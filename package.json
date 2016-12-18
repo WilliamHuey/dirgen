@@ -54,7 +54,6 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "hamjest": "^3.0.0-8",
-    "happypack": "^3.0.1",
     "json-loader": "^0.5.4",
     "lab": "^11.2.1",
     "proxyquire": "^1.7.10",

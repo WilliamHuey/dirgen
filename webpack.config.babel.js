@@ -1,5 +1,10 @@
+//Native modules
 import path from 'path';
+
+//Vendor modules
 import webpack from 'webpack';
+
+//Source modules
 import { localPath, localPathJoin } from './webpack.helpers.babel';
 
 module.exports = {
@@ -18,13 +23,13 @@ module.exports = {
       {
         test: /\.js$/,
         enforce: "pre",
-        exclude: localPathJoin(["/node_modules/"]),
-        loader: "eslint-loader"
+        exclude: localPathJoin(["/node_modules/", "tests"]),
+        loader: ["eslint-loader"]
       },
       {
         test: /\.js$/,
-        exclude: localPathJoin(["/node_modules/"]),
-        loader: "babel-loader"
+        exclude: localPathJoin(["/node_modules/", "tests"]),
+        loader: ["babel-loader?cacheDirectory=true"],
       }
     ]
   },
