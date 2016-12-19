@@ -50,5 +50,6 @@ module.exports = {
     }
   })
 ],
+  performance: false,
   target: 'node'
 };

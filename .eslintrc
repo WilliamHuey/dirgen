@@ -153,5 +153,10 @@
     ],
     "no-unsafe-finally": "off",
     "arrow-body-style": 0
-  }
+  },
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ]
 }
