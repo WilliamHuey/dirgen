@@ -7,7 +7,8 @@ const toString = Object.prototype.toString;
 export default {
   isObject: (obj) => {
     const checkedType = getCheckedType(obj);
-    return obj !== undefined && obj !== null && checkedType === 'Object';
+    return typeof obj !== 'undefined' &&
+      obj !== null && checkedType === 'Object';
   },
   isBoolean: obj => (toString.call(obj) === '[object Boolean]'),
   pluralize: (str, num) => {

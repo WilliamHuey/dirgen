@@ -152,6 +152,7 @@
       }
     ],
     "no-unsafe-finally": "off",
-    "arrow-body-style": 0
+    "arrow-body-style": 0,
+    "func-style": [2, "expression"]
   }
 }
