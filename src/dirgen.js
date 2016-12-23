@@ -72,7 +72,7 @@ const convertHome = (outPath) => {
 //Check for when the error or warning messages should be hidden or not
 const shouldHideMessages = (actionParams) => {
 
-  if (typeof actionParams === 'undefined') {
+  if (typeof actionParams === 'undefined' || actionParams === null) {
     return false;
   } else if (typeof actionParams.options === 'undefined') {
     return false;
@@ -93,7 +93,7 @@ const shouldHideMessages = (actionParams) => {
 const dirgen = (action, actionParams, fromCli) => {
 
   //When 'requiring', for getting callbacks
-  if (typeof actionParams !== 'undefined') {
+  if (actionParams !== null) {
    if (actionParams.settings && actionParams.settings.on) {
      if (actionParams.settings.on.done) {
         onEvtActions.done = actionParams.settings.on.done;
@@ -115,7 +115,7 @@ const dirgen = (action, actionParams, fromCli) => {
   }
 
   if (typeof action.action !== 'undefined' &&
-   typeof actionParams === 'undefined') {
+   actionParams === null) {
 
     //Demo type generation
     creationTemplatePath = commandTypeAction(action.action,
@@ -453,7 +453,6 @@ ${genResult.overwritten.folder} folder`);
 
                 console.log(`Generation failures: ${genFailures.length} \
 write errors`);
-
                 //On error conditions, no timeDiff is needed
                 if (timeDiff && genResult.generated > 0) {
                   console.log(`Write time: \

@@ -66,7 +66,7 @@ const cliCommands = (execPath, fromCli) => {
         //when the dirgen is required
         'settings': execPath
       },
-      undefined,
+      null,
       fromCli,
       );
 
@@ -90,6 +90,7 @@ const cliCommands = (execPath, fromCli) => {
         forceOverwrite = false;
       }
 
+
       require('./dirgen')({
           action: 'demo',
           'execPath': execPath,
@@ -97,7 +98,7 @@ const cliCommands = (execPath, fromCli) => {
             forceOverwrite
           }
         },
-        undefined,
+        null,
         fromCli);
     });
 
@@ -248,7 +249,7 @@ const cliCommands = (execPath, fromCli) => {
     cli.run(cliArgs, () => {});
   }
 
-  return this;
+  return cliCommands;
 };
 
 module.exports = cliCommands;
