@@ -168,11 +168,13 @@ Structure Type:
     at least one error has occurred on reading the template file because
     nothing will be generated.
 
+[//]: <> (Module Only - Begin)
 ## Demo:
 
 For a demo of Dirgen, run 'dirgen demo' on the command line
 and look at the output in the 'demo/example-output' folder
 under the root of the Dirgen module folder.
+[//]: <> (Module Only - End)
 
 ## CLI Usage:
 

@@ -1,4 +1,4 @@
-build command cli
+build command cli - octal code problem
 
 Module
   -What should be checked in to the final npm repo?
@@ -11,6 +11,5 @@ Module
     npm
     dev dependencies
 
-
-  npm start more compatible with windows/linux
+  npm start more compatible with windows
 
