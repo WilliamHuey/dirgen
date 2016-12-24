@@ -3,6 +3,5 @@ src
 .babelrc
 .eslintrc
 todo.txt
-demo
 webpack.config.babel.js
 webpack.helpers.babel.js

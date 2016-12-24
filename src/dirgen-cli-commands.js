@@ -12,7 +12,7 @@ import {
 } from 'fs-extra-promise';
 import co from 'co';
 import includes from 'array-includes';
-import ansimd from 'ansimd';
+import ansimd from '@williamhuey/ansimd';
 
 //Source modules
 import messenger from './validations-messages';
