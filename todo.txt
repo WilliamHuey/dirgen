@@ -3,9 +3,13 @@ Module
   deploy needs
 
   badges
+    https://nodei.co/
     cont integration
-    npm
+    bithound
+    codeclimate
+    https://www.appveyor.com/
     dev dependencies
+    test coverages
 
   npm start more compatible with windows
 

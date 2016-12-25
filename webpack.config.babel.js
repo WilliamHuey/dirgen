@@ -23,12 +23,12 @@ module.exports = {
       {
         test: /\.js$/,
         enforce: "pre",
-        exclude: localPathJoin(["/node_modules/", "tests"]),
+        exclude: localPathJoin(["node_modules", "tests", "bin"]),
         loader: ["eslint-loader"]
       },
       {
         test: /\.js$/,
-        exclude: localPathJoin(["/node_modules/", "tests"]),
+        exclude: localPathJoin(["node_modules", "tests"]),
         loader: ["babel-loader?cacheDirectory=true"],
       }
     ]
