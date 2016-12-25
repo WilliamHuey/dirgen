@@ -4,8 +4,9 @@ Generate files and folders from a template file.
 
 # Purpose:
 Use this module when:
-  - Generating repetitive boilerplate project structures
-  - Writing unit tests with file and folder operations
+
+  * Generating repetitive boilerplate project structures
+  * Writing unit tests with file and folder operations
 
 [//]: <> (Module Only - Begin)
 
@@ -21,16 +22,18 @@ Create a text file with the following contents and
 give it a name of 'the-template-file.txt':
 
 Template:
-  gsdf
-    afsd
-  //sd,ss
-  dfg
-    jj
-    ygvhg
-      dsd
-    ygvhg
-  /fsfa
-  /fsfa
+``` text
+gsdf
+  afsd
+//sd,ss
+dfg
+  jj
+  ygvhg
+    dsd
+  ygvhg
+/fsfa
+/fsfa
+```
 
 Command Line Usage:
 
@@ -63,6 +66,7 @@ dirgen({
 
 Console output:
 
+``` bash
  Warning: Line #3: '//sd,ss', has illegal characters which has been
   replaced, resulting in 'sd,ss'.
 
@@ -77,6 +81,7 @@ Console output:
  Creation count: 8 generated, 2 not generated, 0 skipped
  Generation failures: 0 write errors
  Write time: 35262057 nanoseconds
+```
 
 # Details:
 
@@ -184,34 +189,57 @@ under the root of the Dirgen module folder.
 
 ## CLI Usage:
 
+``` text
 dirgen [command] [command parameters] [options]
+```
 
-## Command:             Command Parameters:
-(Alias below)        (in respective order)
+## Command and Parameters:
 
- generate             <template> (required)
- (g | gen)             The text file provided for generation
-                       Ex: "/some-directory/my-file-template.txt"
+### generate (g | gen)
 
-                      <output directory> (required)
-                       The destination path for where the generated files
-                       or folder should go.
+``` text
+[template] (required)
 
- demo                 N/A
-                       Shows an example of how a template file is used
-                       to generate files and folder inside the /demo folder
-                       of the Dirgen NPM module.
+The text file provided for generation
+Ex: "/some-directory/my-file-template.txt"
 
- version              N/A
- (v)                   Display what is the edition of this module.
+[output directory] (required)
+
+The destination path for where the generated files or
+
+Ex: dirgen g [template] [output directory]
+folder should go.
+```
+
+### demo
+
+``` text
+Shows an example of how a template file is used
+to generate files and folder inside the /demo folder
+of the Dirgen NPM module.
+
+Ex: dirgen demo
+```
+
+### version (v)
+
+``` text
+Display what is the edition of this module.
+
+Ex: dirgen v
+```
 
 ## Options:
 
-  -f                  Overwrite files and directory even if they already
-                      exist. Default behavior is to not use this option
-                      as a safety measure.
+-f
 
-  -s                  Suppress the actual warnings and errors messages from
-                      showing up on the console. The count of warnings and
-                      errors will still be shown in the generation output
-                      information.
+  Overwrite files and directory even if they already
+  exist. Default behavior is to not use this option
+  as a safety measure.
+
+-s
+
+  Suppress the actual warnings and errors messages from
+  showing up on the console. The count of warnings and
+  errors will still be shown in the generation output
+  information.
