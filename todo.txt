@@ -1,5 +1,7 @@
 Module
 
+  icon
+
   deploy needs
 
   badges

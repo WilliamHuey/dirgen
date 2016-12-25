@@ -2,7 +2,13 @@
 
 Generate files and folders from a template file.
 
+# Purpose:
+Use this module when:
+  - Generating repetitive boilerplate project structures
+  - Writing unit tests with file and folder operations
+
 [//]: <> (Module Only - Begin)
+
 # Installation:
 ```js
 npm install dirgen -g
