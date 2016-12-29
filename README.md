@@ -1,3 +1,5 @@
+# <img src="./dirgen-head-logo.png"> Dirgen
+
 # Overview:
 
 Generate files and folders from a template file.
