@@ -1,4 +1,4 @@
-# <img src="./dirgen-head-logo.png"> Dirgen
+# ![dirgen logo](./dirgen-head-logo.png "Dirgen logo") Dirgen
 
 # Overview:
 
