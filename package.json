@@ -12,9 +12,9 @@
         "dirgen": "./bin/dirgen-cli-init.js"
     },
     "scripts": {
-        "watch": "./node_modules/webpack/bin/webpack.js --watch --hide-modules",
-        "build": "./node_modules/.bin/babili ./bin/dirgen-cli-entry.js --out-file ./bin/dirgen-cli-entry.js --optimize-minimize --no-comments",
-        "test": "./node_modules/lab/bin/lab ./tests/integrity.js -vp -m 0 -l"
+        "watch": "webpack --watch --hide-modules",
+        "build": "babili ./bin/dirgen-cli-entry.js --out-file ./bin/dirgen-cli-entry.js --optimize-minimize --no-comments",
+        "test": "lab ./tests/integrity.js -vp -m 0 -l"
     },
     "dependencies": {
         "@williamhuey/ansimd": "^0.2.2",
