@@ -55,27 +55,30 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
       exec('ls ' + __dirname + '/fixtures/problematic*', function(error, stdout, stderr) {
 
-        var modulePath = new RegExp(__dirname + '/fixtures' ,"g");
-        var testFilesPaths = stdout.replace(modulePath, '').split('\n');
+        var modulePath = new RegExp(path.normalize(__dirname + '/fixtures'));
+        var testFilesPaths = stdout.split('\n');
+        var testFolderPaths = stdout.replace(/fixtures/g, 'case-outputs')
+                                .replace(/.txt/g, '')
+                                .split('\n');
 
         //Remove the blank entry in the array
         testFilesPaths.pop();
+        testFolderPaths.slice(0,2).forEach(function(testFolderPath, index) {
 
-        testFilesPaths.forEach(function(testCasePath) {
-
-          var genTestFolder = path.resolve('tests/case-outputs/' +  testCasePath).replace(/.txt/i, '');
+          var genTestFolder = path.normalize(testFolderPath);
 
           fs.mkdirAsync(genTestFolder)
           .then(function() {
 
-            exec(cliEntryFile + ' g ' + 'tests/fixtures' +  testCasePath + ' ' + genTestFolder, function(error, stdout, stderr) {
+            exec(cliEntryFile + ' g ' + ' ' +  path.normalize(testFilesPaths[index]) + ' ' + genTestFolder, function(error, stdout, stderr) {
               problematicCases += 1;
               __.assertThat(stdout,
                 __.containsString('has an illegal character which has'));
 
               if(testFilesPaths.length == problematicCases) {
 
-                fs.statAsync(genTestFolder + '/valid', function(error, stat) {
+                fs.statAsync(genTestFolder, function(error, stat) {
+
                   if (error == null) {
                     __.assertThat(error, __.is(__.falsy()))
                     done(error);
