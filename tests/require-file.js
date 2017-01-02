@@ -14,7 +14,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
 
   lab.experiment('checking for input configuration', function() {
 
-    var dirgenCliEntry = __dirname +  '/../bin/dirgen-cli-entry.js';
+    var dirgenCliEntry = __dirname +  '/../lib/dirgen-cli-entry.js';
     var fixtureDir = __dirname +  '/fixtures';
 
     lab.test('will not error out with valid template file and output directory', function(done) {

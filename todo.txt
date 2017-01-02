@@ -2,6 +2,8 @@ Module
 
   last period is not shown in the console output
 
+  Mention development
+
   deploy needs
 
   badges

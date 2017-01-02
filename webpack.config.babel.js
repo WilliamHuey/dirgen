@@ -37,7 +37,7 @@ module.exports = {
     extensions: ['.js', '.json']
   },
   output: {
-    path: localPath('/bin/'),
+    path: localPath('/lib/'),
     filename: '[name].js',
     libraryTarget: 'umd'
   },
