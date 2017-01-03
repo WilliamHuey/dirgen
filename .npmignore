@@ -5,3 +5,4 @@ src
 todo.txt
 webpack.config.babel.js
 webpack.helpers.babel.js
+.DS_Store

@@ -193,14 +193,26 @@ const cliCommands = (execPath, fromCli) => {
       //Remove the sections that are relevant
       //to a module README.md based on the
       //comment block markers
-      const cliHelpText = helpText.split('[//]: <> (Module Only - End)')
+
+      const endMarkerSplitGroup = helpText
+            .split('[//]: <> (Module Only - End)');
+
+      const lastItemIndexOfLastEndMarker = endMarkerSplitGroup.length - 1;
+
+      const processBeforeLastEndMarkerGroup = endMarkerSplitGroup
+            .slice(0, lastItemIndexOfLastEndMarker);
+
+      //The last item from the 'end' marker split needs not to be processed
+      //and is concatenated at the very end
+      const lastSectionAfterLastUnmarked = endMarkerSplitGroup[lastItemIndexOfLastEndMarker];
+
+      const cliHelpText = processBeforeLastEndMarkerGroup
         .map((value, index) => {
-
-          return value.slice(0, value.indexOf('[//]: <> (Module Only - Begin)'));
+          return value.slice(0,
+            value.indexOf('[//]: <> (Module Only - Begin)'));
         }).filter((value) => {
-
           return value.replace(/\s+/g, '').length > 0;
-        }).join('');
+        }).join('').concat(lastSectionAfterLastUnmarked);
 
       console.log(ansimd(cliHelpText));
     });
