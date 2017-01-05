@@ -1,6 +1,6 @@
-[//]: <> (Module Only - Begin)
+[/]:# (Module Only - Begin)
 # ![dirgen logo](./dirgen-head-logo.png "Dirgen logo") Dirgen
-[//]: <> (Module Only - End)
+[/]:# (Module Only - End)
 
 # Overview:
 
@@ -12,7 +12,7 @@ Use this module when:
   * Generating repetitive boilerplate project structures
   * Writing unit tests with file and folder operations
 
-[//]: <> (Module Only - Begin)
+[/]:# (Module Only - Begin)
 
 # Installation:
 ``` bash
@@ -31,7 +31,7 @@ npm run watch
 npm run build
 ```
 
-[//]: <> (Module Only - End)
+[/]:# (Module Only - End)
 
 ## Example:
 

@@ -195,7 +195,7 @@ const cliCommands = (execPath, fromCli) => {
       //comment block markers
 
       const endMarkerSplitGroup = helpText
-            .split('[//]: <> (Module Only - End)');
+            .split('[/]:# (Module Only - End)');
 
       const lastItemIndexOfLastEndMarker = endMarkerSplitGroup.length - 1;
 
@@ -209,7 +209,7 @@ const cliCommands = (execPath, fromCli) => {
       const cliHelpText = processBeforeLastEndMarkerGroup
         .map((value, index) => {
           return value.slice(0,
-            value.indexOf('[//]: <> (Module Only - Begin)'));
+            value.indexOf('[/]:# (Module Only - Begin)'));
         }).filter((value) => {
           return value.replace(/\s+/g, '').length > 0;
         }).join('').concat(lastSectionAfterLastUnmarked);
