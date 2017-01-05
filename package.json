@@ -14,7 +14,8 @@
     "scripts": {
         "watch": "webpack --watch --hide-modules",
         "build": "babili ./lib/dirgen-cli-entry.js --out-file ./lib/dirgen-cli-entry.js --optimize-minimize --no-comments",
-        "test": "lab ./tests/integrity.js -vp -m 0 -l"
+        "test": "lab ./tests/integrity.js -vp -m 0 -l",
+        "build-test": "npm run build && npm run test"
     },
     "dependencies": {
         "@williamhuey/ansimd": "^0.2.2",
