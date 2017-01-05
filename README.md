@@ -15,9 +15,22 @@ Use this module when:
 [//]: <> (Module Only - Begin)
 
 # Installation:
-```js
+``` bash
 npm install dirgen -g
 ```
+# Development:
+
+``` bash
+#Development should be done by getting this module's
+#full content from git repository
+
+#Run webpack to watch files
+npm run watch
+
+#Make minified built
+npm run build
+```
+
 [//]: <> (Module Only - End)
 
 ## Example:
