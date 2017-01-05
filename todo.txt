@@ -1,7 +1,5 @@
 Module
 
-  last period is not shown in the console output
-
   deploy needs
 
   badges
@@ -12,6 +10,3 @@ Module
     https://www.appveyor.com/
     dev dependencies
     test coverages
-
-  npm start more compatible with windows
-
