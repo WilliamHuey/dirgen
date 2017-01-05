@@ -1,5 +1,6 @@
 [/]:# (Module Only - Begin)
 # ![dirgen logo](./dirgen-head-logo.png "Dirgen logo") Dirgen
+[![Build Status](https://travis-ci.org/WilliamHuey/dirgen.svg?branch=master)](https://travis-ci.org/WilliamHuey/dirgen)
 [/]:# (Module Only - End)
 
 # Overview:
