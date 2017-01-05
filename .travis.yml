@@ -5,4 +5,4 @@ node_js:
 - "5"
 - "6"
 - "7"
-script: npm build-test
+script: npm run build-test
