@@ -1,6 +1,9 @@
 [/]:# (Module Only - Begin)
-# ![dirgen logo](./dirgen-head-logo.png "Dirgen logo") Dirgen
+# ![Dirgen logo](./dirgen-head-logo.png "Dirgen logo") Dirgen
+[![Npm Version](https://badge.fury.io/js/dirgen.svg)](https://badge.fury.io/js/dirgen)
 [![Build Status](https://travis-ci.org/WilliamHuey/dirgen.svg?branch=master)](https://travis-ci.org/WilliamHuey/dirgen)
+[![Dependencies](https://img.shields.io/david/williamhuey/dirgen.svg)](https://img.shields.io/david/williamhuey/dirgen.svg)
+[![License](https://img.shields.io/:license-MIT-brightgreen.svg)](https://img.shields.io/github/license/mashape/apistatus.svg)
 [/]:# (Module Only - End)
 
 # Overview:
