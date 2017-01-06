@@ -4,9 +4,7 @@ Module
 
   badges
     https://nodei.co/
-    cont integration
     bithound
     codeclimate
-    https://www.appveyor.com/
     dev dependencies
     test coverages

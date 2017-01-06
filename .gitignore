@@ -4,3 +4,4 @@ node_modules
 lib/dirgen-cli-entry.js
 demo/example-output/*
 tests/cases-outputs
+.travis.yml

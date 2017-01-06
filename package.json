@@ -70,10 +70,12 @@
         "produce",
         "layout",
         "template",
+        "outline",
         "file",
         "files",
         "folder",
         "folders",
+        "directory",
         "structure",
         "heirarchy",
         "indentation",
@@ -85,6 +87,7 @@
         "python-like",
         "console",
         "cli",
-        "command-line"
+        "command-line",
+        "reuse"
     ]
 }
