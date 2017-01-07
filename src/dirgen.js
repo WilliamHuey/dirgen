@@ -373,7 +373,6 @@ const dirgen = (action, actionParams, fromCli) => {
                       const folderStat = yield statAsync(rootPath);
                     } catch (error) {
 
-
                       if (typeof error.code !== 'undefined') {
                         validRootPath = false;
                       }

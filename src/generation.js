@@ -225,7 +225,6 @@ const createStructure = (linesInfo, lineInfo, rootPath,
           console.log('Folder creation error:', error);
         }
       });
-
     }
 
     const nonGenFolder = !genFolder && (repeatedLine || childRepeatedLine);
@@ -289,6 +288,5 @@ export default (linesInfo, rootPath, validationResults,
     //serves as the initial generation set
     startCreatingAtTopLevel(linesInfo, rootPath, validationResults,
        actionParams, contentLineCount, options, resolve, genFailures, onEvtActions);
-
   });
 };

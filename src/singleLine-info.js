@@ -232,7 +232,6 @@ const singleLineInfoFunctions = {
             linesInfo.prevLineInfo.isFirstLine),
           validationResults);
 
-
         //Stop checks early when the parent line is the first line
         if (prevLine.parent === null) {
           i = linesInfo.contentLineCount;

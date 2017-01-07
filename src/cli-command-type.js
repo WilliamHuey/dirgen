@@ -20,7 +20,6 @@ export default (type, action, generateParams, execPath) => {
     }
   };
 
-
   if (type === 'demo') {
     return commandType[type][action];
   } else {

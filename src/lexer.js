@@ -69,7 +69,6 @@ export default Object.assign(lexer.prototype, {
       scanner.nextChar();
     }
 
-
     return lineTokenStats;
   }
 });

@@ -90,10 +90,9 @@ const cliCommands = (execPath, fromCli) => {
         forceOverwrite = false;
       }
 
-
       require('./dirgen')({
           action: 'demo',
-          'execPath': execPath,
+          execPath: execPath,
           options: {
             forceOverwrite
           }

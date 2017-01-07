@@ -80,5 +80,3 @@ export default Object.assign(linesInfo.prototype, {
     return currentLine;
   }
 });
-
-
