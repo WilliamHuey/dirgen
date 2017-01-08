@@ -126,7 +126,7 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
           output: (__dirname + '/case-outputs/not-error-out-valid-template-and-output-directory-with-valid-force-option'),
           options: { forceOverwrite: true },
           on: {
-            done: (results, logOuput) => {
+            done: (results, logOutput) => {
               __.assertThat(results.errors, __.isEmpty());
               done();
             }
@@ -265,13 +265,13 @@ module.exports = function(__, lab, cliEntryFile, exec, fs, path) {
           output: (__dirname + '/case-outputs/produce-console-output-information'),
           options: { forceOverwrite: true },
           on: {
-            done: (results, logOuput) => {
+            done: (results, logOutput) => {
 
               var requiredOutputKeys =  [
-                'generated', 'logOuput', 'notGenerated',
+                'generated', 'logOutput', 'notGenerated',
                 'repeats', 'skipped', 'overwritten'];
 
-              for (var key of Object.keys(logOuput)) {
+              for (var key of Object.keys(logOutput)) {
                  __.assertThat(requiredOutputKeys, __.hasItem(key));
               }
 

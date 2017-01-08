@@ -6,7 +6,6 @@
 [/]:# (Module Only - End)
 
 # Overview:
-
 Generate files and folders from a template file.
 
 # Purpose:
@@ -73,12 +72,51 @@ dirgen({
   template: '/location-of/the-template-file.txt',
   output: '/folder-location-for-generated-files-or-folders'
   /*
-  OPTIONAL
-  (following two keys below are command options and
-  are opposite of their default value)
+  options: {
+    //The following two keys in the 'option' key below are optional
+    //and are command options which
+    //have valued opposite of their default
 
-  hideMessages: true,
-  forceOverwrite: false
+    hideMessages: true,
+    forceOverwrite: false,
+  },
+
+  //'on' is also optional and it allows
+  //for information callbacks to execute with 'done' or 'line'
+  on: {
+
+    //'done' is called when all files and folder are finished generating
+    //or when there is an early return with an error condition
+    done: (results, logOutput) => {
+
+      //Example format of 'results'
+      //Errors and warnings will contain a collection
+      //of error and warning message strings respectively
+      // {
+      //   errors: [],
+      //   warnings: []
+      // }
+
+      //Example format of 'logOutput'
+      // {
+      //   generated: 1,
+      //   notGenerated: 0,
+      //   repeats: [],
+      //   skipped: 0,
+      //   overwritten: {
+      //    file: 0,
+      //    folder: 0
+      //   }
+      // }
+    },
+
+    //'line' gets called on every content line processed
+    line: (stat) => {
+
+      //Example format of 'stat'
+      //Generated:    Line #1 (File): <line-content>
+    }
+  }
 
   */
 });
@@ -242,9 +280,17 @@ Ex: dirgen demo
 ### version (v)
 
 ``` text
-Display what is the edition of this module.
+Display what the edition of this module.
 
 Ex: dirgen v
+```
+
+### help (h)
+
+``` help
+Display general information for this module.
+
+Ex: dirgen h
 ```
 
 ## Options:
@@ -261,3 +307,6 @@ Ex: dirgen v
   showing up on the console. The count of warnings and
   errors will still be shown in the generation output
   information.
+
+# License
+MIT
