@@ -65,6 +65,7 @@
         "type": "git",
         "url": "https://github.com/WilliamHuey/dirgen"
     },
+    "bugs": "https://github.com/WilliamHuey/dirgen/issues",
     "engine": "node >= 4",
     "private": false,
     "license": "MIT",
