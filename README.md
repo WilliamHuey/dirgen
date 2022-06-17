@@ -1,9 +1,9 @@
-[/]:# (Module Only - Begin)
+<!-- (Module Only - Begin) -->
 # ![Dirgen logo](./dirgen-head-logo.png "Dirgen logo") Dirgen
 [![Npm Version](https://badge.fury.io/js/dirgen.svg)](https://badge.fury.io/js/dirgen)
 [![Build Status](https://travis-ci.org/WilliamHuey/dirgen.svg?branch=master)](https://travis-ci.org/WilliamHuey/dirgen)
 [![License](https://img.shields.io/:license-MIT-brightgreen.svg)](https://img.shields.io/github/license/mashape/apistatus.svg)
-[/]:# (Module Only - End)
+<!-- (Module Only - End) -->
 
 # Overview:
 Generate files and folders from a template file.
@@ -23,13 +23,14 @@ npm install dirgen -g
 # Development:
 
 ``` bash
-#Development should be done by getting this module's
-#full content from git repository
+# Development should be done by getting this module's
+# full content from git repository
 
-#Run webpack to watch files
+# Use webpack to watch files
 npm run watch
 
-#Make minified built
+# Run the build command for 'dirgen-cli-entry.js'
+# to be generated before running dirgen
 npm run build
 ```
 
@@ -63,7 +64,7 @@ dirgen g 'the-template-file.txt' '/where-you-want-output-folder'
 'Require' Usage:
 
 The following is an equivalent to the above but is
-'require' as a module in a JavaScript file
+required as a module in a JavaScript file
 
 ``` js
 import dirgen from 'dirgen';
@@ -73,31 +74,31 @@ dirgen({
   output: '/folder-location-for-generated-files-or-folders'
   /*
   options: {
-    //The following two keys in the 'option' key below are optional
-    //and are command options which
-    //have valued opposite of their default
+    // The following two keys in the 'option' key below are optional
+    // and are command options which
+    // have values opposite of the settings default
 
     hideMessages: true,
     forceOverwrite: false,
   },
 
-  //'on' is also optional and it allows
-  //for information callbacks to execute with 'done' or 'line'
+  // 'on' is also optional and it allows
+  // for informational callbacks to execute with 'done' or 'line'
   on: {
 
-    //'done' is called when all files and folder are finished generating
-    //or when there is an early return with an error condition
+    // 'done' is called when all files and folder are finished generating
+    // or when there is an early return with an error condition
     done: (results, logOutput) => {
 
-      //Example format of 'results'
-      //Errors and warnings will contain a collection
-      //of error and warning message strings respectively
+      // Example format of 'results'
+      // Errors and warnings will contain a collection
+      // of error and warning message strings respectively
       // {
       //   errors: [],
       //   warnings: []
       // }
 
-      //Example format of 'logOutput'
+      // Example format of 'logOutput'
       // {
       //   generated: 1,
       //   notGenerated: 0,
@@ -110,11 +111,11 @@ dirgen({
       // }
     },
 
-    //'line' gets called on every content line processed
+    // 'line' gets called on every content line processed
     line: (stat) => {
 
-      //Example format of 'stat'
-      //Generated:    Line #1 (File): <line-content>
+      // Example format of 'stat'
+      // Generated:    Line #1 (File): <line-content>
     }
   }
 
@@ -145,8 +146,8 @@ Console output:
 
 ## Template file:
 
-Template files provide the heirarchy of structure which explains the
-nesting of files and folders. Template files are plain textual files.
+Template files provide the hierarchy of structure which explains the
+nesting of files and folders. These files are plain textual files.
 
 Indentation:
   Determines what file or folder types should be on the same folder level.
@@ -173,7 +174,7 @@ Structure Type:
   Folder:
     A content line with a folder marker (forward slash) at the
     beginning of the line will be identified as a folder type.
-    A folder line can also be signified with having a later line
+    A folder line can also signify having a later line
     with a greater indent than the folder line.
 
     It might be desirable to use the explicit 'slash'
@@ -193,17 +194,17 @@ Structure Type:
   Template info:
 
     Content:
-      Lines that have characters which are non-white space. These line
+      Lines that have characters which are non-white space. These lines
       may or may not be generated.
 
     Blanks:
-      Lines that are white-space only characters or has not characters
+      Lines that are white-space only characters or have no characters
       at all. These lines are never generated.
 
   Template read:
 
     Errors:
-      Upon one or more error, there will be no
+      Upon one or more errors, there will be no
       generated file or folders.
 
     Warnings:
@@ -214,22 +215,22 @@ Structure Type:
   Creation count:
 
     Generated:
-      Lines that were read that were successfully created
+      Lines that were read and were successfully created
 
     Not generated:
       Lines that produced a warning that may or may
       not have been generated.
 
     Skipped:
-      Lines that were skipped because they already exists. By default
+      Lines that were skipped because they already exists. By default,
       existing files and folders are not overwritten to prevent data lost.
 
-    Generated, Not generated, and Skipped counts total up to the
+    'Generated', 'Not generated', and 'Skipped counts' add up to the
     total line count of the template file.
 
   Generation failures:
-    Failures occurs when a valid line creation attempt did not go through.
-    The generation failures counts towards the "Skipped" of
+    Failures occur when a valid line creation attempt did not go through.
+    The generation failures count towards the "Skipped" of
     "Creation count".
 
   Write time:
@@ -262,16 +263,17 @@ Ex: "/some-directory/my-file-template.txt"
 [output directory] (required)
 
 The destination path for where the generated files or
+folder should go.
 
 Ex: dirgen g [template] [output directory]
-folder should go.
+
 ```
 
 ### demo
 
 ``` text
 Shows an example of how a template file is used
-to generate files and folder inside the /demo folder
+to generate files and folders inside the /demo folder
 of the Dirgen NPM module.
 
 Ex: dirgen demo
@@ -280,7 +282,7 @@ Ex: dirgen demo
 ### version (v)
 
 ``` text
-Display what the edition of this module.
+Displays what is the edition of this module.
 
 Ex: dirgen v
 ```
@@ -288,7 +290,7 @@ Ex: dirgen v
 ### help (h)
 
 ``` help
-Display general information for this module.
+Displays general information for this module.
 
 Ex: dirgen h
 ```
@@ -297,14 +299,14 @@ Ex: dirgen h
 
 -f
 
-  Overwrite files and directory even if they already
+  Overwrite files and directories even if they already
   exist. Default behavior is to not use this option
   as a safety measure.
 
 -s
 
   Suppress the actual warnings and errors messages from
-  showing up on the console. The count of warnings and
+  showing up in the console. The count of warnings and
   errors will still be shown in the generation output
   information.
 

@@ -60,15 +60,15 @@ const cliCommands = (execPath, fromCli) => {
     const dirgen = require('./dirgen');
 
     dirgen({
-        action: 'generate',
+      action: 'generate',
 
-        //execPath will actually be the settings for
-        //when the dirgen is required
-        'settings': execPath
-      },
+      //execPath will actually be the settings for
+      //when the dirgen is required
+      'settings': execPath
+    },
       null,
       fromCli,
-      );
+    );
 
     return dirgen;
   }
@@ -91,12 +91,12 @@ const cliCommands = (execPath, fromCli) => {
       }
 
       require('./dirgen')({
-          action: 'demo',
-          execPath: execPath,
-          options: {
-            forceOverwrite
-          }
-        },
+        action: 'demo',
+        execPath: execPath,
+        options: {
+          forceOverwrite
+        }
+      },
         null,
         fromCli);
     });
@@ -127,28 +127,28 @@ const cliCommands = (execPath, fromCli) => {
 
         //Check for file template
         new Promise((resolve, reject) => {
-            fs.stat(data[0], (error) => {
-              if (error) {
-                message(requireValidationMessages.inValidTemplateMsg);
-                return reject({
-                  file: false
-                });
-              } else if (!isTextPath(data[0])) {
+          fs.stat(data[0], (error) => {
+            if (error) {
+              message(requireValidationMessages.inValidTemplateMsg);
+              return reject({
+                file: false
+              });
+            } else if (!isTextPath(data[0])) {
 
-                //Check for text file
-                message(`Not a valid template file. Please
+              //Check for text file
+              message(`Not a valid template file. Please
                   provide a plain text file format in
                   the first command input.`);
-                return resolve({
-                  file: false
-                });
-              } else {
-                return resolve({
-                  file: true
-                });
-              }
-            });
-          }),
+              return resolve({
+                file: false
+              });
+            } else {
+              return resolve({
+                file: true
+              });
+            }
+          });
+        }),
 
         //Check for folder
         new Promise((resolve, reject) => {
@@ -172,15 +172,15 @@ const cliCommands = (execPath, fromCli) => {
           //Only generate on valid file and folder input
           if (values[0].file && values[1].folder) {
             require('./dirgen')('generate', {
-                template: data[0],
-                output: data[1],
-                options: {
-                  'forceOverwrite': forceOverwrite,
-                  'hideMessages': hideMessages
-                }
-              }, fromCli);
+              template: data[0],
+              output: data[1],
+              options: {
+                'forceOverwrite': forceOverwrite,
+                'hideMessages': hideMessages
+              }
+            }, fromCli);
           }
-        }, () => {});
+        }, () => { });
     });
 
   //Get assistance on the command use of this module
@@ -194,12 +194,12 @@ const cliCommands = (execPath, fromCli) => {
       //comment block markers
 
       const endMarkerSplitGroup = helpText
-            .split('[/]:# (Module Only - End)');
+        .split('<!-- (Module Only - End) -->');
 
       const lastItemIndexOfLastEndMarker = endMarkerSplitGroup.length - 1;
 
       const processBeforeLastEndMarkerGroup = endMarkerSplitGroup
-            .slice(0, lastItemIndexOfLastEndMarker);
+        .slice(0, lastItemIndexOfLastEndMarker);
 
       //The last item from the 'end' marker split needs not to be processed
       //and is concatenated at the very end
@@ -208,7 +208,7 @@ const cliCommands = (execPath, fromCli) => {
       const cliHelpText = processBeforeLastEndMarkerGroup
         .map((value, index) => {
           return value.slice(0,
-            value.indexOf('[/]:# (Module Only - Begin)'));
+            value.indexOf('<!-- (Module Only - Begin) -->'));
         }).filter((value) => {
           return value.replace(/\s+/g, '').length > 0;
         }).join('').concat(lastSectionAfterLastUnmarked);
@@ -221,7 +221,7 @@ const cliCommands = (execPath, fromCli) => {
     cliCommand === '-h' ||
     cliArgs.length === 2) {
 
-    cli.run(['', '', 'help'], () => {});
+    cli.run(['', '', 'help'], () => { });
   }
 
   if (includes(asyncCommands, cliCommand)) {
@@ -239,10 +239,10 @@ const cliCommands = (execPath, fromCli) => {
 
       //Read the version from package.json
       //In the exports function because needs access to the read path
-       packageJson = yield readJsonAsync(
+      packageJson = yield readJsonAsync(
         path.resolve(execPath, '../package.json'));
 
-      cli.run(['', '', 'version'], () => {});
+      cli.run(['', '', 'version'], () => { });
 
     });
 
@@ -257,7 +257,7 @@ const cliCommands = (execPath, fromCli) => {
   } else if (isValidCommand) {
 
     //Run the supplied command if it one of the existing commands
-    cli.run(cliArgs, () => {});
+    cli.run(cliArgs, () => { });
   }
 
   return cliCommands;
